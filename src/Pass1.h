@@ -18,6 +18,8 @@ public:
 private:
 	SourceCodeTable sourceCodeTable;
 	int getLengthOf(std::string);
+	string path;
+	void writeCurrenLineToIntermediateFile(string);
 };
 
 #endif /* PASS1_H_ */

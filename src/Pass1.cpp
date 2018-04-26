@@ -17,7 +17,8 @@
 
 using namespace std;
 Pass1::Pass1(string path) {
-	cout << "Pass1 object created" << endl;
+	cout << "Pass1 object created with path" + path<< endl;
+	this->path = path.append("o");
 	SicParser sicParser;
 	this->sourceCodeTable = sicParser.parse(path);
 	mainLoop();
@@ -92,6 +93,12 @@ int Pass1::getLengthOf(string constant) {
 	int integerValue;
 	//TODO Convert Value to integer and store in integer value
 	return integerValue;
+}
+
+void Pass1::writeCurrenLineToIntermediateFile(string line) {
+	  ofstream outfile;
+	  outfile.open(path, std::ios_base::app);
+	  outfile << line;
 }
 
 
