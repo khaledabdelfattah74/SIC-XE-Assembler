@@ -21,6 +21,9 @@ public:
     virtual ~SicParser();
     SourceCodeTable parse(string path);
     ;
+private:
+    string get_comment(vector<string> strings);
+    ;
 };
 
 #endif /* SicParser_hpp */
