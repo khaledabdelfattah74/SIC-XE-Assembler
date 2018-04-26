@@ -1,12 +1,13 @@
-/*
- * SicParser.cpp
- *
- *  Created on: Apr 25, 2018
- *      Author: user
- */
+//
+//  SicParser.cpp
+//  SIC
+//
+//  Created by Khaled Abdelfattah on 4/26/18.
+//  Copyright © 2018 Khaled Abdelfattah. All rights reserved.
+//
 
-#include "SicParser.h"
-#include "SourceCodeTable.h"
+#include "SicParser.hpp"
+#include "SourceCodeTable.hpp"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -33,7 +34,7 @@ SourceCodeTable SicParser::parse(string path) {
         while (str >> field) {
             fields.push_back(field);
         }
-
+        
         Entry entry = *new Entry("", "", "", "", false);
         if (fields[0][0] == '.') {
             entry = *new Entry("", "", "", line, true);
