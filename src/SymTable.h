@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unordered_map>
 
+using namespace std;
 
 class SymTable {
 public:
@@ -18,6 +19,6 @@ public:
 	void insert(std::string, int);
 	bool found(std::string);
 private:
-	std::tr1::unordered_map<std::string, int> symbolTable;
+	unordered_map<std::string, int> symbolTable;
 };
 #endif /* SYMTABLE_H_ */

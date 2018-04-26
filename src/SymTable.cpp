@@ -18,7 +18,7 @@ SymTable::~SymTable() {
 }
 
 void SymTable::insert(string lable, int address) {
-	this->symbolTable.insert(std::make_pair<std::string,int>(lable,address));
+	this->symbolTable.insert(make_pair(lable, address));
 }
 bool SymTable::found(string lable) {
 	if (this->symbolTable.count(lable) == 0) {

@@ -7,6 +7,10 @@
 
 #ifndef OPTABLE_H_
 #define OPTABLE_H_
+#include <string>
+#include <unordered_map>
+
+using namespace std;
 
 class OpTable {
 public:
@@ -15,7 +19,7 @@ public:
 	bool found(std::string);
 	int lengthOf(std::string);
 private:
-	std::tr1::unordered_map<std::string, int> operationTable;
+	unordered_map<string, int> operationTable;
 };
 
 #endif /* OPTABLE_H_ */

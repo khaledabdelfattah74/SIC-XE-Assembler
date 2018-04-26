@@ -12,6 +12,9 @@
 #include "SourceCodeTable.h"
 #include "SymTable.h"
 #include "OpTable.h"
+#include <string>
+#include <sstream>
+
 using namespace std;
 Pass1::Pass1(FILE * sourceCode) {
 	cout << "Pass1 object created" << endl;
@@ -58,10 +61,16 @@ void Pass1::mainLoop() {
 				locctr += 3;
 			} else if (currentEntrythis.getOpCode() == "RESW") {
 				//TODO donont forget to convert the operand to integer
-				locctr += (3 * currentEntrythis.getOperand());
+				istringstream buffer(currentEntrythis.getOperand());
+                int numOfWords;
+                buffer >> numOfWords;
+				locctr += 3 * numOfWords;
 			} else if (currentEntrythis.getOpCode() == "RESB") {
 				//TODO donont forget to convert the operand to integer
-				locctr += currentEntrythis.getOperand();
+				istringstream buffer(currentEntrythis.getOperand());
+                int numOfBytes;
+                buffer >> numOfBytes;
+				locctr += numOfBytes;
 			} else if (currentEntrythis.getOpCode() == "BYTE") {
 				//TODO Implement this function
 				locctr += getLengthOf(currentEntrythis.getOperand());
