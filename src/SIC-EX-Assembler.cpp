@@ -7,7 +7,7 @@
 //============================================================================
 
 #include <iostream>
-#include "Pass1.h"
+#include "Pass1.hpp"
 using namespace std;
 
 int main() {
