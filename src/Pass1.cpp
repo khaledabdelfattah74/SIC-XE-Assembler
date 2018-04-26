@@ -96,9 +96,10 @@ int Pass1::getLengthOf(string constant) {
 }
 
 void Pass1::writeCurrenLineToIntermediateFile(string line) {
-	  ofstream outfile;
-	  outfile.open(path, std::ios_base::app);
-	  outfile << line;
+	ofstream outfile;
+	outfile.open(path, ios_base::app);
+	outfile << line << endl;
+	outfile.close();
 }
 
 
