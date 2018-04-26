@@ -15,8 +15,8 @@ void SourceCodeTable::addEntry(Entry entry) {
 	this->entries.push(entry);
 }
 
-Entry SourceCodeTable::fetchNextEntry() {
-	Entry firstIsertedEntry = this->entries.front();
+Entry* SourceCodeTable::fetchNextEntry() {
+	Entry* firstIsertedEntry = &this->entries.front();
 	entries.pop();
 	return firstIsertedEntry;
 }

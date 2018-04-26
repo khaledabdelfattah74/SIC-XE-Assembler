@@ -30,9 +30,9 @@ void Pass1::mainLoop() {
 	cout << "mainLoop called h" << endl;
 	int startingAddress;
 	int locctr;
-	Entry currentEntrythis = sourceCodeTable.fetchNextEntry();
+	Entry* currentEntrythis = sourceCodeTable.fetchNextEntry();
 	//TODO do not forget to ignore case here
-	if (currentEntrythis.getOpCode() == "START") {
+	if (currentEntrythis->getOpCode() == "START") {
 		//TODO donont forget to convert the operand to integer
 		//startingAddress = currentEntrythis.getOperand();
 		locctr = startingAddress;
@@ -42,39 +42,39 @@ void Pass1::mainLoop() {
 		locctr = 0;
 	}
 	//TODO Ignore case in this comparison
-	while (currentEntrythis.getOpCode() != "END") {
-		if (!currentEntrythis.isCommentLine()) {
-			if(currentEntrythis.getLable().length() != 0) {
-				bool repeated = symTab.found(currentEntrythis.getLable());
+	while (currentEntrythis->getOpCode() != "END") {
+		if (!currentEntrythis->isCommentLine()) {
+			if(currentEntrythis->getLable().length() != 0) {
+				bool repeated = symTab.found(currentEntrythis->getLable());
 				if (repeated) {
 					//TODO set Error flag
 				} else {
-					symTab.insert(currentEntrythis.getLable(), locctr);
+					symTab.insert(currentEntrythis->getLable(), locctr);
 				}
 
 			}
 			//DO not forget to convert to upper to case
-			bool validOpCode = opTable.found(currentEntrythis.getOpCode());
+			bool validOpCode = opTable.found(currentEntrythis->getOpCode());
 			if (validOpCode) {
-				locctr += opTable.lengthOf(currentEntrythis.getOpCode());
+				locctr += opTable.lengthOf(currentEntrythis->getOpCode());
 			//TODO IGNORE CASE
-			} else if (currentEntrythis.getOpCode() == "WORD") {
+			} else if (currentEntrythis->getOpCode() == "WORD") {
 				locctr += 3;
-			} else if (currentEntrythis.getOpCode() == "RESW") {
+			} else if (currentEntrythis->getOpCode() == "RESW") {
 				//TODO donont forget to convert the operand to integer
-				istringstream buffer(currentEntrythis.getOperand());
+				istringstream buffer(currentEntrythis->getOperand());
                 int numOfWords;
                 buffer >> numOfWords;
 				locctr += 3 * numOfWords;
-			} else if (currentEntrythis.getOpCode() == "RESB") {
+			} else if (currentEntrythis->getOpCode() == "RESB") {
 				//TODO donont forget to convert the operand to integer
-				istringstream buffer(currentEntrythis.getOperand());
+				istringstream buffer(currentEntrythis->getOperand());
                 int numOfBytes;
                 buffer >> numOfBytes;
 				locctr += numOfBytes;
-			} else if (currentEntrythis.getOpCode() == "BYTE") {
+			} else if (currentEntrythis->getOpCode() == "BYTE") {
 				//TODO Implement this function
-				locctr += getLengthOf(currentEntrythis.getOperand());
+				locctr += getLengthOf(currentEntrythis->getOperand());
 			} else {
 				//TODO
 				//setError Flag invalid operation code
