@@ -22,7 +22,7 @@ SicParser::~SicParser() {
 
 //TODO IMPORTATNT if a field in an entry is not exist insert it as a string with length zero
 //TODO parsing code goes here to fill and return a source code table object with entries.
-SourceCodeTable parse(string path) {
+SourceCodeTable SicParser::parse(string path) {
     SourceCodeTable sourceCodeTable = *new SourceCodeTable();
     ifstream file(path);
     string line;
@@ -33,7 +33,7 @@ SourceCodeTable parse(string path) {
         while (str >> field) {
             fields.push_back(field);
         }
-        
+
         Entry entry = *new Entry("", "", "", "", false);
         if (fields[0][0] == '.') {
             entry = *new Entry("", "", "", line, true);
