@@ -8,6 +8,7 @@
 #ifndef PASS1_H_
 #define PASS1_H_
 #include "SourceCodeTable.h"
+#include <fstream>
 using namespace std;
 
 class Pass1 {
