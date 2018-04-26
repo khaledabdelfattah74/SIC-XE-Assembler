@@ -8,13 +8,15 @@
 #ifndef SICPARSER_H_
 #define SICPARSER_H_
 #include "SourceCodeTable.h"
+#include <string>
+
+using namespace std;
 class SicParser {
 public:
-	SicParser(FILE * sourceCode);
-	virtual ~SicParser();
-	SourceCodeTable parse();
-private:
-	FILE * sourceCode;
+    SicParser();
+    virtual ~SicParser();
+    SourceCodeTable parse(string path);
+    ;
 };
 
 #endif /* SICPARSER_H_ */

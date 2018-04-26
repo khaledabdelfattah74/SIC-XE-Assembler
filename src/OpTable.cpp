@@ -87,6 +87,7 @@ OpTable::~OpTable() {
 
 int OpTable::lengthOf(std::string opCode) {
 	int size = this->operationTable[opCode];
+    return size;
 }
 
 bool OpTable::found(std::string lable) {

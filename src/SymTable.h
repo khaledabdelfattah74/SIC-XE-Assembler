@@ -7,7 +7,7 @@
 
 #ifndef SYMTABLE_H_
 #define SYMTABLE_H_
-#include <string.h>
+#include <string>
 #include <unordered_map>
 
 using namespace std;
@@ -16,9 +16,9 @@ class SymTable {
 public:
 	SymTable();
 	virtual ~SymTable();
-	void insert(std::string, int);
-	bool found(std::string);
+	void insert(string, int);
+	bool found(string);
 private:
-	unordered_map<std::string, int> symbolTable;
+	unordered_map<string, int> symbolTable;
 };
 #endif /* SYMTABLE_H_ */

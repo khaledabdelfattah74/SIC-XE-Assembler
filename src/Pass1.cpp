@@ -16,10 +16,10 @@
 #include <sstream>
 
 using namespace std;
-Pass1::Pass1(FILE * sourceCode) {
+Pass1::Pass1(string path) {
 	cout << "Pass1 object created" << endl;
-	SicParser sicParser(sourceCode);
-	this->sourceCodeTable = sicParser.parse();
+	SicParser sicParser;
+	this->sourceCodeTable = sicParser.parse(path);
 	mainLoop();
 }
 

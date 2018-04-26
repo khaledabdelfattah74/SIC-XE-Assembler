@@ -12,7 +12,7 @@ using namespace std;
 
 class Pass1 {
 public:
-	Pass1(FILE * sourceCode);
+	Pass1(string path);
 	void mainLoop();
 private:
 	SourceCodeTable sourceCodeTable;

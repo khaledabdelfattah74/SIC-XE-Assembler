@@ -6,7 +6,7 @@
  */
 
 #include "SymTable.h"
-#include <string.h>
+#include <string>
 using namespace std;
 SymTable::SymTable() {
 	// TODO Auto-generated constructor stub
