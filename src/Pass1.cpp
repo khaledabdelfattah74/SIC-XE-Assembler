@@ -27,7 +27,7 @@ Pass1::Pass1(string path) {
 void Pass1::mainLoop() {
 	SymTable symTab;
 	OpTable opTable;
-	cout << "mainLoop called" << endl;
+	cout << "mainLoop called h" << endl;
 	int startingAddress;
 	int locctr;
 	Entry currentEntrythis = sourceCodeTable.fetchNextEntry();

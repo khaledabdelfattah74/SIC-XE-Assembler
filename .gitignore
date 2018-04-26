@@ -208,3 +208,5 @@ xcuserdata/
 
 SIC-XE-Assembler/
 # End 
+/Debug/
+/Release/
