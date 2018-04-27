@@ -37,6 +37,12 @@ SourceCodeTable SicParser::parse(string path) {
             entry = *new Entry("", "", "", line, true);
         } else {
             switch (fields.size()) {
+                case 0:
+                    // Error
+                    break;
+                case 1:
+                    // Error
+                    break;
                 case 2:
                     entry = *new Entry("", fields[0], fields[1], "", false);
                     break;
@@ -47,15 +53,20 @@ SourceCodeTable SicParser::parse(string path) {
                         entry = *new Entry(fields[0], fields[1], fields[2], "", false);
                     }
                     break;
-                case 4:
-                    entry = *new Entry(fields[0], fields[1], fields[2], fields[4], false);
-                    break;
                 default:
-                    // Error
+                    string comment = get_comment(fields);
+                    entry = *new Entry(fields[0], fields[1], fields[2], comment, false);
                     break;
             }
         }
         sourceCodeTable.addEntry(entry);
     }
     return sourceCodeTable;
+}
+
+string SicParser::get_comment(vector<string> strings) {
+    string str = "";
+    for (int i = 3; i < strings.size(); i++)
+        str += strings[i] + " ";
+    return str;
 }
