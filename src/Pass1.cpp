@@ -39,13 +39,13 @@ void Pass1::mainLoop() {
     Entry currentEntry = *sourceCodeTable.fetchNextEntry();
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
-    
+
     while (currentEntry.isCommentLine()) {
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
         currentEntry = *sourceCodeTable.fetchNextEntry();
     }
-    
+
     if (to_upper(currentEntry.getOpCode()) == "START") {
         istringstream buffer(currentEntry.getOperand());
         buffer >> startingAddress;
@@ -62,7 +62,7 @@ void Pass1::mainLoop() {
         locctr = 0;
         startingAddress = 0;
     }
-    
+
     int currentInstructionLength = 0;
     while (to_upper(currentEntry.getOpCode()) != "END") {
         if (!currentEntry.isCommentLine()) {
@@ -72,7 +72,7 @@ void Pass1::mainLoop() {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-1, locctr, currentInstructionLength, currentEntry);
                 } else {
-                    symTab.insert(currentEntry.getLable(), locctr);
+                    symTab.insert(to_upper(currentEntry.getLable()), locctr);
                 }
             }
             bool validOpCode = opTable.found(to_upper(currentEntry.getOpCode()));
@@ -106,7 +106,7 @@ void Pass1::mainLoop() {
         lineNo++;
         currentEntry = *sourceCodeTable.fetchNextEntry();
     }
-    
+
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
     this->programLength = locctr - startingAddress;
