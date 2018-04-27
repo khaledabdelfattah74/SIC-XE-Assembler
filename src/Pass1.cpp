@@ -16,6 +16,8 @@
 #include <string>
 #include <sstream>
 #include <stdio.h>
+#include <ctype.h>
+
 
 using namespace std;
 Pass1::Pass1(string path) {
@@ -38,7 +40,7 @@ void Pass1::mainLoop() {
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
     //TODO do not forget to ignore case here
-    if (currentEntry.getOpCode() == "START") {
+    if (to_upper(currentEntry.getOpCode()) == "START") {
         istringstream buffer(currentEntry.getOperand());
         buffer >> startingAddress;
         locctr = startingAddress;
@@ -56,10 +58,10 @@ void Pass1::mainLoop() {
     }
     //TODO Ignore case in this comparison
     int currentInstructionLength = 0;
-    while (currentEntry.getOpCode() != "END") {
+    while (to_upper(currentEntry.getOpCode()) != "END") {
         if (!currentEntry.isCommentLine()) {
             if(currentEntry.getLable().length() != 0) {
-                bool repeated = symTab.found(currentEntry.getLable());
+                bool repeated = symTab.found(to_upper(currentEntry.getLable()));
                 if (repeated) {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-1, locctr, currentInstructionLength, currentEntry);
@@ -68,27 +70,27 @@ void Pass1::mainLoop() {
                 }
             }
             //TODO DO not forget to convert to upper to case
-            bool validOpCode = opTable.found(currentEntry.getOpCode());
+            bool validOpCode = opTable.found(to_upper(currentEntry.getOpCode()));
             if (validOpCode) {
                 currentInstructionLength = opTable.lengthOf(currentEntry.getOpCode());
                 locctr += currentInstructionLength;
                 //TODO IGNORE CASE
-            } else if (currentEntry.getOpCode() == "WORD") {
+            } else if (to_upper(currentEntry.getOpCode()) == "WORD") {
                 currentInstructionLength = 3;
                 locctr += currentInstructionLength;
-            } else if (currentEntry.getOpCode() == "RESW") {
+            } else if (to_upper(currentEntry.getOpCode()) == "RESW") {
                 istringstream buffer(currentEntry.getOperand());
                 int numOfWords;
                 buffer >> numOfWords;
                 currentInstructionLength = 3 * numOfWords;
                 locctr += currentInstructionLength;
-            } else if (currentEntry.getOpCode() == "RESB") {
+            } else if (to_upper(currentEntry.getOpCode()) == "RESB") {
                 istringstream buffer(currentEntry.getOperand());
                 int numOfBytes;
                 buffer >> numOfBytes;
                 currentInstructionLength = numOfBytes;
                 locctr += currentInstructionLength;
-            } else if (currentEntry.getOpCode() == "BYTE") {
+            } else if (to_upper(currentEntry.getOpCode()) == "BYTE") {
                 currentInstructionLength = getLengthOf(currentEntry.getOperand());
                 locctr += currentInstructionLength;
             } else {
@@ -125,32 +127,32 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
     } else if (lineNumber == -1) {
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
-        outfile << "***Duplicate lable definition***" << endl;
+        outfile << "\t\t\t\t\t\t***Duplicate lable definition***" << endl;
         outfile.close();
         return;
     } else if (lineNumber == -2) {
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
-        outfile << "***Wrong operand prefix***" << endl;
+        outfile << "\t\t\t\t\t\t***Wrong operand prefix***" << endl;
         outfile.close();
         return;
     }
     string fixedLable = currentEntry.getLable();
-    int length = fixedLable.length();
+    int length = (int) fixedLable.length();
     if (length < 8) {
             for (int i = 0; i < 8 - length; i++) {
                 fixedLable.append(" ");
             }
     }
     string fixedOpcode = currentEntry.getOpCode();
-    length = fixedOpcode.length();
+    length = (int) fixedOpcode.length();
     if (length < 9) {
         for (int i = 0; i < 9 - length; i++) {
             fixedOpcode.append(" ");
         }
     }
     string fixedOperand = currentEntry.getOperand();
-    length = fixedOperand.length();
+    length = (int) fixedOperand.length();
     if (length < 17) {
         for (int i = 0; i < 17 - length; i++) {
             fixedOperand.append(" ");
@@ -167,6 +169,13 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
     outfile.open(outPath, ios_base::app);
     outfile << stro << endl;
     outfile.close();
-    delete stro;
+    //delete stro;
+}
+
+string Pass1::to_upper(string str) {
+    string upper_case_string = "";
+    for (char c : str)
+        upper_case_string += toupper(c);
+    return upper_case_string;
 }
 

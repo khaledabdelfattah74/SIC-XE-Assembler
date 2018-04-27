@@ -41,7 +41,7 @@ SourceCodeTable SicParser::parse(string path) {
                     // Error
                     break;
                 case 1:
-                    // Error
+                    entry = *new Entry("", fields[0], "", "", false);
                     break;
                 case 2:
                     entry = *new Entry("", fields[0], fields[1], "", false);

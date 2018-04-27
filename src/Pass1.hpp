@@ -26,6 +26,7 @@ private:
     SourceCodeTable sourceCodeTable;
     int getLengthOf(std::string);
     void writeCurrenLineToIntermediateFile(int ,int , int, Entry);
+    string to_upper(string str);
 };
 
 #endif /* Pass1_hpp */
