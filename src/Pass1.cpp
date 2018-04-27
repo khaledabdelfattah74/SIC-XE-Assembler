@@ -39,7 +39,13 @@ void Pass1::mainLoop() {
     Entry currentEntry = *sourceCodeTable.fetchNextEntry();
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
-    //TODO do not forget to ignore case here
+    
+    while (currentEntry.isCommentLine()) {
+        writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+        lineNo++;
+        currentEntry = *sourceCodeTable.fetchNextEntry();
+    }
+    
     if (to_upper(currentEntry.getOpCode()) == "START") {
         istringstream buffer(currentEntry.getOperand());
         buffer >> startingAddress;
@@ -56,7 +62,7 @@ void Pass1::mainLoop() {
         locctr = 0;
         startingAddress = 0;
     }
-    //TODO Ignore case in this comparison
+    
     int currentInstructionLength = 0;
     while (to_upper(currentEntry.getOpCode()) != "END") {
         if (!currentEntry.isCommentLine()) {
@@ -69,12 +75,10 @@ void Pass1::mainLoop() {
                     symTab.insert(currentEntry.getLable(), locctr);
                 }
             }
-            //TODO DO not forget to convert to upper to case
             bool validOpCode = opTable.found(to_upper(currentEntry.getOpCode()));
             if (validOpCode) {
                 currentInstructionLength = opTable.lengthOf(currentEntry.getOpCode());
                 locctr += currentInstructionLength;
-                //TODO IGNORE CASE
             } else if (to_upper(currentEntry.getOpCode()) == "WORD") {
                 currentInstructionLength = 3;
                 locctr += currentInstructionLength;
@@ -102,6 +106,7 @@ void Pass1::mainLoop() {
         lineNo++;
         currentEntry = *sourceCodeTable.fetchNextEntry();
     }
+    
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
     this->programLength = locctr - startingAddress;
@@ -116,12 +121,13 @@ int Pass1::getLengthOf(string constant) {
     return integerValue;
 }
 
-void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter, int lenOfCurrentInstruction, Entry currentEntry) {
+void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
+                                              int lenOfCurrentInstruction, Entry currentEntry) {
     if (lineNumber == 0) {
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
         outfile << "Line no.\tAddress   \tLabel   \t\tMnemonic\t\tOperands          \tComments\n"
-                                          "\t\t\t\t\t\t\t\t\t\tOp-code" << endl;
+        "\t\t\t\t\t\t\t\t\t\tOp-code" << endl;
         outfile.close();
         return;
     } else if (lineNumber == -1) {
@@ -140,9 +146,9 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
     string fixedLable = currentEntry.getLable();
     int length = (int) fixedLable.length();
     if (length < 8) {
-            for (int i = 0; i < 8 - length; i++) {
-                fixedLable.append(" ");
-            }
+        for (int i = 0; i < 8 - length; i++) {
+            fixedLable.append(" ");
+        }
     }
     string fixedOpcode = currentEntry.getOpCode();
     length = (int) fixedOpcode.length();
@@ -160,11 +166,11 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
     }
     char stro[100];
     sprintf(stro, "%-8d\t%06x\t\t%.8s\t\t%.8s\t\t%.18s\t%s",
-        lineNumber,(locationCounter - lenOfCurrentInstruction),
-        fixedLable.c_str(),
-        fixedOpcode.c_str(),
-        fixedOperand.c_str(),
-        currentEntry.getComment().c_str());
+            lineNumber,(locationCounter - lenOfCurrentInstruction),
+            fixedLable.c_str(),
+            fixedOpcode.c_str(),
+            fixedOperand.c_str(),
+            currentEntry.getComment().c_str());
     ofstream outfile;
     outfile.open(outPath, ios_base::app);
     outfile << stro << endl;
