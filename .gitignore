@@ -34,6 +34,8 @@
 .project
 .cproject
 .settings/
+Debug/
+Release/
 
 # Created by https://www.gitignore.io/api/
 
