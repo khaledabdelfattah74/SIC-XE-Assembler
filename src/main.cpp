@@ -8,10 +8,14 @@
 
 #include <iostream>
 #include "Pass1.hpp"
+#include "SicParser.hpp"
+#include "SourceCodeTable.hpp"
+
 using namespace std;
 
 int main() {
-	//TODO implement this
-	Pass1 pa("E:\\testSic.txt");
+    string path = "C:\\Users\\user\\Desktop\\test.txt";
+	Pass1 pa = *new Pass1(path);
+    cout << endl << "An intermediate file was written to the path: " << pa.outPath << endl;
 	return 0;
 }

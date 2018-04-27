@@ -7,9 +7,10 @@
 //
 
 #include "SourceCodeTable.hpp"
+#include <iostream>
 
 SourceCodeTable::SourceCodeTable() {
-    
+
 }
 
 void SourceCodeTable::addEntry(Entry entry) {
@@ -18,10 +19,10 @@ void SourceCodeTable::addEntry(Entry entry) {
 
 Entry* SourceCodeTable::fetchNextEntry() {
     Entry* firstIsertedEntry = &this->entries.front();
-    entries.pop();
+    this->entries.pop();
     return firstIsertedEntry;
 }
 
 SourceCodeTable::~SourceCodeTable() {
-    // TODO Auto-generated destructor stub
 }
+

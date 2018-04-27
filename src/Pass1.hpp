@@ -19,11 +19,13 @@ class Pass1 {
 public:
     Pass1(string path);
     void mainLoop();
+    string outPath;
+    bool error;
+    int programLength;
 private:
     SourceCodeTable sourceCodeTable;
     int getLengthOf(std::string);
-    string path;
-    void writeCurrenLineToIntermediateFile(string);
+    void writeCurrenLineToIntermediateFile(int ,int , int, Entry);
 };
 
 #endif /* Pass1_hpp */

@@ -79,11 +79,10 @@ OpTable::OpTable() {
         {"WD", 3},
         {"+WD", 4}
     };
-    
+
 }
 
 OpTable::~OpTable() {
-    // TODO Auto-generated destructor stub
 }
 
 int OpTable::lengthOf(std::string opCode) {

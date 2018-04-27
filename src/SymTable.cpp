@@ -11,12 +11,10 @@
 
 using namespace std;
 SymTable::SymTable() {
-    // TODO Auto-generated constructor stub
-    
+
 }
 
 SymTable::~SymTable() {
-    // TODO Auto-generated destructor stub
 }
 
 void SymTable::insert(string lable, int address) {
