@@ -28,34 +28,42 @@ SourceCodeTable SicParser::parse(string path) {
         istringstream str(line);
         vector<string> fields;
         string field;
+        int flag = 0;
+        bool has_comment = false;
         while (str >> field) {
             fields.push_back(field);
+            if (field[0] != '.' && !has_comment)
+                flag++;
+            if (field[0] == '.')
+                has_comment = true;
         }
 
         Entry entry = *new Entry("", "", "", "", false);
         if (fields[0][0] == '.') {
             entry = *new Entry("", "", "", line, true);
         } else {
-            switch (fields.size()) {
+            string comment = get_comment(fields, flag);
+            switch (flag) {
                 case 0:
                     // Error
                     break;
                 case 1:
-                    entry = *new Entry("", fields[0], "", "", false);
+                    entry = *new Entry("", fields[0], "", comment, false);
                     break;
                 case 2:
-                    entry = *new Entry("", fields[0], fields[1], "", false);
+                    entry = *new Entry("", fields[0], fields[1], comment, false);
+                    if (fields[1] == "RSUB")
+                        entry = *new Entry(fields[0], fields[1], "", comment, false);
                     break;
                 case 3:
-                    if (fields[2][0] == '.') {
-                        entry = *new Entry("", fields[0], fields[1], fields[2], false);
-                    } else {
-                        entry = *new Entry(fields[0], fields[1], fields[2], "", false);
-                    }
+                    entry = *new Entry(fields[0], fields[1], fields[2], comment, false);
                     break;
                 default:
-                    string comment = get_comment(fields);
-                    entry = *new Entry(fields[0], fields[1], fields[2], comment, false);
+                    // Error
+                    string operand = "";
+                    for (int i = 2; i < flag; i ++)
+                        operand += fields[i];
+                    entry = *new Entry(fields[0], fields[1], operand, comment, false);
                     break;
             }
         }
@@ -64,9 +72,9 @@ SourceCodeTable SicParser::parse(string path) {
     return sourceCodeTable;
 }
 
-string SicParser::get_comment(vector<string> strings) {
+string SicParser::get_comment(vector<string> strings, int start) {
     string str = "";
-    for (int i = 3; i < strings.size(); i++)
+    for (int i = start; i < strings.size(); i++)
         str += strings[i] + " ";
     return str;
 }
