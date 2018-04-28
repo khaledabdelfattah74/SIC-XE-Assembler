@@ -8,6 +8,7 @@
 
 #include "SymTable.hpp"
 #include <string>
+#include <iostream>
 
 using namespace std;
 SymTable::SymTable() {
@@ -20,6 +21,11 @@ SymTable::~SymTable() {
 void SymTable::insert(string lable, int address) {
     this->symbolTable.insert(make_pair(lable, address));
 }
+
+int SymTable::size() {
+    return this->symbolTable.size();
+}
+
 bool SymTable::found(string lable) {
     if (this->symbolTable.count(lable) == 0) {
         return false;

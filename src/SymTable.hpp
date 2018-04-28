@@ -21,7 +21,7 @@ public:
     virtual ~SymTable();
     void insert(string, int);
     bool found(string);
-private:
+    int size();
     unordered_map<string, int> symbolTable;
 };
 
