@@ -22,7 +22,7 @@ public:
     SourceCodeTable parse(string path);
     ;
 private:
-    string get_comment(vector<string> strings);
+    string get_comment(vector<string> strings, int start);
     ;
 };
 
