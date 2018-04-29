@@ -322,7 +322,7 @@ void Pass1::printSymTable(SymTable symTable) {
     outfile << endl << "SymTable\tAddress" << endl << endl;
     for(auto symbol : symTable.symbolTable) {
         string symbolName = symbol.first;
-        int length = symbolName.length();
+        int length = (int) symbolName.length();
         if (length < 8) {
             for (int i = 0; i < 8 - length; i++) {
                 symbolName.append(" ");
