@@ -21,7 +21,8 @@ public:
     virtual ~SourceCodeTable();
     void addEntry(Entry entry);
     Entry* fetchNextEntry();
-    
+    int size();
+
 private:
     queue<Entry> entries;
 };

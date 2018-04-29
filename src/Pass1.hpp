@@ -12,6 +12,7 @@
 #include "SymTable.hpp"
 #include "SourceCodeTable.hpp"
 #include <fstream>
+#include "LitTab.h"
 using namespace std;
 
 class Pass1 {
@@ -22,6 +23,7 @@ public:
     string symTablePath;
     bool error;
     int programLength;
+    LitTab litTab;
 private:
     bool baseAvailable = false;
     int base = 0;

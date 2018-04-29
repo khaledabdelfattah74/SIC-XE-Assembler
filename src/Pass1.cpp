@@ -67,7 +67,7 @@ void Pass1::mainLoop() {
     }
 
     int currentInstructionLength = 0;
-    while (to_upper(currentEntry.getOpCode()) != "END") {
+    while (sourceCodeTable.size() != 0 && to_upper(currentEntry.getOpCode()) != "END") {
         if (!currentEntry.isCommentLine()) {
             if(currentEntry.getLable().length() != 0) {
                 bool repeated = symTab.found(to_upper(currentEntry.getLable()));
@@ -170,6 +170,18 @@ void Pass1::mainLoop() {
                 this->error = true;
                 writeCurrenLineToIntermediateFile(-2, locctr, currentInstructionLength, currentEntry);
             }
+            if(currentEntry.getOperand().length() != 0) {
+                if (currentEntry.getOperand().c_str()[0] == '=') {
+                    if (currentEntry.getOperand().c_str()[2] == '\''
+                        && currentEntry.getOperand().c_str()[currentEntry.getOperand().length() - 1] == '\'') {
+                            bool valid = this->litTab.insert(currentEntry.getOperand());
+                            if (!valid) {
+                                this->error = true;
+                                writeCurrenLineToIntermediateFile(-9, locctr, currentInstructionLength, currentEntry);
+                            }
+                        }
+                }
+            }
         }
         stringstream stream;
         stream << currentInstructionLength;
@@ -179,10 +191,20 @@ void Pass1::mainLoop() {
         currentEntry = *sourceCodeTable.fetchNextEntry();
     }
 
-    writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-    lineNo++;
-    this->programLength = locctr - startingAddress;
-    this->printSymTable(symTab);
+    if (this->to_upper(currentEntry.getOpCode()) == "END") {
+        if (currentEntry.getLable() == "") {
+            writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+            lineNo++;
+            this->programLength = locctr - startingAddress;
+            this->printSymTable(symTab);
+        } else {
+            writeCurrenLineToIntermediateFile(-7, locctr, currentInstructionLength, currentEntry);
+            this->error = true;
+        }
+    } else {
+        writeCurrenLineToIntermediateFile(-8, locctr, 0, currentEntry);
+        this->error = true;
+    }
 }
 
 
@@ -243,6 +265,18 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
         outfile << "\t\t\t\t\t\t***This instruction can not have operand***" << endl;
+        outfile.close();
+        return;
+    } else if (lineNumber == -8) {
+        ofstream outfile;
+        outfile.open(outPath, ios_base::app);
+        outfile << "\t\t\t\t\t\t***No END statement***" << endl;
+        outfile.close();
+        return;
+    } else if (lineNumber == -9) {
+        ofstream outfile;
+        outfile.open(outPath, ios_base::app);
+        outfile << "\t\t\t\t\t\t***Invalid literal***" << endl;
         outfile.close();
         return;
     }

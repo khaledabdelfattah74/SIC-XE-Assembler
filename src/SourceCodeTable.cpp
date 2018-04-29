@@ -23,6 +23,10 @@ Entry* SourceCodeTable::fetchNextEntry() {
     return firstIsertedEntry;
 }
 
+int SourceCodeTable::size() {
+    return this->entries.size();
+}
+
 SourceCodeTable::~SourceCodeTable() {
 }
 
