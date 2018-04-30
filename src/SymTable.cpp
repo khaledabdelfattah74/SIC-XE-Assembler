@@ -23,7 +23,7 @@ void SymTable::insert(string lable, int address) {
 }
 
 int SymTable::size() {
-    return (int) this->symbolTable.size();
+    return this->symbolTable.size();
 }
 
 bool SymTable::found(string lable) {

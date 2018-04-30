@@ -33,6 +33,10 @@ Pass1::Pass1(string path) {
     mainLoop();
 }
 
+int Pass1::getNumOfErrors() {
+    return this->numOfErrors;
+}
+
 void Pass1::mainLoop() {
     SymTable symTab;
     OpTable opTable;
@@ -164,8 +168,17 @@ void Pass1::mainLoop() {
                     this->error = true;
                 }
             } else if (to_upper(currentEntry.getOpCode()) == "LTORG") {
-                currentInstructionLength = getLengthOf(currentEntry.getOperand());
-                locctr += currentInstructionLength;
+                if (currentEntry.getLable() == "") {
+                    if (currentEntry.getOperand() == "") {
+                        locctr = litTab.assignCurrentLiterals(locctr, lineNo, outPath);
+                    } else {
+                        writeCurrenLineToIntermediateFile(-7, locctr, currentInstructionLength, currentEntry);
+                        this->error = true;
+                    }
+                } else {
+                    writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                }
             } else {
                 this->error = true;
                 writeCurrenLineToIntermediateFile(-2, locctr, currentInstructionLength, currentEntry);
@@ -186,7 +199,9 @@ void Pass1::mainLoop() {
         stringstream stream;
         stream << currentInstructionLength;
         stream >> hex >> currentInstructionLength;
-        writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
+        if (to_upper(currentEntry.getOpCode()) != "LTORG") {
+            writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
+        }
         lineNo++;
         currentEntry = *sourceCodeTable.fetchNextEntry();
     }
@@ -197,6 +212,8 @@ void Pass1::mainLoop() {
             lineNo++;
             this->programLength = locctr - startingAddress;
             this->printSymTable(symTab);
+            litTab.assignCurrentLiterals(locctr, lineNo, outPath);
+            this->printLitTable(litTab);
         } else {
             writeCurrenLineToIntermediateFile(-7, locctr, currentInstructionLength, currentEntry);
             this->error = true;
@@ -218,6 +235,9 @@ int Pass1::getLengthOf(string constant) {
 
 void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
                                               int lenOfCurrentInstruction, Entry currentEntry) {
+    if (lineNumber < 0) {
+        numOfErrors++;
+    }
     if (lineNumber == 0) {
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
@@ -322,16 +342,31 @@ void Pass1::printSymTable(SymTable symTable) {
     outfile << endl << "SymTable\tAddress" << endl << endl;
     for(auto symbol : symTable.symbolTable) {
         string symbolName = symbol.first;
-        int length = (int) symbolName.length();
+        int length = symbolName.length();
         if (length < 8) {
             for (int i = 0; i < 8 - length; i++) {
                 symbolName.append(" ");
             }
         }
-       cout << symbolName << "\t" << symbol.second << endl;
-       outfile << symbolName << "\t" << symbol.second << endl;
+       cout << symbolName << "\t" << hex << symbol.second << endl;
+       outfile << symbolName << "\t" << hex << symbol.second << endl;
     }
     outfile.close();
+}
+
+void Pass1::printLitTable(LitTab litTable) {
+    cout << endl << "LitTable\tLength\tAddress" << endl << endl;
+    for(auto literal : litTable.litTable) {
+        string litName = literal.first;
+        int length = litName.length();
+        if (length < 8) {
+            for (int i = 0; i < 8 - length; i++) {
+                litName.append(" ");
+            }
+        }
+        int address = literal.second.address;
+        cout << litName << "\t" << literal.second.length << "\t" << hex << address << endl;
+    }
 }
 
 string Pass1::to_upper(string str) {

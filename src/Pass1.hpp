@@ -24,7 +24,9 @@ public:
     bool error;
     int programLength;
     LitTab litTab;
+    int getNumOfErrors();
 private:
+    int numOfErrors = 0;
     bool baseAvailable = false;
     int base = 0;
     SourceCodeTable sourceCodeTable;
@@ -32,6 +34,7 @@ private:
     void writeCurrenLineToIntermediateFile(int ,int , int, Entry);
     string to_upper(string str);
     void printSymTable(SymTable);
+    void printLitTable(LitTab litTable);
     int valueOfExpression(string, SymTable);
     const vector<string> explode(const string&, const char&);
     bool is_number(const std::string&);

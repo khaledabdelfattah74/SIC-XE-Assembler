@@ -25,7 +25,7 @@ OpTable::OpTable() {
         {"JEQ", 3},
         {"+JEQ", 4},
         {"JGT", 3},
-        {"+JGT", 4},
+        {"+jGT", 4},
         {"JLT", 3},
         {"+JLT", 4},
         {"JSUB", 3},
