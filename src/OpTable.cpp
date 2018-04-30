@@ -70,7 +70,7 @@ OpTable::OpTable() {
         {"+STX", 4},
         {"SUB", 3},
         {"+SUB", 4},
-        {"SUBR", 2},
+        {"SUBR", 3},
         {"TD", 3},
         {"+TD", 4},
         {"TIX", 3},
@@ -86,9 +86,7 @@ OpTable::~OpTable() {
 }
 
 int OpTable::lengthOf(std::string opCode) {
-    int size = -1;
-    if (this->found(opCode))
-        return this->operationTable[opCode];
+    int size = this->operationTable[opCode];
     return size;
 }
 

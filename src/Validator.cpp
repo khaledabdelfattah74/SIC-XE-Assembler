@@ -12,10 +12,10 @@
 const regex twoRegisters ("(A|B|X|L|T|F|S|P),(A|B|X|L|T|F|S|P)");
 const regex oneRegister ("(A|B|X|L|T|F|S|P)");
 const regex indexing ("(\\w)+,X");
-const regex memoryAddressing ("(((#|@)*([A-Z])(\\w)*)|((#|@)*\\*))");
+const regex memoryAddressing ("(#|@)*([A-Z])(\\w)*");
 const regex immediateAddressing ("(#|@)*(\\d)+");
 const regex notRegester ("(#|@)*(A|B|X|L|T|F|S|P)");
-const regex expression ("\\w+(\\+|\\-)(\\w+(\\+|\\-))*\\w+");
+const regex expression ("(\\w)+(\\-|\\+)(\\w)+");
 const regex notValid ("([A-Z](\\w)*(\\+)[A-Z](\\w)*)|((\\d)+(\\-)[A-Z](\\w)*)");
 const regex literal ("(\\=)(C|W|X)\\'(\\w)+\\'");
 
@@ -33,9 +33,7 @@ bool Validator::check_vaidity(string operation, string operand) {
         return operand.length() == 0;
     } else if (regex_match(operand, expression)) {
         return !regex_match(operand, notValid);
-    } else if (lengthOfInstruction == -1)
-        return false;
-    else {
+    } else {
         if (regex_match(operand, oneRegister))
             return false;
         if (regex_match(operand, indexing) && !regex_match(operand, twoRegisters))
@@ -44,16 +42,14 @@ bool Validator::check_vaidity(string operation, string operand) {
                  && !regex_match(operand, notRegester))
             return true;
         else if (regex_match(operand, literal)) {
-            
             string value = "";
             for (int i = 3; i < operand.length() - 1; i ++)
                 value += operand[i];
-            
-            if (operand[1] == 'W' || operand[1] == 'w')
-                return regex_match(value, regex ("(\\-){0,1}\\d+"));
-            else if (operand[1] == 'X' || operand[1] == 'x')
-                return regex_match(value, regex ("(\\d|[A-F]|[a-f)+"));
-            else if (operand[1] == 'C' || operand[1] == 'c')
+            if (operand[1] == 'W')
+                return regex_match(value, regex ("\\d+"));
+            else if (operand[1] == 'X')
+                return regex_match(value, regex ("(\\d|[A-F])+"));
+            else if (operand[1] == 'C')
                 return regex_match(value, regex ("\\w+"));
         } else
             return false;

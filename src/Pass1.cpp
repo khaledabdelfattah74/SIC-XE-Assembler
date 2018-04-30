@@ -17,8 +17,8 @@
 #include <sstream>
 #include <stdio.h>
 #include <ctype.h>
-#include "Validator.hpp"
-#include <regex>
+#include <Validator.hpp>
+
 
 using namespace std;
 Pass1::Pass1(string path) {
@@ -79,7 +79,7 @@ void Pass1::mainLoop() {
                 if (repeated) {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-1, locctr, currentInstructionLength, currentEntry);
-                } else if (regex_match(currentEntry.getLable(), regex ("([A-Z]|[a-z])\\w+"))){
+                } else if (currentEntry.getLable().c_str()[0] < '0' || currentEntry.getLable().c_str()[0] > '9'){
                     symTab.insert(to_upper(currentEntry.getLable()), locctr);
                 } else {
                     this->error = true;
@@ -224,7 +224,13 @@ void Pass1::mainLoop() {
             writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
             this->error = true;
         }
+        if (sourceCodeTable.size() != 0) {
+            writeCurrenLineToIntermediateFile(-11, locctr, currentInstructionLength, currentEntry);
+            this->error = true;
+        }
     } else {
+        writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+        lineNo++;
         writeCurrenLineToIntermediateFile(-8, locctr, 0, currentEntry);
         this->error = true;
     }
@@ -309,6 +315,12 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
         outfile << "\t\t\t\t\t\t***Operand format is not compatible with operation***" << endl;
+        outfile.close();
+        return;
+    } else if (lineNumber == -11) {
+        ofstream outfile;
+        outfile.open(outPath, ios_base::app);
+        outfile << "\t\t\t\t\t\t***End must be at the last line***" << endl;
         outfile.close();
         return;
     }

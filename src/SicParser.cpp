@@ -35,7 +35,6 @@ SourceCodeTable SicParser::parse(string path) {
         bool has_comment = false;
 
         if (line.empty()) {
-            cout << "in";
             continue;
         }
         if(line.find_first_not_of(' ') == std::string::npos) {
