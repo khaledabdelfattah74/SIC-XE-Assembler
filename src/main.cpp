@@ -22,8 +22,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     Validator v = *new Validator();
-    cout << v.check_vaidity("COMPR", "dasdasdX,B") << endl;
-    
+    //cout << v.check_vaidity("LDA", "=X'123'") << endl;
     
     //cout << regex_match("A,X", twoRegesters) << endl;
     
