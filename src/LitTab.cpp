@@ -2,7 +2,7 @@
 #include <string>
 #include <cstring>
 #include <ctype.h>
-#include <SymTable.hpp>
+#include "SymTable.hpp"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -59,16 +59,16 @@ int LitTab::lengthOfInstruction(string name) {
     if (toupper(name.c_str()[1]) == 'W') {
         return 3;
     } else if (toupper(name.c_str()[1]) == 'X') {
-        return (name.length() - 4 )/ 2;
+        return ((int) name.length() - 4 )/ 2;
     } else if (toupper(name.c_str()[1]) == 'C') {
-        return name.length() - 4;
+        return (int) name.length() - 4;
     } else {
         return -1;
     }
 }
 
 int LitTab::size() {
-    return this->litTable.size();
+    return (int) this->litTable.size();
 }
 
 bool LitTab::found(string lable) {

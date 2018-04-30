@@ -19,7 +19,7 @@ using namespace std;
 class Validator {
 public:
     Validator();
-    bool validate(string operation, string operand);
+    bool check_vaidity(string operation, string operand);
 private:
     OpTable opTable;
 };
