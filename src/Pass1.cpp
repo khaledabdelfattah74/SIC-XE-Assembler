@@ -17,8 +17,8 @@
 #include <sstream>
 #include <stdio.h>
 #include <ctype.h>
-#include <Validator.hpp>
-
+#include "Validator.hpp"
+#include <regex>
 
 using namespace std;
 Pass1::Pass1(string path) {
@@ -79,7 +79,7 @@ void Pass1::mainLoop() {
                 if (repeated) {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-1, locctr, currentInstructionLength, currentEntry);
-                } else if (currentEntry.getLable().c_str()[0] < '0' || currentEntry.getLable().c_str()[0] > '9'){
+                } else if (regex_match(currentEntry.getLable(), regex ("([A-Z]|[a-z])\\w+"))){
                     symTab.insert(to_upper(currentEntry.getLable()), locctr);
                 } else {
                     this->error = true;
