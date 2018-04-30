@@ -221,7 +221,7 @@ void Pass1::mainLoop() {
             litTab.assignCurrentLiterals(locctr, lineNo, outPath);
             this->printLitTable(litTab);
         } else {
-            writeCurrenLineToIntermediateFile(-7, locctr, currentInstructionLength, currentEntry);
+            writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
             this->error = true;
         }
     } else {
