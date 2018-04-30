@@ -89,7 +89,7 @@ void Pass1::mainLoop() {
             bool validOpCode = opTable.found(to_upper(currentEntry.getOpCode()));
             if (validOpCode) {
                 Validator validator;
-                bool valid = validator.validate(to_upper(currentEntry.getOpCode()), to_upper(currentEntry.getOperand()));
+                bool valid = validator.check_vaidity(to_upper(currentEntry.getOpCode()), to_upper(currentEntry.getOperand()));
                 if (valid) {
                     currentInstructionLength = opTable.lengthOf(to_upper(currentEntry.getOpCode()));
                     locctr += currentInstructionLength;
@@ -116,7 +116,6 @@ void Pass1::mainLoop() {
                 currentInstructionLength = getLengthOf(currentEntry.getOperand());
                 locctr += currentInstructionLength;
             } else if (to_upper(currentEntry.getOpCode()) == "EQU") {
-                        cout << "in";
                     int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
                     if (valueOfExp == -1) {
                         writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
@@ -431,7 +430,6 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
                 return -2;
             }
             int numValue = symTable.symbolTable[to_upper(term)];
-
             if (minus[i]) {
                 value -= numValue;
             } else {

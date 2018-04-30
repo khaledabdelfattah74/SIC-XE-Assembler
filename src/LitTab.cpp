@@ -72,9 +72,19 @@ int LitTab::lengthOfInstruction(string name) {
         }
         return 3;
     } else if (toupper(name.c_str()[1]) == 'X') {
-        return ((int) name.length() - 4 )/ 2;
+        if (name.length() >= 5) {
+                return ((int) name.length() - 4 )/ 2;
+            } else {
+                return -1;
+            }
+
     } else if (toupper(name.c_str()[1]) == 'C') {
-        return (int) name.length() - 4;
+        if (name.length() >= 5) {
+                return (int) name.length() - 4;
+            } else {
+                return -1;
+            }
+
     } else {
         return -1;
     }
