@@ -24,7 +24,7 @@ Entry* SourceCodeTable::fetchNextEntry() {
 }
 
 int SourceCodeTable::size() {
-    return this->entries.size();
+    return (int) this->entries.size();
 }
 
 SourceCodeTable::~SourceCodeTable() {
