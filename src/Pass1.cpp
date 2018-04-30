@@ -17,6 +17,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <ctype.h>
+#include <Validator.hpp>
 
 
 using namespace std;
@@ -73,7 +74,7 @@ void Pass1::mainLoop() {
     int currentInstructionLength = 0;
     while (sourceCodeTable.size() != 0 && to_upper(currentEntry.getOpCode()) != "END") {
         if (!currentEntry.isCommentLine()) {
-            if(currentEntry.getLable().length() != 0) {
+            if(currentEntry.getLable().length() != 0 && to_upper(currentEntry.getOpCode()) != "EQU") {
                 bool repeated = symTab.found(to_upper(currentEntry.getLable()));
                 if (repeated) {
                     this->error = true;
@@ -87,8 +88,15 @@ void Pass1::mainLoop() {
             }
             bool validOpCode = opTable.found(to_upper(currentEntry.getOpCode()));
             if (validOpCode) {
-                currentInstructionLength = opTable.lengthOf(to_upper(currentEntry.getOpCode()));
-                locctr += currentInstructionLength;
+                Validator validator;
+                bool valid = validator.check_vaidity(to_upper(currentEntry.getOpCode()), to_upper(currentEntry.getOperand()));
+                if (valid) {
+                    currentInstructionLength = opTable.lengthOf(to_upper(currentEntry.getOpCode()));
+                    locctr += currentInstructionLength;
+                } else {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "WORD") {
                 currentInstructionLength = 3;
                 locctr += currentInstructionLength;
@@ -108,7 +116,6 @@ void Pass1::mainLoop() {
                 currentInstructionLength = getLengthOf(currentEntry.getOperand());
                 locctr += currentInstructionLength;
             } else if (to_upper(currentEntry.getOpCode()) == "EQU") {
-                if (symTab.found(to_upper(currentEntry.getLable()))) {
                     int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
                     if (valueOfExp == -1) {
                         writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
@@ -120,7 +127,6 @@ void Pass1::mainLoop() {
                         symTab.insert(to_upper(currentEntry.getLable()), valueOfExp);
                     }
                     currentInstructionLength = 0;
-                }
             } else if (to_upper(currentEntry.getOpCode()) == "ORG") {
                 if (currentEntry.getLable() == "") {
                     int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
@@ -299,6 +305,12 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
         outfile << "\t\t\t\t\t\t***Invalid literal***" << endl;
         outfile.close();
         return;
+    } else if (lineNumber == -10) {
+        ofstream outfile;
+        outfile.open(outPath, ios_base::app);
+        outfile << "\t\t\t\t\t\t***Operand format is not compatible with operation***" << endl;
+        outfile.close();
+        return;
     }
     string fixedLable = currentEntry.getLable();
     int length = (int) fixedLable.length();
@@ -377,11 +389,26 @@ string Pass1::to_upper(string str) {
 }
 
 int Pass1::valueOfExpression(string expression, SymTable symTable) {
-	vector<string> terms{explode(expression, '+')};
+	vector<string> terms{explode(expression, '+', '-')};
+	bool minus[terms.size()];
+	if (expression.c_str()[0] == '-') {
+        minus[0] = true;
+	} else {
+        minus[0] = false;
+	}
+	int counter = 1;
+	for (int i = 1; i < expression.length(); i++) {
+        if (expression.c_str()[i] == '-') {
+            minus[counter++] = true;
+        } else if (expression.c_str()[i] == '+') {
+            minus[counter++] = false;
+        }
+	}
 	int value = 0;
 	stringstream stream;
     stream << value;
     stream >> hex >> value;
+    int i = 0;
 	for(auto term:terms) {
 
         if (term.find(',') != std::string::npos) {
@@ -393,20 +420,24 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
             stringstream stream;
             stream << numValue;
             stream >> hex >> numValue;
-            value += numValue;
+            if (minus[i]) {
+                value -= numValue;
+            } else {
+                value += numValue;
+            }
         } else {
             if (!symTable.found(to_upper(term))) {
                 return -2;
             }
-            int numValue = symTable.symbolTable[term];
-            stringstream stream;
-            stream << numValue;
-            stream >> hex >> numValue;
-            value += numValue;
+            int numValue = symTable.symbolTable[to_upper(term)];
+            if (minus[i]) {
+                value -= numValue;
+            } else {
+                value += numValue;
+            }
         }
-
+    i++;
 	}
-
 	return value;
 }
 
@@ -417,12 +448,12 @@ bool Pass1::is_number(const std::string& s)
     return !s.empty() && it == s.end();
 }
 
-const vector<string> Pass1::explode(const string& s, const char& c) {
+const vector<string> Pass1::explode(const string& s, const char& c, const char& c1) {
 	string buff{""};
 	vector<string> v;
 	for(auto n:s) {
-		if(n != c) buff+=n; else
-		if(n == c && buff != "") { v.push_back(buff); buff = ""; }
+		if(n != c && n!= c1) buff+=n; else
+		if((n == c || n ==c1) && buff != "") { v.push_back(buff); buff = ""; }
 	}
 	if(buff != "") v.push_back(buff);
 	return v;

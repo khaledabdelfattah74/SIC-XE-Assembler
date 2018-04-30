@@ -57,11 +57,34 @@ int LitTab::assignCurrentLiterals(int currentAddress, int linNo, string outPath)
 
 int LitTab::lengthOfInstruction(string name) {
     if (toupper(name.c_str()[1]) == 'W') {
+        if (name.c_str()[3] == '-') {
+            if (name.length() <= 9 && name.length() >= 6) {
+                return 3;
+            } else {
+                return -1;
+            }
+        } else {
+            if (name.length() <= 8 && name.length() >= 5) {
+                return 3;
+            } else {
+                return -1;
+            }
+        }
         return 3;
     } else if (toupper(name.c_str()[1]) == 'X') {
-        return ((int) name.length() - 4 )/ 2;
+        if (name.length() >= 5) {
+                return ((int) name.length() - 4 )/ 2;
+            } else {
+                return -1;
+            }
+
     } else if (toupper(name.c_str()[1]) == 'C') {
-        return (int) name.length() - 4;
+        if (name.length() >= 5) {
+                return (int) name.length() - 4;
+            } else {
+                return -1;
+            }
+
     } else {
         return -1;
     }
