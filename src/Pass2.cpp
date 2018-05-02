@@ -31,7 +31,7 @@ int main() {
 
 	IntermediateFileParser x = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
 	vector<IntermediateFileParser::entry> y = x.getEntriesVector();
-	debugEntriesVectors(y);//testing push
+	debugEntriesVectors(y);
 	return 0;
 }
 
