@@ -17,7 +17,7 @@ void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 	cout <<"Entries Of Vector"<< endl;
 	cout << endl;
-	for(short int i = 0;i < vectorToDebug.capacity();i++) {
+	for(unsigned short int i = 0;i < vectorToDebug.capacity();i++) {
 		IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
 		cout << entryToDebug.address;
 		cout << " ";
@@ -25,7 +25,7 @@ void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
 		cout << " ";
 		cout << entryToDebug.operationCode;
 		cout << " ";
-		for(short int j = 0; j < entryToDebug.operand.capacity(); j++) {
+		for(unsigned short int j = 0; j < entryToDebug.operand.capacity(); j++) {
 			cout << entryToDebug.operand.at(j);
 			cout << " ";
 		}
@@ -49,7 +49,7 @@ void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 	cout<<"Address Mode"<<endl;
 	cout << endl;
-	for(short int i = 0;i < vectorToDebug.capacity();i++) {
+	for(unsigned short int i = 0;i < vectorToDebug.capacity();i++) {
 			IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
 			cout << entryToDebug.address;
 			cout << " ";
@@ -57,7 +57,7 @@ void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
 			cout << " ";
 			cout << entryToDebug.operationCode;
 			cout << " ";
-			for(short int j = 0; j < entryToDebug.operand.capacity(); j++) {
+			for(unsigned short int j = 0; j < entryToDebug.operand.capacity(); j++) {
 				cout << entryToDebug.operand.at(j);
 				cout << " ";
 			}
