@@ -53,5 +53,5 @@ void AddresingModifier::setAddressingMode(IntermediateFileParser::entry *entryTo
 			entryToSet->i = 1;
 		}
 	}
-	cout<< entryToSet->getAddressingMode()<<endl;
+	//cout<< entryToSet->getAddressingMode()<<endl;
 }

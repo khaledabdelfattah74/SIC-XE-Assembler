@@ -19,7 +19,7 @@ vector<IntermediateFileParser::entry> IntermediateFileParser::getEntriesVector()
 		while (getline(intermediatefile, line)) {
 			trim(&line);
 			entry e = getSuitableEntry(line);
-			debugEntry(e);
+			//debugEntry(e);
 			if(validEntry(e)) {
 				entryVector.push_back(e);
 			}
@@ -46,6 +46,8 @@ IntermediateFileParser::entry IntermediateFileParser::getSuitableEntry(string li
 	line.erase(0, 10);
 
 	newEntry.operationCode = line.substr(0, 8);
+	removeSpaces(&newEntry.operationCode);
+
 	line.erase(0, 10);
 
 	string operands = line.substr(0, 17);
@@ -64,7 +66,7 @@ void IntermediateFileParser::eraseAnyForwardSpaces(string *str,int offset) {
 
 void IntermediateFileParser::extractOperands(vector<string> *operandList,string operands) {
 	int x = operands.find(',');
-	if(x != operands.npos) {
+	if(x != (signed)operands.npos) {
 		operandList->push_back(operands.substr(0, x));
 		operandList->push_back(operands.substr(x + 1, operands.length()));
 	} else {
@@ -79,7 +81,7 @@ void IntermediateFileParser::debugEntry(IntermediateFileParser::entry entryToDeb
 	cout << " ";
 	cout << entryToDebug.operationCode;
 	cout << " ";
-	for(int i = 0; i < entryToDebug.operand.capacity(); i++) {
+	for(unsigned short int i = 0; i < entryToDebug.operand.capacity(); i++) {
 		cout << entryToDebug.operand.at(i);
 		cout << " ";
 	}
@@ -88,4 +90,18 @@ void IntermediateFileParser::debugEntry(IntermediateFileParser::entry entryToDeb
 
 bool IntermediateFileParser::validEntry(IntermediateFileParser::entry entryToValidate) {
 	return entryToValidate.label.at(0) != ' ' || entryToValidate.operationCode.at(0) != ' ';
+}
+
+void IntermediateFileParser::removeSpaces(string *str) {
+	if(str->at(0) == ' ')
+		return;
+	cout << *str << endl;
+	for(auto it = str->begin();it != str->end();++it) {
+		//cout << *it << endl;
+		if(*it == ' ') {
+			str->erase(it,it+1);
+			it--;
+		}
+	}
+	cout << *str << endl;
 }

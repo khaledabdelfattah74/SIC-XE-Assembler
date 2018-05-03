@@ -41,6 +41,7 @@ private:
 	entry getSuitableEntry(string line);
 	void eraseAnyForwardSpaces(string *str,int offset);
 	void extractOperands(vector<string> *operandList,string operands);
+	void removeSpaces(string *str);
 	void debugEntry(entry entryToDebug);
 	bool validEntry(entry entryToValidate);
 
