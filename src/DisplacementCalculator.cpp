@@ -79,25 +79,27 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 }
 
 void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp,int ta) {
-	if(-2048 <= disp && disp <= 2047) {
+	if(-2048 <= disp && disp <= 2047 && addresses.count(entryToHandle->operand.at(0)) > 0) {
 		stringstream ss;
 		ss << hex << disp;
 		cout << entryToHandle-> address << " : "<< entryToHandle->operand.at(0) << " : " << ss.str() << " : " << disp;
 		entryToHandle->displacemnet = ss.str();
-	} else if(canBase && disp > 0) {
+		entryToHandle->p = 1;
+	} else if(canBase && disp > 0 && addresses.count(entryToHandle->operand.at(0)) > 0) {
 		stringstream ss;
 		int b = 0;
 		ss << hex << base;
 		ss >> b;
 		disp = ta - b;
-		if(disp >= 0 && disp <= 4096) {
+		if(disp >= 0 && disp <= 4095) {
 			ss << hex << disp;
 			cout << ss.str() <<" : "<< disp;
 			entryToHandle->displacemnet = ss.str();
+			entryToHandle->b = 1;
 		} else {
-			cout << "Error : invalid address b";
+			cout << "Error : invalid address b" << endl;
 		}
 	} else {
-		cout << "Error : invalid address p";
+		cout << "Error : invalid address p" << endl;
 	}
 }
