@@ -29,9 +29,9 @@ void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
 
 int main() {
 
-	IntermediateFileParser x = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
-	vector<IntermediateFileParser::entry> y = x.getEntriesVector();
-	debugEntriesVectors(y);
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
+	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
+	debugEntriesVectors(allEntryVector);
 	return 0;
 }
 

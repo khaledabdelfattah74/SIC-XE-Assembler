@@ -30,6 +30,7 @@ private:
 	void eraseAnyForwardSpaces(string *str,int offset);
 	void extractOperands(vector<string> *operandList,string operands);
 	void debugEntry(entry entryToDebug);
+	bool validEntry(entry entryToValidate);
 
 };
 

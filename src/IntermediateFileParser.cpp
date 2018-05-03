@@ -20,7 +20,9 @@ vector<IntermediateFileParser::entry> IntermediateFileParser::getEntriesVector()
 			trim(&line);
 			entry e = getSuitableEntry(line);
 			debugEntry(e);
-			entryVector.push_back(e);
+			if(validEntry(e)) {
+				entryVector.push_back(e);
+			}
 		}
 		intermediatefile.close();
 	}
@@ -82,4 +84,8 @@ void IntermediateFileParser::debugEntry(IntermediateFileParser::entry entryToDeb
 		cout << " ";
 	}
 	cout << endl;
+}
+
+bool IntermediateFileParser::validEntry(IntermediateFileParser::entry entryToValidate) {
+	return entryToValidate.label.at(0) != ' ' || entryToValidate.operationCode.at(0) != ' ';
 }
