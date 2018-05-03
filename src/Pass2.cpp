@@ -10,7 +10,7 @@
 #include "IntermediateFileParser.hpp"
 #include "LabelProcessor.h"
 #include "AddresingModifier.h"
-
+#include "DisplacementCalculator.h"
 using namespace std;
 
 void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
@@ -78,6 +78,9 @@ int main() {
 	}
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector);
+
+	DisplacementCalculator disCalc = *new DisplacementCalculator();
+	disCalc.handleDisplacement(&allEntryVector);
 
 	debugLabelAddresses(labelAddresses);
 	debugEntriesVectors(allEntryVector);

@@ -95,7 +95,7 @@ bool IntermediateFileParser::validEntry(IntermediateFileParser::entry entryToVal
 void IntermediateFileParser::removeSpaces(string *str) {
 	if(str->at(0) == ' ')
 		return;
-	cout << *str << endl;
+	//cout << *str << endl;
 	for(auto it = str->begin();it != str->end();++it) {
 		//cout << *it << endl;
 		if(*it == ' ') {
@@ -103,5 +103,5 @@ void IntermediateFileParser::removeSpaces(string *str) {
 			it--;
 		}
 	}
-	cout << *str << endl;
+	//cout << *str << endl;
 }
