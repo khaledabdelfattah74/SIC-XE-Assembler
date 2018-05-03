@@ -64,6 +64,9 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 	}
 	int targetAdress = 0;
 	string operand1 = entryToHandle->operand.at(0);
+	if(operand1.at(0) == '@' || operand1.at(0) == '#') {
+		operand1.erase(0,1);
+	}
 	if(operand1.find('-')  == operand1.npos && operand1.find('+') == operand1.npos) {
 		if(addresses.count(operand1) > 0) {
 			stringstream ss;
@@ -79,13 +82,17 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 }
 
 void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp,int ta) {
-	if(-2048 <= disp && disp <= 2047 && addresses.count(entryToHandle->operand.at(0)) > 0) {
+	string operand1 = entryToHandle->operand.at(0);
+	if(operand1.at(0) == '@' || operand1.at(0) == '#') {
+			operand1.erase(0,1);
+	}
+	if(-2048 <= disp && disp <= 2047 && addresses.count(operand1) > 0) {
 		stringstream ss;
 		ss << hex << disp;
 		cout << entryToHandle-> address << " : "<< entryToHandle->operand.at(0) << " : " << ss.str() << " : " << disp;
 		entryToHandle->displacemnet = ss.str();
 		entryToHandle->p = 1;
-	} else if(canBase && disp > 0 && addresses.count(entryToHandle->operand.at(0)) > 0) {
+	} else if(canBase && disp > 0 && addresses.count(operand1) > 0) {
 		stringstream ss;
 		int b = 0;
 		ss << hex << base;
