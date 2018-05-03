@@ -34,9 +34,7 @@ bool LabelProcessor::getErrorFlag() {
 
 bool LabelProcessor::canBeRemved(IntermediateFileParser::entry entryToCheck) {
 	bool op1 = false;
-	bool op2 = false;
 	string operation = entryToCheck.operationCode;
 	op1 = operation.find("res") != operation.npos || operation.find("RES") != operation.npos;
-	op2 = operation.find("wor") != operation.npos || operation.find("WOR") != operation.npos;
-	return op1 || op2;
+	return op1;
 }
