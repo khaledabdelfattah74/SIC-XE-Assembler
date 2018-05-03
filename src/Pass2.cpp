@@ -8,10 +8,11 @@
 
 #include <iostream>
 #include "IntermediateFileParser.hpp"
+#include "LabelProcessor.h"
 using namespace std;
 
 void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
-	for(int i = 0;i < vectorToDebug.capacity();i++) {
+	for(short int i = 0;i < vectorToDebug.capacity();i++) {
 		IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
 		cout << entryToDebug.address;
 		cout << " ";
@@ -19,7 +20,7 @@ void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
 		cout << " ";
 		cout << entryToDebug.operationCode;
 		cout << " ";
-		for(int j = 0; j < entryToDebug.operand.capacity(); j++) {
+		for(short int j = 0; j < entryToDebug.operand.capacity(); j++) {
 			cout << entryToDebug.operand.at(j);
 			cout << " ";
 		}
@@ -27,11 +28,23 @@ void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
 	}
 }
 
+void debugLabelAddresses(unordered_map<string,string> addresses) {
+	for ( auto it = addresses.begin(); it != addresses.end(); ++it ) {
+	    cout << it->first << ":" << it->second;
+		cout << endl;
+	}
+}
 int main() {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
-	debugEntriesVectors(allEntryVector);
+	LabelProcessor labelProcessor = *new LabelProcessor();
+	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(allEntryVector);
+	if(labelProcessor.getErrorFlag()) {
+		cout << "uncompletely assembled";
+		return 0;
+	}
+	debugLabelAddresses(labelAddresses);
 	return 0;
 }
 
