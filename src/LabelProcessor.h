@@ -8,10 +8,11 @@ class LabelProcessor {
 public:
 	LabelProcessor();
 	virtual ~LabelProcessor();
-	unordered_map<string,string> assignLabelAddresses(vector<IntermediateFileParser::entry> vectorToFilter);
+	unordered_map<string,string> assignLabelAddresses(vector<IntermediateFileParser::entry> *vectorToFilter);
 	bool getErrorFlag();
 private:
 	bool errorFlag = false;
+	bool canBeRemved(IntermediateFileParser::entry entryToCheck);
 };
 
 #endif

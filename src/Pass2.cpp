@@ -39,12 +39,13 @@ int main() {
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 	LabelProcessor labelProcessor = *new LabelProcessor();
-	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(allEntryVector);
+	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
 	if(labelProcessor.getErrorFlag()) {
 		cout << "uncompletely assembled";
 		return 0;
 	}
-	debugLabelAddresses(labelAddresses);
+	//debugLabelAddresses(labelAddresses);
+	debugEntriesVectors(allEntryVector);
 	return 0;
 }
 
