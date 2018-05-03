@@ -40,9 +40,10 @@ IntermediateFileParser::entry IntermediateFileParser::getSuitableEntry(string li
 
 	newEntry.address = line.substr(0, 6);
 	line.erase(0, 6);
-
 	eraseAnyForwardSpaces(&line,2);
+
 	newEntry.label = line.substr(0, 8);
+	removeSpaces(&newEntry.label);
 	line.erase(0, 10);
 
 	newEntry.operationCode = line.substr(0, 8);
@@ -67,9 +68,14 @@ void IntermediateFileParser::eraseAnyForwardSpaces(string *str,int offset) {
 void IntermediateFileParser::extractOperands(vector<string> *operandList,string operands) {
 	int x = operands.find(',');
 	if(x != (signed)operands.npos) {
-		operandList->push_back(operands.substr(0, x));
-		operandList->push_back(operands.substr(x + 1, operands.length()));
+		string operand1 = operands.substr(0, x);
+		string operand2 = operands.substr(x + 1, operands.length());
+		removeSpaces(&operand1);
+		removeSpaces(&operand2);
+		operandList->push_back(operand1);
+		operandList->push_back(operand2);
 	} else {
+		removeSpaces(&operands);
 		operandList->push_back(operands);
 	}
 }

@@ -66,6 +66,28 @@ void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
 		}
 	cout << endl;
 }
+void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
+	cout << endl;
+	cout<<"Displacement"<<endl;
+	cout << endl;
+	for(unsigned short int i = 0;i < vectorToDebug.capacity();i++) {
+			IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
+			cout << entryToDebug.address;
+			cout << " ";
+			cout << entryToDebug.label;
+			cout << " ";
+			cout << entryToDebug.operationCode;
+			cout << " ";
+			for(unsigned short int j = 0; j < entryToDebug.operand.capacity(); j++) {
+				cout << entryToDebug.operand.at(j);
+				cout << " ";
+			}
+			cout << entryToDebug.getAddressingMode();
+			cout << " " << entryToDebug.displacemnet;
+			cout << endl;
+		}
+	cout << endl;
+}
 int main() {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
@@ -79,12 +101,13 @@ int main() {
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector);
 
-	DisplacementCalculator disCalc = *new DisplacementCalculator();
+	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	disCalc.handleDisplacement(&allEntryVector);
 
 	debugLabelAddresses(labelAddresses);
 	debugEntriesVectors(allEntryVector);
 	debugAddressMode(allEntryVector);
+	debugDisplacement(allEntryVector);
 	return 0;
 }
 

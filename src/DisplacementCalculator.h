@@ -6,14 +6,17 @@
 
 class DisplacementCalculator {
 public:
-	DisplacementCalculator();
+	DisplacementCalculator(unordered_map<string,string> labelAddresses);
 	virtual ~DisplacementCalculator();
 	void handleDisplacement(vector<IntermediateFileParser::entry> *vectorToCalculate);
 private:
 	string base = "";
 	bool canBase = false;
 	OpTable operations;
+	unordered_map<string,string> addresses;
 	void handle(IntermediateFileParser::entry *entryToHandle);
+	int handleOperation3(IntermediateFileParser::entry *entryToHandle);
+	void checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp, int ta);
 };
 
 #endif
