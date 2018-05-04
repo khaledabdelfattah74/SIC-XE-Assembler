@@ -25,7 +25,7 @@ public:
 			int b = 0;
 			int p = 0;
 			int e = 0;
-			string displacemnet;
+			string displacemnet = "";
 			bool isAbs;
 			string getAddressingMode() {
 				string mode = to_string(n) + to_string(i)+to_string(x)+to_string(b)+to_string(p)+to_string(e);

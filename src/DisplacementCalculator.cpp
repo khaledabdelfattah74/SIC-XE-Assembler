@@ -28,6 +28,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 	if (operations.found(entryToHandle->operationCode)) {
 		string progCounter = entryToHandle->address;
 		stringstream ss;
+		string operand1;
 		int pc,disp,ta;
 		switch (operations.lengthOf(entryToHandle->operationCode)) {
 		case 1:
@@ -45,11 +46,28 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			pc += 3;
 			//get operand addresses then disp = TA - PC
 			ta = handleOperation3(entryToHandle);
+			if(entryToHandle->displacemnet.length() != 0)
+				return;
 			disp = ta - pc;
 			checkDisplacementOperation3(entryToHandle, disp, ta);
 			break;
 		case 4:
 			cout << 4 << endl;
+			if(entryToHandle->operand.capacity() == 0) {
+				cout << "Error : no operand or may be +RSUB";
+				return;
+			}
+			operand1 = entryToHandle->operand.at(0);
+			if(operand1.at(0) == '@' || operand1.at(0) == '#') {
+				operand1.erase(0,1);
+			}
+			if(addresses.count(operand1) > 0) {
+				ss << hex << addresses[operand1];
+				entryToHandle->displacemnet = ss.str();
+			} else if(isdigit(operand1.at(0))){
+				ss<< hex << operand1;
+				entryToHandle->displacemnet = ss.str();
+			}
 			break;
 		default:
 			cout << "Displacement Error or  directive" << endl;
@@ -59,7 +77,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 }
 int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entryToHandle) {
 	if(entryToHandle->operand.capacity() == 0) {
-		cout << "Error : no operand Or May be RSUB";
+		cout << "Error : no operand or may be RSUB";
 		return 0;
 	}
 	int targetAdress = 0;
@@ -68,12 +86,13 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 		operand1.erase(0,1);
 	}
 	if(operand1.find('-')  == operand1.npos && operand1.find('+') == operand1.npos) {
+		stringstream ss;
 		if(addresses.count(operand1) > 0) {
-			stringstream ss;
 			ss << hex << addresses[operand1];
 			ss >> targetAdress;
-		} else {
-			//for constant values or undefined labels
+		} else if (isdigit(operand1.at(0))) {
+			ss << hex << operand1;
+			entryToHandle->displacemnet = ss.str();
 		}
 	} else {
 		//TO DO handle expression bonus
