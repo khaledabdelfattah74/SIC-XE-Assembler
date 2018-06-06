@@ -64,8 +64,12 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			if(addresses.count(operand1) > 0) {
 				ss << hex << addresses[operand1];
 				entryToHandle->displacemnet = ss.str();
-			} else if(isdigit(operand1.at(0))){
-				ss<< hex << operand1;
+			}
+			if(isdigit(operand1.at(0))){
+				istringstream iss(operand1);
+				int value;
+				iss >> value;
+				ss << hex << value;
 				entryToHandle->displacemnet = ss.str();
 			}
 			break;
@@ -90,8 +94,12 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 		if(addresses.count(operand1) > 0) {
 			ss << hex << addresses[operand1];
 			ss >> targetAdress;
-		} else if (isdigit(operand1.at(0))) {
-			ss << hex << operand1;
+		}
+		if (isdigit(operand1.at(0))) {
+			istringstream iss(operand1);
+			int value;
+			iss >> value;
+			ss << hex << value;
 			entryToHandle->displacemnet = ss.str();
 		}
 	} else {
