@@ -4,6 +4,7 @@
 
 #include "ObjectProgramGenerator.h"
 #include "OpTable.hpp"
+#include "Utilities.h"
 
 vector<string> entries_to_object_codes(vector<IntermediateFileParser::entry> entries);
 
@@ -19,15 +20,84 @@ string third_format_to_hex(IntermediateFileParser::entry &entry);
 
 string forth_format_to_hex(IntermediateFileParser::entry entry);
 
+string generateHeader(const vector<IntermediateFileParser::entry> &entries);
+
+string generateModificationRecords();
+
 void generate_program_code(vector<IntermediateFileParser::entry> entries) {
+    Utilities utilities;
     vector<string> objectCodes = entries_to_object_codes(entries);
-    string output = "H";
+    string output;
+    output.append(generateHeader(entries));
+    int current_address = utilities.hexToDecimal(entries[0].address);
+    int text_length = 0;
+    int text_length_ind = -1;
+    for (int i = 1; i < entries.size()-1; ++i) {
+        if(current_address != utilities.hexToDecimal(entries[i].address)) {
+            current_address = utilities.hexToDecimal(entries[i].address);
+            output.append("\n");
+            string text_length_hex = utilities.decimalToHex(text_length);
+            output[text_length_ind] = text_length_hex[4];
+            output[text_length_ind+1] = text_length_hex[5];
+            output.append("T");
+            output.append(entries[i].address);
+            text_length_ind = output.length();
+            output.append("  ");
+            output.append(objectCodes[i-1]);
+            text_length = objectCodes[i-1].length()/2;
+        } else {
+            if(text_length + objectCodes[i-1].length()/2 <= 30) {
+                current_address += objectCodes[i-1].length()/2;
+                output.append(objectCodes[i-1]);
+                text_length += objectCodes[i-1].length()/2;
+            } else {
+                current_address += objectCodes[i-1].length()/2;
+                output.append("\n");
+                string text_length_hex = utilities.decimalToHex(text_length);
+                output[text_length_ind] = text_length_hex[4];
+                output[text_length_ind+1] = text_length_hex[5];
+                output.append("T");
+                output.append(entries[i].address);
+                text_length_ind = output.length();
+                output.append("  ");
+                output.append(objectCodes[i-1]);
+                text_length = objectCodes[i-1].length()/2;
+            }
+        }
+    }
+    output.append("\n");
+    string text_length_hex = utilities.decimalToHex(text_length);
+    output[text_length_ind] = text_length_hex[4];
+    output[text_length_ind+1] = text_length_hex[5];
+    output.append(generateModificationRecords());
+}
+
+string generateModificationRecords(vector<IntermediateFileParser::entry> entries) {
+    if(entries[0].address == "000000") {
+        string modifications;
+        for (int i = 0; i < entries.size(); ++i) {
+            if(entries[i].e) {
+                modifications.append("M");
+                modifications.append(entries[i].address);
+                modifications.append("05\n");
+            }
+        }
+        return modifications;
+    }
+}
+
+string generateHeader(vector<IntermediateFileParser::entry> entries) {
+    string header;
+    Utilities utilities;
+    header.append("H");
     string porgram_name = entries[0].label;
     while (porgram_name.length() < 6)
         porgram_name.push_back(' ');
-    output.append(porgram_name);
-    output.append(entries[0].address);
-
+    header.append(porgram_name);
+    header.append(entries[0].address);
+    header.append(utilities.decimalToHex(utilities.hexToDecimal(entries[entries.size()-1].address) - utilities.hexToDecimal(entries[0].address)));
+    header.append("\n");
+    return header;
 }
 
 vector<string> entries_to_object_codes(vector<IntermediateFileParser::entry> entries) {
@@ -42,10 +112,11 @@ string entry_to_object_code(IntermediateFileParser::entry entry) {
     string op_code = entry.operationCode;
     string object_code;
     OpTable operation_table;
+    Utilities utilities;
     if(op_code == "WORD") {
-        // Todo
+        object_code = utilities.hexWord(entry.displacemnet);
     } else if(op_code == "BYTE") {
-        // Todo
+        object_code = utilities.hexByte(entry.displacemnet);
     } else if(operation_table.lengthOf(op_code) == 1){
         object_code = operation_table.getOperationCode(op_code);
     } else if(operation_table.lengthOf(op_code) == 2){
