@@ -79,6 +79,76 @@ OpTable::OpTable() {
         {"WD", 3},
         {"+WD", 4}
     };
+    this->operationCode = {
+            {"ADD", "18"},
+            {"+ADD", "18"},
+            {"ADDR", "90"},
+            {"CLEAR", "B4"},
+            {"COMP", "28"},
+            {"+COMP", "28"},
+            {"COMPR", "A0"},
+            {"DIV", "24"},
+            {"+DIV", "24"},
+            {"DIVR", "9C"},
+            {"J", "3C"},
+            {"+J", "3C"},
+            {"JEQ", "30"},
+            {"+JEQ", "30"},
+            {"JGT", "34"},
+            {"+jGT", "34"},
+            {"JLT", "38"},
+            {"+JLT", "38"},
+            {"JSUB", "48"},
+            {"+JSUB", "48"},
+            {"LDA", "00"},
+            {"+LDA", "00"},
+            {"LDB", "68"},
+            {"+LDB", "68"},
+            {"LDCH", "50"},
+            {"+LDCH", "50"},
+            {"LDL", "08"},
+            {"+LDL", "08"},
+            {"LDS", "6C"},
+            {"+LDS", "6C"},
+            {"LDT", "74"},
+            {"+LDT", "74"},
+            {"LDX", "04"},
+            {"+LDX", "04"},
+            {"MUL", "20"},
+            {"+MUL", "20"},
+            {"MULR", "98"},
+            {"RD", "D8"},
+            {"+RD", "D8"},
+            {"RMO", "AC"},
+            {"RSUB", "4C"},
+            {"+RSUB", "4C"},
+            {"SHIFTL", "A4"},
+            {"SHIFTR", "A8"},
+            {"STA", "0C"},
+            {"+STA", "0C"},
+            {"STB", "78"},
+            {"+STB", "78"},
+            {"STCH", "54"},
+            {"+STCH", "54"},
+            {"STL", "14"},
+            {"+STL", "14"},
+            {"STS", "7C"},
+            {"+STS", "7C"},
+            {"STT", "84"},
+            {"+STT", "84"},
+            {"STX", "10"},
+            {"+STX", "10"},
+            {"SUB", "1C"},
+            {"+SUB", "1C"},
+            {"SUBR", "94"},
+            {"TD", "E0"},
+            {"+TD", "E0"},
+            {"TIX", "2C"},
+            {"+TIX", "2C"},
+            {"TIXR", "B8"},
+            {"WD", "DC"},
+            {"+WD", "DC"}
+        };
 
 }
 
@@ -88,6 +158,10 @@ OpTable::~OpTable() {
 int OpTable::lengthOf(std::string opCode) {
     int size = this->operationTable[opCode];
     return size;
+}
+string OpTable::getOperationCode(string operation)
+{
+	return this->operationCode[operation];
 }
 
 bool OpTable::found(std::string lable) {

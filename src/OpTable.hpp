@@ -21,8 +21,10 @@ public:
     virtual ~OpTable();
     bool found(std::string);
     int lengthOf(std::string);
+    string getOperationCode(string operation);
 private:
     unordered_map<string, int> operationTable;
+    unordered_map<string, string> operationCode;
 };
 
 #endif /* OpTable_hpp */
