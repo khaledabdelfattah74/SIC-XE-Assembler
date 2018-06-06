@@ -19,6 +19,8 @@ public:
 	virtual ~Utilities();
 	string hexWord(string word);
 	string hexByte(string byte);
+	string decimalToHex(int decimal);
+	int hexToDecimal(string hex);
 };
 
 #endif /* SRC_UTILITIES_H_ */

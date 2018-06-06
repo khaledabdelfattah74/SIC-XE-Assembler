@@ -89,6 +89,17 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 		}
 	cout << endl;
 }
+void debugUtilities() {
+	Utilities x = *new Utilities();
+	cout << endl;
+	cout << "Utilities : "<< endl;
+	cout << "HexWord : 15 >>> " + x.hexWord("15") << endl;
+	cout << "HexByte : c'abcABC' >>> " + x.hexByte("C'abcABC'") << endl;
+	cout << "HexByte : X'af00' >>> " + x.hexByte("X'af00'") << endl;
+	cout << "DecimalToHex : 10 >>> " + x.decimalToHex(10) << endl;
+	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
+
+}
 int main() {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
@@ -99,14 +110,13 @@ int main() {
 		cout << "uncompletely assembled";
 		return 0;
 	}
+	debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector);
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	disCalc.handleDisplacement(&allEntryVector);
-	Utilities x = *new Utilities();
-	cout << endl;
-	cout << "HERE : "<<x.hexByte("C'aAbB'") << endl;
+
 	debugLabelAddresses(labelAddresses);
 	debugEntriesVectors(allEntryVector);
 	debugAddressMode(allEntryVector);
