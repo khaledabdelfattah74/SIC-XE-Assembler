@@ -70,6 +70,8 @@ void generate_program_code(vector<IntermediateFileParser::entry> entries) {
     output[text_length_ind] = text_length_hex[4];
     output[text_length_ind+1] = text_length_hex[5];
     output.append(generateModificationRecords());
+    //Todo : End Record
+    cout << output;
 }
 
 string generateModificationRecords(vector<IntermediateFileParser::entry> entries) {

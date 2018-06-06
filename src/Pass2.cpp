@@ -12,6 +12,7 @@
 #include "AddresingModifier.h"
 #include "DisplacementCalculator.h"
 #include "Utilities.h"
+#include "ObjectProgramGenerator.h"
 using namespace std;
 
 void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
@@ -121,6 +122,8 @@ int main() {
 	debugEntriesVectors(allEntryVector);
 	debugAddressMode(allEntryVector);
 	debugDisplacement(allEntryVector);
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
+	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
 
