@@ -45,3 +45,18 @@ string Utilities::hexByte(string byte)
 	return "INVALID BYTE FORMAT !!";
 }
 
+string Utilities::decimalToHex(int decimal) {
+	string result = "000000";
+	stringstream ss;
+	ss << hex << decimal;
+	result.append(ss.str());
+	return result.substr(result.length() - 6, result.length());
+}
+
+int Utilities::hexToDecimal(string hexa) {
+	int result;
+	stringstream ss;
+	ss << hex << hexa;
+	ss >> result;
+	return result;
+}
