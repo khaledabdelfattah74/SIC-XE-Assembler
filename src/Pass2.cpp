@@ -11,6 +11,7 @@
 #include "LabelProcessor.h"
 #include "AddresingModifier.h"
 #include "DisplacementCalculator.h"
+#include "Utilities.h"
 using namespace std;
 
 void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
@@ -103,7 +104,9 @@ int main() {
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	disCalc.handleDisplacement(&allEntryVector);
-
+	Utilities x = *new Utilities();
+	cout << endl;
+	cout << "HERE : "<<x.hexByte("C'aAbB'") << endl;
 	debugLabelAddresses(labelAddresses);
 	debugEntriesVectors(allEntryVector);
 	debugAddressMode(allEntryVector);
