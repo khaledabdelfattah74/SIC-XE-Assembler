@@ -28,7 +28,7 @@ void generate_program_code(vector<IntermediateFileParser::entry> entries) {
     Utilities utilities;
     vector<string> objectCodes = entries_to_object_codes(entries);
     string output;
-    output.append(generateHeader(entries));
+    //output.append(generateHeader(entries));
     int current_address = utilities.hexToDecimal(entries[0].address);
     int text_length = 0;
     int text_length_ind = -1;
@@ -69,7 +69,7 @@ void generate_program_code(vector<IntermediateFileParser::entry> entries) {
     string text_length_hex = utilities.decimalToHex(text_length);
     output[text_length_ind] = text_length_hex[4];
     output[text_length_ind+1] = text_length_hex[5];
-    output.append(generateModificationRecords());
+   // output.append(generateModificationRecords());
     //Todo : End Record
     cout << output;
 }

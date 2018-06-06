@@ -1,7 +1,5 @@
 /*
  * Utilities.cpp
- *
- *  Created on: ??þ/??þ/????
  *      Author: ecc
  */
 
