@@ -12,7 +12,7 @@
 #include "AddresingModifier.h"
 #include "DisplacementCalculator.h"
 #include "Utilities.h"
-
+#include "ObjectProgramGenerator.h"
 using namespace std;
 
 void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
@@ -72,9 +72,10 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 	cout<<"Displacement"<<endl;
 	cout << endl;
+	OpTable x;
 	for(unsigned short int i = 0;i < vectorToDebug.capacity();i++) {
 			IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
-			cout << entryToDebug.address;
+			cout << i << "- "<< entryToDebug.address;
 			cout << " ";
 			cout << entryToDebug.label;
 			cout << " ";
@@ -84,6 +85,8 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 				cout << entryToDebug.operand.at(j);
 				cout << " ";
 			}
+			cout << x.getOperationCode(entryToDebug.operationCode);
+			cout << " ";
 			cout << entryToDebug.getAddressingMode();
 			cout << " " << entryToDebug.displacemnet;
 			cout << endl;
@@ -95,7 +98,7 @@ void debugUtilities() {
 	cout << endl;
 	cout << "Utilities : "<< endl;
 	cout << "HexWord : 15 >>> " + x.hexWord("15") << endl;
-	cout << "HexByte : c'abcABC' >>> " + x.hexByte("C'abcABC'") << endl;
+	cout << "HexByte : c'String' >>> " + x.hexByte("C'String'") << endl;
 	cout << "HexByte : X'af00' >>> " + x.hexByte("X'af00'") << endl;
 	cout << "DecimalToHex : 10 >>> " + x.decimalToHex(10) << endl;
 	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
@@ -122,8 +125,8 @@ int main() {
 	debugEntriesVectors(allEntryVector);
 	debugAddressMode(allEntryVector);
 	debugDisplacement(allEntryVector);
-	//ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
-	//objGen.generate_program_code(allEntryVector);
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
+	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
 
