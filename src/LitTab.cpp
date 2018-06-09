@@ -45,7 +45,7 @@ int LitTab::assignCurrentLiterals(int currentAddress, int linNo, string outPath)
             directive = "BYTE";
             value = litNameToBeAssigned;
         }
-        string fixedLable = litNameToBeAssigned;
+        string fixedLable = "=" + litNameToBeAssigned;
         int length = (int) fixedLable.length();
         if (length < 8) {
             for (int i = 0; i < 8 - length; i++) {
@@ -87,14 +87,19 @@ int LitTab::assignCurrentLiterals(int currentAddress, int linNo, string outPath)
 
 int LitTab::lengthOfInstruction(string name) {
     if (toupper(name.c_str()[1]) == 'W') {
+        int intValue = 0;
         if (name.c_str()[3] == '-') {
-            if (name.length() <= 9 && name.length() >= 6) {
+            istringstream buffer(name.substr(4, 4));
+            buffer >> intValue;
+            if (name.length() <= 9 && name.length() >= 6 && intValue < 4096) {
                 return 3;
             } else {
                 return -1;
             }
         } else {
-            if (name.length() <= 8 && name.length() >= 5) {
+            istringstream buffer(name.substr(3, 4));
+            buffer >> intValue;
+            if (name.length() <= 8 && name.length() >= 5 && intValue < 4096) {
                 return 3;
             } else {
                 return -1;

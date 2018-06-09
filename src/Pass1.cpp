@@ -217,12 +217,12 @@ void Pass1::mainLoop() {
 
     if (this->to_upper(currentEntry.getOpCode()) == "END") {
         if (currentEntry.getLable() == "") {
+            this->printSymTable(symTab);
+            locctr = litTab.assignCurrentLiterals(locctr, lineNo, outPath);
+            this->printLitTable(litTab);
             writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
             lineNo++;
             this->programLength = locctr - startingAddress;
-            this->printSymTable(symTab);
-            litTab.assignCurrentLiterals(locctr, lineNo, outPath);
-            this->printLitTable(litTab);
         } else {
             writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
             this->error = true;

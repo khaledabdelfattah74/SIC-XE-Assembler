@@ -42,7 +42,7 @@ IntermediateFileParser::entry IntermediateFileParser::getSuitableEntry(string li
 	line.erase(0, 6);
 	eraseAnyForwardSpaces(&line,2);
 
-	newEntry.label = line.substr(0, 10);
+	newEntry.label = line.substr(0, 8);
 	removeSpaces(&newEntry.label);
 	line.erase(0, 10);
 
