@@ -79,6 +79,9 @@ void Pass1::mainLoop() {
                 if (repeated) {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-1, locctr, currentInstructionLength, currentEntry);
+                } else if (opTable.found(to_upper(currentEntry.getLable()))) {
+                    this->error = true;
+                    writeCurrenLineToIntermediateFile(-3, locctr, currentInstructionLength, currentEntry);
                 } else if (currentEntry.getLable().c_str()[0] < '0' || currentEntry.getLable().c_str()[0] > '9'){
                     symTab.insert(to_upper(currentEntry.getLable()), locctr);
                 } else {
@@ -238,11 +241,7 @@ void Pass1::mainLoop() {
 
 
 int Pass1::getLengthOf(string constant) {
-    string value = constant.substr(2, constant.length() - 3);
-    int integerValue = 0;
-    istringstream buffer(value);
-    buffer >> integerValue;
-    return integerValue;
+    return constant.length() - 3;
 }
 
 void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
