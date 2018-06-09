@@ -106,7 +106,7 @@ void debugUtilities() {
 }
 int main() {
 
-	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser("/home/ayman/University Assignment/2nd Year/2nd Semester/SIC-XE Assembler/srcfileOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
