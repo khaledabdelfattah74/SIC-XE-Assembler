@@ -75,7 +75,7 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 	OpTable x;
 	for(unsigned short int i = 0;i < vectorToDebug.capacity();i++) {
 			IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
-			cout << entryToDebug.address;
+			cout << i << "- "<< entryToDebug.address;
 			cout << " ";
 			cout << entryToDebug.label;
 			cout << " ";
