@@ -10,8 +10,8 @@
 #include "Pass1.hpp"
 using namespace std;
 
-int main() {
+/*int main() {
 	//TODO implement this
 	Pass1 pa("E:\\testSic.txt");
 	return 0;
-}
+}*/
