@@ -11,6 +11,7 @@
 #include "LabelProcessor.h"
 #include "AddresingModifier.h"
 #include "DisplacementCalculator.h"
+#include "OpTable.hpp"
 #include "Utilities.h"
 #include "ObjectProgramGenerator.h"
 
@@ -70,11 +71,13 @@ void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 }
 void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
+	OpTable x;
 	cout << endl;
 	cout<<"Displacement"<<endl;
 	cout << endl;
 	for(unsigned short int i = 0;i < vectorToDebug.capacity();i++) {
 			IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
+			cout << i << " -";
 			cout << entryToDebug.address;
 			cout << " ";
 			cout << entryToDebug.label;
@@ -85,6 +88,7 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 				cout << entryToDebug.operand.at(j);
 				cout << " ";
 			}
+			cout << " " << x.getOperationCode(entryToDebug.operationCode);
 			cout << entryToDebug.getAddressingMode();
 			cout << " " << entryToDebug.displacemnet;
 			cout << endl;
