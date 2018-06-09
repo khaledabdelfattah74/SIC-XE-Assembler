@@ -122,7 +122,7 @@ int main() {
 	//debugLabelAddresses(labelAddresses);
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);
-	//debugDisplacement(allEntryVector);
+	debugDisplacement(allEntryVector);
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
 	objGen.generate_program_code(allEntryVector);
 	return 0;
