@@ -12,6 +12,7 @@
 #include "AddresingModifier.h"
 #include "DisplacementCalculator.h"
 #include "Utilities.h"
+#include "ObjectProgramGenerator.h"
 
 using namespace std;
 
@@ -103,7 +104,7 @@ void debugUtilities() {
 }
 int main() {
 
-	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser("/home/ayman/University Assignment/2nd Year/2nd Semester/SIC-XE-Assembler/SIC-XE-Assembler/srcfileOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
@@ -111,19 +112,19 @@ int main() {
 		cout << "uncompletely assembled";
 		return 0;
 	}
-	debugUtilities();
+	//debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector);
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	disCalc.handleDisplacement(&allEntryVector);
 
-	debugLabelAddresses(labelAddresses);
-	debugEntriesVectors(allEntryVector);
-	debugAddressMode(allEntryVector);
-	debugDisplacement(allEntryVector);
-	//ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
-	//objGen.generate_program_code(allEntryVector);
+	//debugLabelAddresses(labelAddresses);
+	//debugEntriesVectors(allEntryVector);
+	//debugAddressMode(allEntryVector);
+	//debugDisplacement(allEntryVector);
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
+	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
 

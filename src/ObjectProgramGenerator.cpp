@@ -6,75 +6,68 @@
 #include "OpTable.hpp"
 #include "Utilities.h"
 
-vector<string> entries_to_object_codes(vector<IntermediateFileParser::entry> entries);
-
-string entry_to_object_code(IntermediateFileParser::entry entry);
-
-string register_to_hex(string reg);
-
-vector<bool> hex_string_to_binary(string hex);
-
-string binary_to_hex_string(vector<bool> binary);
-
-string third_format_to_hex(IntermediateFileParser::entry &entry);
-
-string forth_format_to_hex(IntermediateFileParser::entry entry);
-
-string generateHeader(const vector<IntermediateFileParser::entry> &entries);
-
 string generateModificationRecords();
 
-void generate_program_code(vector<IntermediateFileParser::entry> entries) {
-    Utilities utilities;
-    vector<string> objectCodes = entries_to_object_codes(entries);
+void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries) {
     string output;
-    //output.append(generateHeader(entries));
+    output.append(generate_header_record(entries));
+    output.append(generate_text_records(entries));
+    output.append(generate_modification_records(entries));
+    output.append(generate_end_record(entries));
+    write_string_to_file(output,"ObjectCode.txt");
+}
+
+string ObjectProgramGenerator::generate_text_records(vector<IntermediateFileParser::entry> entries) const {
+    vector<string> objectCodes = entries_to_object_codes(entries);
+    Utilities utilities;
+    string text_records;
     int current_address = utilities.hexToDecimal(entries[0].address);
     int text_length = 0;
-    int text_length_ind = -1;
+    text_records.append("T");
+    text_records.append(entries[0].address);
+    int text_length_ind = text_records.length();
+    text_records.append("XX");
     for (int i = 1; i < entries.size()-1; ++i) {
         if(current_address != utilities.hexToDecimal(entries[i].address)) {
             current_address = utilities.hexToDecimal(entries[i].address);
-            output.append("\n");
+            text_records.append("\n");
             string text_length_hex = utilities.decimalToHex(text_length);
-            output[text_length_ind] = text_length_hex[4];
-            output[text_length_ind+1] = text_length_hex[5];
-            output.append("T");
-            output.append(entries[i].address);
-            text_length_ind = output.length();
-            output.append("  ");
-            output.append(objectCodes[i-1]);
+            text_records[text_length_ind] = text_length_hex[4];
+            text_records[text_length_ind+1] = text_length_hex[5];
+            text_records.append("T");
+            text_records.append(entries[i].address);
+            text_length_ind = text_records.length();
+            text_records.append("XX");
+            text_records.append(objectCodes[i-1]);
             text_length = objectCodes[i-1].length()/2;
         } else {
             if(text_length + objectCodes[i-1].length()/2 <= 30) {
                 current_address += objectCodes[i-1].length()/2;
-                output.append(objectCodes[i-1]);
+                text_records.append(objectCodes[i-1]);
                 text_length += objectCodes[i-1].length()/2;
             } else {
                 current_address += objectCodes[i-1].length()/2;
-                output.append("\n");
+                text_records.append("\n");
                 string text_length_hex = utilities.decimalToHex(text_length);
-                output[text_length_ind] = text_length_hex[4];
-                output[text_length_ind+1] = text_length_hex[5];
-                output.append("T");
-                output.append(entries[i].address);
-                text_length_ind = output.length();
-                output.append("  ");
-                output.append(objectCodes[i-1]);
+                text_records[text_length_ind] = text_length_hex[4];
+                text_records[text_length_ind+1] = text_length_hex[5];
+                text_records.append("T");
+                text_records.append(entries[i].address);
+                text_length_ind = text_records.length();
+                text_records.append("XX");
+                text_records.append(objectCodes[i-1]);
                 text_length = objectCodes[i-1].length()/2;
             }
         }
     }
-    output.append("\n");
+    text_records.append("\n");
     string text_length_hex = utilities.decimalToHex(text_length);
-    output[text_length_ind] = text_length_hex[4];
-    output[text_length_ind+1] = text_length_hex[5];
-   // output.append(generateModificationRecords());
-    //Todo : End Record
-    cout << output;
+    text_records[text_length_ind] = text_length_hex[4];
+    text_records[text_length_ind+1] = text_length_hex[5];
+    return text_records;
 }
 
-string generateModificationRecords(vector<IntermediateFileParser::entry> entries) {
+string ObjectProgramGenerator::generate_modification_records(vector<IntermediateFileParser::entry> entries) {
     if(entries[0].address == "000000") {
         string modifications;
         for (int i = 0; i < entries.size(); ++i) {
@@ -86,23 +79,11 @@ string generateModificationRecords(vector<IntermediateFileParser::entry> entries
         }
         return modifications;
     }
+    return "";
 }
 
-string generateHeader(vector<IntermediateFileParser::entry> entries) {
-    string header;
-    Utilities utilities;
-    header.append("H");
-    string porgram_name = entries[0].label;
-    while (porgram_name.length() < 6)
-        porgram_name.push_back(' ');
-    header.append(porgram_name);
-    header.append(entries[0].address);
-    header.append(utilities.decimalToHex(utilities.hexToDecimal(entries[entries.size()-1].address) - utilities.hexToDecimal(entries[0].address)));
-    header.append("\n");
-    return header;
-}
 
-vector<string> entries_to_object_codes(vector<IntermediateFileParser::entry> entries) {
+vector<string> ObjectProgramGenerator::entries_to_object_codes(vector<IntermediateFileParser::entry> entries)const {
     vector<string> object_codes;
     for(int i = 1;i < entries.size()-1;i++) {
         object_codes.push_back(entry_to_object_code(entries[i]));
@@ -110,15 +91,15 @@ vector<string> entries_to_object_codes(vector<IntermediateFileParser::entry> ent
     return object_codes;
 }
 
-string entry_to_object_code(IntermediateFileParser::entry entry) {
+string ObjectProgramGenerator::entry_to_object_code(IntermediateFileParser::entry entry)const {
     string op_code = entry.operationCode;
     string object_code;
     OpTable operation_table;
     Utilities utilities;
     if(op_code == "WORD") {
-        object_code = utilities.hexWord(entry.displacemnet);
+        object_code = utilities.hexWord(entry.operand[0]);
     } else if(op_code == "BYTE") {
-        object_code = utilities.hexByte(entry.displacemnet);
+        object_code = utilities.hexByte(entry.operand[0]);
     } else if(operation_table.lengthOf(op_code) == 1){
         object_code = operation_table.getOperationCode(op_code);
     } else if(operation_table.lengthOf(op_code) == 2){
@@ -130,47 +111,41 @@ string entry_to_object_code(IntermediateFileParser::entry entry) {
     } else if(operation_table.lengthOf(op_code) == 4) {
         object_code = forth_format_to_hex(entry);
     }
+    return object_code;
 }
 
-string forth_format_to_hex(IntermediateFileParser::entry entry) {
-    vector<bool> binary;
-    string op_code = entry.operationCode;
-    OpTable operation_table;
-    binary= hex_string_to_binary(operation_table.getOperationCode(op_code));
-    if(entry.n)
-        binary[6] = true;
-    if(entry.i)
-        binary[7] = true;
-    if(entry.x)
-        binary.push_back(true);
-    else
-        binary.push_back(false);
-    if(entry.b)
-        binary.push_back(true);
-    else
-        binary.push_back(false);
-    if(entry.p)
-        binary.push_back(true);
-    else
-        binary.push_back(false);
-    if(entry.e)
-        binary.push_back(true);
-    else
-        binary.push_back(false);
+string ObjectProgramGenerator::forth_format_to_hex(IntermediateFileParser::entry entry)const {
+    vector<bool> entry_start_binary = entry_start_to_binary(entry);
     string operand = entry.displacemnet;
+    if(operand.length() > 5)
+        operand = operand.substr(operand.length()-5,5);
     while (operand.length() < 5) {
-        operand.reserve();
-        operand.push_back('0');
-        operand.reserve();
+        operand.insert(0,"0");
     }
-    return binary_to_hex_string(binary) + operand;
+    //vector<bool> operand_binary = hex_string_to_binary(operand);
+    string object_hex = binary_to_hex_string(entry_start_binary).substr(2,4);
+    object_hex.append(operand);
+    return  object_hex;
 }
 
-string third_format_to_hex(IntermediateFileParser::entry &entry) {
-    vector<bool> binary;
-    string op_code = entry.operationCode;
+string ObjectProgramGenerator::third_format_to_hex(IntermediateFileParser::entry entry)const {
+    vector<bool> entry_start_binary = entry_start_to_binary(entry);
+    string operand = entry.displacemnet;
+    if(operand.length() > 3)
+        operand = operand.substr(operand.length()-3,3);
+    while (operand.length() < 3) {
+            operand.insert(0,"0");
+    }
+    //vector<bool> operand_binary = hex_string_to_binary(operand);
+    string object_hex = binary_to_hex_string(entry_start_binary).substr(2,4);
+    object_hex.append(operand);
+    return  object_hex;
+}
+
+vector<bool> ObjectProgramGenerator::entry_start_to_binary(const IntermediateFileParser::entry entry)const {
     OpTable operation_table;
-    binary= hex_string_to_binary(operation_table.getOperationCode(op_code));
+    string op_code = entry.operationCode;
+    vector<bool> binary = hex_string_to_binary(operation_table.getOperationCode(op_code));
     if(entry.n)
             binary[6] = true;
     if(entry.i)
@@ -191,34 +166,23 @@ string third_format_to_hex(IntermediateFileParser::entry &entry) {
             binary.push_back(true);
         else
             binary.push_back(false);
-    string operand = entry.displacemnet;
-    while (operand.length() < 3) {
-            operand.reserve();
-            operand.push_back('0');
-            operand.reserve();
-    }
-    return binary_to_hex_string(binary) + operand;
+    return binary;
 }
 
-string binary_to_hex_string(vector<bool> binary) {
+string ObjectProgramGenerator::binary_to_hex_string(vector<bool> binary)const {
     string hex;
-    for (int i = binary.size(); i >= 0; i=i-4) {
-        int base = 1;
-        int dec = 0;
-        for (int j = i; j >= 0 && j > i-4; --j) {
-            if(binary[j])
-                dec += base;
-            base *= 2;
-        }
-        if(dec < 10)
-            hex.push_back(dec+'0');
-        else
-            hex.push_back(dec-10+'A');
+    int decimal = 0;
+    int base = 1;
+    for (int i = 0; i < binary.size(); ++i) {
+        if(binary[binary.size()-i-1])
+            decimal += base;
+        base *= 2;
     }
-    return hex;
+    Utilities utilities;
+    return utilities.decimalToHex(decimal);
 }
 
-string register_to_hex(string reg) {
+string ObjectProgramGenerator::register_to_hex(string reg)const {
     switch (reg[0]) {
         case 'A':
             return "0";
@@ -237,7 +201,7 @@ string register_to_hex(string reg) {
     }
 }
 
-vector<bool> hex_string_to_binary(string hex) {
+vector<bool> ObjectProgramGenerator::hex_string_to_binary(string hex)const {
     vector<bool> res;
     for(int i = 0;i < hex.length();i++) {
         switch (hex[i]) {
@@ -340,5 +304,31 @@ vector<bool> hex_string_to_binary(string hex) {
         }
     }
     return res;
+}
+
+string ObjectProgramGenerator::generate_header_record(vector<IntermediateFileParser::entry> entries) {
+    string header;
+    Utilities utilities;
+    header.append("H");
+    string porgram_name = entries[0].label;
+    while (porgram_name.length() < 6)
+        porgram_name.push_back(' ');
+    header.append(porgram_name);
+    header.append(entries[0].address);
+    header.append(utilities.decimalToHex(utilities.hexToDecimal(entries[entries.size()-1].address) - utilities.hexToDecimal(entries[0].address)));
+    header.append("\n");
+    return header;
+}
+
+string ObjectProgramGenerator::generate_end_record(vector<IntermediateFileParser::entry> entries) {
+    string end_record;
+    end_record.append("E");
+    end_record.append(entries[0].address);
+    return end_record;
+}
+
+void ObjectProgramGenerator::write_string_to_file(string str, string file_path) {
+    ofstream out (file_path);
+    out << str;
 }
 

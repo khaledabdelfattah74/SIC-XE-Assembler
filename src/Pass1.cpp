@@ -79,9 +79,6 @@ void Pass1::mainLoop() {
                 if (repeated) {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-1, locctr, currentInstructionLength, currentEntry);
-                } else if (opTable.found(to_upper(currentEntry.getLable()))) {
-                    this->error = true;
-                    writeCurrenLineToIntermediateFile(-3, locctr, currentInstructionLength, currentEntry);
                 } else if (currentEntry.getLable().c_str()[0] < '0' || currentEntry.getLable().c_str()[0] > '9'){
                     symTab.insert(to_upper(currentEntry.getLable()), locctr);
                 } else {
@@ -217,12 +214,12 @@ void Pass1::mainLoop() {
 
     if (this->to_upper(currentEntry.getOpCode()) == "END") {
         if (currentEntry.getLable() == "") {
-            this->printSymTable(symTab);
-            locctr = litTab.assignCurrentLiterals(locctr, lineNo, outPath);
-            this->printLitTable(litTab);
             writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
             lineNo++;
             this->programLength = locctr - startingAddress;
+            this->printSymTable(symTab);
+            litTab.assignCurrentLiterals(locctr, lineNo, outPath);
+            this->printLitTable(litTab);
         } else {
             writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
             this->error = true;
@@ -241,7 +238,11 @@ void Pass1::mainLoop() {
 
 
 int Pass1::getLengthOf(string constant) {
-    return constant.length() - 3;
+    string value = constant.substr(2, constant.length() - 3);
+    int integerValue = 0;
+    istringstream buffer(value);
+    buffer >> integerValue;
+    return integerValue;
 }
 
 void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
