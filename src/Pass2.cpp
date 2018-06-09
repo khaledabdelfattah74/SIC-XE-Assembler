@@ -88,7 +88,7 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 				cout << entryToDebug.operand.at(j);
 				cout << " ";
 			}
-			cout << " " << x.getOperationCode(entryToDebug.operationCode);
+			cout << " " << x.getOperationCode(entryToDebug.operationCode) << " ";
 			cout << entryToDebug.getAddressingMode();
 			cout << " " << entryToDebug.displacemnet;
 			cout << endl;
