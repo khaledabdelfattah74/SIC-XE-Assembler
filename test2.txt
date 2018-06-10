@@ -1,5 +1,6 @@
 .23456789
 .sajed
+.23456789
 LAB2C START 1000
 LDA alpha
 ldb #10
@@ -7,6 +8,7 @@ ldx #0
 addr a,b
 sta savew,x
 ldx #1
+.format 4
 sta savew,x
 lda =x'5f'
 lda =x'df'
@@ -28,6 +30,7 @@ stch output,x
 tix #5
 jlt loop
 found j out
+.format 4
 alpha word 2
 savew resw 2
 hexachar byte x'61'

@@ -1,6 +1,6 @@
 Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 										Op-code
-1       	000000		        		        		                 	$¨
+1       	000000		        		        		                 	.234567890123456789
 2       	001000		LAB2C   		START   		1000             	
 3       	001000		        		LDA     		ALPHA            	
 4       	001003		        		LDB     		#10              	

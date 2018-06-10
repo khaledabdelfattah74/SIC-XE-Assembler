@@ -13,14 +13,20 @@ SourceCodeTable::SourceCodeTable() {
 
 }
 
+
 void SourceCodeTable::addEntry(Entry entry) {
     this->entries.push(entry);
 }
 
-Entry* SourceCodeTable::fetchNextEntry() {
-    Entry* firstIsertedEntry = &this->entries.front();
+Entry SourceCodeTable::fetchNextEntry() {
+    Entry firstInsertedEntry = * new Entry(
+            entries.front().getLable(),
+            entries.front().getOpCode(),
+            entries.front().getOperand(),
+            entries.front().getComment(),
+            entries.front().isCommentLine());
     this->entries.pop();
-    return firstIsertedEntry;
+    return firstInsertedEntry;
 }
 
 int SourceCodeTable::size() {

@@ -63,9 +63,9 @@ SourceCodeTable SicParser::parse(string path) {
                 opIndex = i;
         }
 
-        Entry entry = *new Entry("", "", "", "", "0");
+        Entry entry = *new Entry("", "", "", "", false);
         if (fields[0][0] == '.') {
-            entry = *new Entry("", "", "", line, "1");
+            entry = *new Entry("", "", "", line, true);
         } else {
             string comment = get_comment(fields, flag);
             switch (flag) {
@@ -73,23 +73,23 @@ SourceCodeTable SicParser::parse(string path) {
                     // Error
                     break;
                 case 1:
-                    entry = *new Entry("", fields[0], "", comment, "0");
+                    entry = *new Entry("", fields[0], "", comment, false);
                     break;
                 case 2:
                     if (opIndex == 0)
-                        entry = *new Entry("", fields[0], fields[1], comment, "0");
+                        entry = *new Entry("", fields[0], fields[1], comment, false);
                     else
-                        entry = *new Entry(fields[0], fields[1], "", comment, "0");
+                        entry = *new Entry(fields[0], fields[1], "", comment, false);
                     break;
                 case 3:
-                    entry = *new Entry(fields[0], fields[1], fields[2], comment, "0");
+                    entry = *new Entry(fields[0], fields[1], fields[2], comment, false);
                     break;
                 default:
                     // Error
                     string operand = "";
                     for (int i = 2; i < flag; i ++)
                         operand += fields[i] + " ";
-                    entry = *new Entry(fields[0], fields[1], operand, comment, "0");
+                    entry = *new Entry(fields[0], fields[1], operand, comment, false);
                     break;
             }
         }

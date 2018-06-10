@@ -10,7 +10,7 @@
 #include "Entry.hpp"
 
 using namespace std;
-Entry::Entry(string lable, string opCode, string operand, string comment, string commentLine) {
+Entry::Entry(string lable, string opCode, string operand, string comment, bool commentLine) {
     this->lable = lable;
     this->opCode = opCode;
     this->operand = operand;
@@ -34,6 +34,6 @@ string Entry::getComment() {
     return this->comment;
 }
 
-string Entry::isCommentLine() {
+bool Entry::isCommentLine() {
     return this->commentLine;
 }

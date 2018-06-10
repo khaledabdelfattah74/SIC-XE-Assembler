@@ -44,15 +44,15 @@ void Pass1::mainLoop() {
     int startingAddress = 0;
     int locctr = 0;
     int lineNo = 0;
-    Entry currentEntry = *sourceCodeTable.fetchNextEntry();
+    Entry currentEntry = sourceCodeTable.fetchNextEntry();
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
 
 
-    while (currentEntry.isCommentLine() == "1") {
+    while (currentEntry.isCommentLine()) {
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
-        currentEntry = *sourceCodeTable.fetchNextEntry();
+        currentEntry = sourceCodeTable.fetchNextEntry();
     }
 
 
@@ -68,7 +68,7 @@ void Pass1::mainLoop() {
         stream >> hex >> startingAddress;
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
-        currentEntry = *sourceCodeTable.fetchNextEntry();
+        currentEntry = sourceCodeTable.fetchNextEntry();
     } else {
         locctr = 0;
         startingAddress = 0;
@@ -77,7 +77,7 @@ void Pass1::mainLoop() {
     int currentInstructionLength = 0;
     while (sourceCodeTable.size() != 0 && to_upper(currentEntry.getOpCode()) != "END") {
         //this print is just necessary, I have no idea why!, with out it garbage values appears from under the ground to eat the zombies faces.
-        if (currentEntry.isCommentLine() == "0") {
+        if (!currentEntry.isCommentLine()) {
             if(currentEntry.getLable().length() != 0 && to_upper(currentEntry.getOpCode()) != "EQU") {
                 bool repeated = symTab.found(to_upper(currentEntry.getLable()));
                 if (repeated) {
@@ -216,7 +216,7 @@ void Pass1::mainLoop() {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
         }
         lineNo++;
-        currentEntry = *sourceCodeTable.fetchNextEntry();
+        currentEntry = sourceCodeTable.fetchNextEntry();
     }
 
     if (this->to_upper(currentEntry.getOpCode()) == "END") {
