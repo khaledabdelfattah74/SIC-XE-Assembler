@@ -9,9 +9,9 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 7       	00100b		        		STA     		SAVEW,X          	
 8       	00100e		        		LDX     		#1               	
 9       	001011		        		STA     		SAVEW,X          	
-10      	001014		        		LDA     		=X'5f'           	
-11      	001017		        		LDA     		=X'df'           	
-12      	00101a		        		LDA     		=C'8j5f'         	
+10      	001014		        		LDA     		=X'5F'           	
+11      	001017		        		LDA     		=X'DF'           	
+12      	00101a		        		LDA     		=C'8J5F'         	
 13      	00101d		        		LDA     		=W'1524'         	
 14      	001020		        		LDA     		=W'-1524'        	
 15      	001023		        		LDA     		=W'124'          	
@@ -34,7 +34,7 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 32      	001054		SAVEW   		RESW    		2                	
 33      	00105a		HEXCHAR 		BYTE    		X'61'            	
 34      	00105c		INPUT   		RESB    		1                	
-35      	00105d		STRING  		BYTE    		C'String'        	
+35      	00105d		STRING  		BYTE    		C'STRING'        	
 36      	001063		OUTPUT  		RESB    		5                	
 37      	001068		=X'5f'  		BYTE    		X'5f'            	
 37      	001069		=X'df'  		BYTE    		X'df'            	

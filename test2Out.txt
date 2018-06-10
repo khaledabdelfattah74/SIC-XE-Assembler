@@ -4,41 +4,41 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 2       	000000		        		        		                 	.sajed
 3       	000000		        		        		                 	.23456789
 4       	001000		LAB2C   		START   		1000             	
-5       	001000		        		LDA     		alpha            	
-6       	001003		        		ldb     		#10              	
-7       	001006		        		ldx     		#0               	
-8       	001009		        		addr    		a,b              	
-9       	00100b		        		sta     		savew,x          	
-10      	00100e		        		ldx     		#1               	
+5       	001000		        		LDA     		ALPHA            	
+6       	001003		        		LDB     		#10              	
+7       	001006		        		LDX     		#0               	
+8       	001009		        		ADDR    		A,B              	
+9       	00100b		        		STA     		SAVEW,X          	
+10      	00100e		        		LDX     		#1               	
 11      	00100e		        		        		                 	.format 4
-12      	001011		        		sta     		savew,x          	
-13      	001014		        		lda     		=x'5f'           	
-14      	001017		        		lda     		=x'df'           	
-15      	00101a		        		lda     		=c'8jf'          	
-16      	00101d		        		lda     		=w'1524'         	
+12      	001011		        		STA     		SAVEW,X          	
+13      	001014		        		LDA     		=X'5F'           	
+14      	001017		        		LDA     		=X'DF'           	
+15      	00101a		        		LDA     		=C'8JF'          	
+16      	00101d		        		LDA     		=W'1524'         	
 17      	00101d		        		        		                 	.sajed
-18      	001020		        		lda     		=w'1524'         	
-19      	001023		        		lda     		=w'1624'         	
-20      	001026		        		lda     		=w'4095'         	
+18      	001020		        		LDA     		=W'1524'         	
+19      	001023		        		LDA     		=W'1624'         	
+20      	001026		        		LDA     		=W'4095'         	
 21      	001026		        		        		                 	.format 4
-22      	001029		        		+sub    		#12              	
-23      	00102d		        		ldx     		#0               	
-24      	001030		        		ldch    		hexchar          	
-25      	001033		        		sta     		input            	
-26      	001036		loop    		ldch    		string,x         	
-27      	001039		        		comp    		input            	
-28      	00103c		        		jeq     		found            	
-29      	00103f		        		stch    		output,x         	
-30      	001042		        		tix     		#5               	
-31      	001045		        		jlt     		loop             	
-32      	001048		found   		j       		out              	
+22      	001029		        		+SUB    		#12              	
+23      	00102d		        		LDX     		#0               	
+24      	001030		        		LDCH    		HEXCHAR          	
+25      	001033		        		STA     		INPUT            	
+26      	001036		LOOP    		LDCH    		STRING,X         	
+27      	001039		        		COMP    		INPUT            	
+28      	00103c		        		JEQ     		FOUND            	
+29      	00103f		        		STCH    		OUTPUT,X         	
+30      	001042		        		TIX     		#5               	
+31      	001045		        		JLT     		LOOP             	
+32      	001048		FOUND   		J       		OUT              	
 33      	001048		        		        		                 	.format 4
-34      	00104b		alpha   		word    		2                	
-35      	00104e		savew   		resw    		2                	
-36      	001054		hexachar		byte    		x'61'            	
-37      	001056		input   		resb    		1                	
-38      	001057		string  		byte    		'String'         	
-39      	00105c		output  		resb    		5                	
+34      	00104b		ALPHA   		WORD    		2                	
+35      	00104e		SAVEW   		RESW    		2                	
+36      	001054		HEXACHAR		BYTE    		X'61'            	
+37      	001056		INPUT   		RESB    		1                	
+38      	001057		STRING  		BYTE    		'STRING'         	
+39      	00105c		OUTPUT  		RESB    		5                	
 40      	001061		=x'5f'  		BYTE    		x'5f'            	
 40      	001062		=x'df'  		BYTE    		x'df'            	
 40      	001063		=c'8jf' 		BYTE    		c'8jf'           	
@@ -46,4 +46,4 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 40      	001069		=w'1524'		WORD    		1524             	
 40      	00106c		=w'1624'		WORD    		1624             	
 40      	00106f		=w'4095'		WORD    		4095             	
-40      	001072		        		end     		                 	
+40      	001072		        		END     		                 	

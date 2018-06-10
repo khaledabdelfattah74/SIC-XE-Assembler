@@ -348,6 +348,9 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
             fixedOperand.append(" ");
         }
     }
+    fixedLable = to_upper(fixedLable);
+    fixedOpcode = to_upper(fixedOpcode);
+    fixedOperand = to_upper(fixedOperand);
     char stro[100];
     sprintf(stro, "%-8d\t%06x\t\t%.8s\t\t%.8s\t\t%.18s\t%s",
             lineNumber,(locationCounter - lenOfCurrentInstruction),

@@ -25,7 +25,7 @@ int main(int argc, const char * argv[]) {
     //Validator v = *new Validator();
     //cout << v.check_vaidity("LDA", "=X'123'") << endl;
     //cout << regex_match("A,X", twoRegesters) << endl;
-    string path = "/home/sajed/CLionProjects/untitled/test.txt";
+    string path = "/home/sajed/CLionProjects/untitled/test2.txt";
     Pass1 pass(path);
     cout << endl << "An intermediate file was written to the path: " << pass.outPath << endl;
 /*int main(int argc, const char * argv[]) {

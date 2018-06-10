@@ -1,7 +1,7 @@
 .23456789
 .sajed
 .23456789
-LAB2C START 1000
+LAb2C START 1000
 LDA alpha
 ldb #10
 ldx #0
