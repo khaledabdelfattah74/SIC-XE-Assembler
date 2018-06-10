@@ -89,6 +89,7 @@ SourceCodeTable SicParser::parse(string path) {
                     string operand = "";
                     for (int i = 2; i < flag; i ++)
                         operand += fields[i] + " ";
+                    operand = operand.substr(0, operand.length() - 1);
                     entry = *new Entry(fields[0], fields[1], operand, comment, false);
                     break;
             }

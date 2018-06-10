@@ -1,0 +1,19 @@
+Line no.	Address   	Label   		Mnemonic		Operands          	Comments
+										Op-code
+1       	001000		PRBN08  		START   		1000             	
+2       	001000		        		LDA     		ZERO             	
+3       	001003		        		STA     		INDEX            	
+4       	001006		LOOP    		LDA     		ZERO             	
+5       	001009		        		LDX     		INDEX            	
+6       	00100c		        		STA     		ALPHA,X          	
+7       	00100f		        		LDA     		INDEX            	
+8       	001012		        		ADD     		THREE            	
+9       	001015		        		STA     		INDEX            	
+10      	001018		        		COMP    		K300             	
+11      	00101b		        		JLT     		LOOP             	
+12      	00101e		ALPHA   		RESW    		100              	
+13      	00114a		K300    		WORD    		300              	
+14      	00114d		ZERO    		WORD    		0                	
+15      	001150		THREE   		WORD    		3                	
+16      	001153		INDEX   		RESW    		1                	
+17      	001156		        		END     		PRBN08           	

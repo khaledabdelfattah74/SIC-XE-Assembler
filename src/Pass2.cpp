@@ -11,6 +11,7 @@
 #include "LabelProcessor.h"
 #include "AddresingModifier.h"
 #include "DisplacementCalculator.h"
+#include "OpTable.hpp"
 #include "Utilities.h"
 #include "ObjectProgramGenerator.h"
 
@@ -70,11 +71,13 @@ void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 }
 void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
+	OpTable x;
 	cout << endl;
 	cout<<"Displacement"<<endl;
 	cout << endl;
 	for(unsigned short int i = 0;i < vectorToDebug.capacity();i++) {
 			IntermediateFileParser::entry entryToDebug = vectorToDebug.at(i);
+			cout << i << " -";
 			cout << entryToDebug.address;
 			cout << " ";
 			cout << entryToDebug.label;
@@ -85,6 +88,7 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 				cout << entryToDebug.operand.at(j);
 				cout << " ";
 			}
+			cout << " " << x.getOperationCode(entryToDebug.operationCode) << " ";
 			cout << entryToDebug.getAddressingMode();
 			cout << " " << entryToDebug.displacemnet;
 			cout << endl;
@@ -102,9 +106,9 @@ void debugUtilities() {
 	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
 
 }
+/*
 int main() {
-
-	IntermediateFileParser intermediateParser = *new IntermediateFileParser("/Users/khaledabdelfattah/Desktop/tryOut.txt");
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser("testOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
     //for (IntermediateFileParser::entry i : allEntryVector)
       //  cout << i.label << " " << i.operationCode << endl;
@@ -114,20 +118,24 @@ int main() {
 		cout << "incompletely assembled";
 		return 0;
 	}
-	debugUtilities();
+	//debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector);
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	disCalc.handleDisplacement(&allEntryVector);
-
-	debugLabelAddresses(labelAddresses);
-	debugEntriesVectors(allEntryVector);
-	debugAddressMode(allEntryVector);
+	if(disCalc.getDisplacemnetError()) {
+		cout << "uncompletely assembled";
+		return 0;
+	}
+	//debugLabelAddresses(labelAddresses);
+	//debugEntriesVectors(allEntryVector);
+	//debugAddressMode(allEntryVector);
 	debugDisplacement(allEntryVector);
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
 	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
+*/
 
 

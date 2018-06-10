@@ -19,14 +19,28 @@ LitTab::~LitTab()
     //dtor
 }
 
+string LitTab::to_upper(string str) {
+    string upper_case_string = "";
+    for (char c : str)
+        upper_case_string += toupper(c);
+    return upper_case_string;
+}
+
 bool LitTab::insert(string name) {
+    string temp = to_upper(name.substr(0, 2));
+    temp.append(name.substr(2, name.length() - 2));
+    name = temp;
     int length = lengthOfInstruction(name);
     if (length == -1) {
         return false;
     }
-    this->litTable.insert(make_pair(name.substr(1, name.length() - 1), *new Literal(name.substr(3, name.length() - 4),
-                                                        length, --initialAddress)));
-    this->nonAssignedLiterals.insert(make_pair(initialAddress, name.substr(1, name.length() - 1)));
+    if (this->litTable.count(name.substr(1, name.length() - 1)) == 0) {
+        this->litTable.insert(
+                make_pair(name.substr(1, name.length() - 1), *new Literal(name.substr(3, name.length() - 4),
+                                                                          length, --initialAddress)));
+
+        this->nonAssignedLiterals.insert(make_pair(initialAddress, name.substr(1, name.length() - 1)));
+    }
     return true;
 }
 
@@ -38,14 +52,14 @@ int LitTab::assignCurrentLiterals(int currentAddress, int linNo, string outPath)
         string directive;
         string value;
         string dump = "";
-        if (litNameToBeAssigned.c_str()[0] == 'w' || litNameToBeAssigned.c_str()[0] == 'W') {
+        if (toupper(litNameToBeAssigned.c_str()[0]) == 'W') {
             directive = "WORD";
             value = litNameToBeAssigned.substr(2, litNameToBeAssigned.length() - 3);
         } else {
             directive = "BYTE";
             value = litNameToBeAssigned;
         }
-        string fixedLable = "=" + litNameToBeAssigned;
+        string fixedLable = "="+litNameToBeAssigned;
         int length = (int) fixedLable.length();
         if (length < 8) {
             for (int i = 0; i < 8 - length; i++) {
@@ -72,6 +86,7 @@ int LitTab::assignCurrentLiterals(int currentAddress, int linNo, string outPath)
                 fixedLable.c_str(),
                 fixedOpcode.c_str(),
                 fixedOperand.c_str(),
+
                 dump.c_str());
         std::ofstream outfile;
         outfile.open(outPath, ios_base::app);
@@ -92,6 +107,7 @@ int LitTab::lengthOfInstruction(string name) {
             istringstream buffer(name.substr(4, 4));
             buffer >> intValue;
             if (name.length() <= 9 && name.length() >= 6 && intValue < 4096) {
+
                 return 3;
             } else {
                 return -1;
@@ -100,6 +116,7 @@ int LitTab::lengthOfInstruction(string name) {
             istringstream buffer(name.substr(3, 4));
             buffer >> intValue;
             if (name.length() <= 8 && name.length() >= 5 && intValue < 4096) {
+
                 return 3;
             } else {
                 return -1;
@@ -108,17 +125,17 @@ int LitTab::lengthOfInstruction(string name) {
         return 3;
     } else if (toupper(name.c_str()[1]) == 'X') {
         if (name.length() >= 6 && (name.length() % 2) == 0) {
-                return ((int) name.length() - 4 )/ 2;
-            } else {
-                return -1;
-            }
+            return ((int) name.length() - 4 )/ 2;
+        } else {
+            return -1;
+        }
 
     } else if (toupper(name.c_str()[1]) == 'C') {
         if (name.length() >= 5) {
-                return (int) name.length() - 4;
-            } else {
-                return -1;
-            }
+            return (int) name.length() - 4;
+        } else {
+            return -1;
+        }
 
     } else {
         return -1;

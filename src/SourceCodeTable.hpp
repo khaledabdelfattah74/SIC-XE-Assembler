@@ -20,7 +20,7 @@ public:
     SourceCodeTable();
     virtual ~SourceCodeTable();
     void addEntry(Entry entry);
-    Entry* fetchNextEntry();
+    Entry fetchNextEntry();
     int size();
 
 private:

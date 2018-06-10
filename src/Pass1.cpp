@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "Validator.hpp"
+#include "Utilities.h"
 
 
 using namespace std;
@@ -39,38 +40,31 @@ int Pass1::getNumOfErrors() {
 }
 
 void Pass1::mainLoop() {
+    Utilities utilities;
     SymTable symTab;
     OpTable opTable;
     int startingAddress = 0;
     int locctr = 0;
     int lineNo = 0;
-    Entry currentEntry = *sourceCodeTable.fetchNextEntry();
+    Entry currentEntry = sourceCodeTable.fetchNextEntry();
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-    lineNo++;
-    
+    lineNo++;    
     string section_name;
-    
     while (currentEntry.isCommentLine()) {
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
-        currentEntry = *sourceCodeTable.fetchNextEntry();
+        currentEntry = sourceCodeTable.fetchNextEntry();
     }
 
+
+
     if (to_upper(currentEntry.getOpCode()) == "START") {
-        istringstream buffer(currentEntry.getOperand());
-        buffer >> startingAddress;
-        locctr = startingAddress;
-        stringstream stream;
-        stream << locctr;
-        stream >> hex >> locctr;
-        stream << startingAddress;
-        stream >> hex >> startingAddress;
+        locctr = utilities.hexToDecimal(currentEntry.getOperand());
+        startingAddress = utilities.hexToDecimal(currentEntry.getOperand());
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-        lineNo++;
-        
+        lineNo++;        
         section_name = to_upper(currentEntry.getLable());
-        
-        currentEntry = *sourceCodeTable.fetchNextEntry();
+        currentEntry = sourceCodeTable.fetchNextEntry();
     } else {
         locctr = 0;
         startingAddress = 0;
@@ -78,6 +72,7 @@ void Pass1::mainLoop() {
 
     int currentInstructionLength = 0;
     while (sourceCodeTable.size() != 0 && to_upper(currentEntry.getOpCode()) != "END") {
+        //this print is just necessary, I have no idea why!, with out it garbage values appears from under the ground to eat the zombies faces.
         if (!currentEntry.isCommentLine()) {
             if(currentEntry.getLable().length() != 0 && to_upper(currentEntry.getOpCode()) != "EQU") {
                 bool repeated = symTab.found(to_upper(currentEntry.getLable()));
@@ -122,19 +117,27 @@ void Pass1::mainLoop() {
                 locctr += currentInstructionLength;
             } else if (to_upper(currentEntry.getOpCode()) == "BYTE") {
                 currentInstructionLength = getLengthOf(currentEntry.getOperand());
-                locctr += currentInstructionLength;
+                if (currentInstructionLength == -1) {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else {
+                    locctr += currentInstructionLength;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "EQU") {
-                    int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
-                    if (valueOfExp == -1) {
-                        writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
-                        this->error = true;
-                    } else if (valueOfExp == -2) {
-                        writeCurrenLineToIntermediateFile(-4, locctr, currentInstructionLength, currentEntry);
-                        this->error = true;
-                    } else {
-                        symTab.insert(to_upper(currentEntry.getLable()), valueOfExp, section_name);
-                    }
-                    currentInstructionLength = 0;
+                int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
+                if (valueOfExp == -1) {
+                    writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else if (valueOfExp == -2) {
+                    writeCurrenLineToIntermediateFile(-4, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else {
+                    symTab.insert(to_upper(currentEntry.getLable()), valueOfExp);
+                }
+                currentInstructionLength = 0;
+                currentEntry = * new Entry(currentEntry.getLable(), "RESW", "NONE", ".Assumption", false);
+                lineNo++;
+                writeCurrenLineToIntermediateFile(lineNo, valueOfExp, currentInstructionLength, currentEntry);
             } else if (to_upper(currentEntry.getOpCode()) == "ORG") {
                 if (currentEntry.getLable() == "") {
                     int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
@@ -210,26 +213,21 @@ void Pass1::mainLoop() {
                 if (currentEntry.getOperand().c_str()[0] == '=') {
                     if (currentEntry.getOperand().c_str()[2] == '\''
                         && currentEntry.getOperand().c_str()[currentEntry.getOperand().length() - 1] == '\'') {
-                            bool valid = this->litTab.insert(currentEntry.getOperand());
-                            if (!valid) {
-                                this->error = true;
-                                writeCurrenLineToIntermediateFile(-9, locctr, currentInstructionLength, currentEntry);
-                            }
+                        bool valid = this->litTab.insert(currentEntry.getOperand());
+                        if (!valid) {
+                            this->error = true;
+                            writeCurrenLineToIntermediateFile(-9, locctr, currentInstructionLength, currentEntry);
                         }
+                    }
                 }
             }
         }
-        stringstream stream;
-        stream << currentInstructionLength;
-        stream >> hex >> currentInstructionLength;
-        if (to_upper(currentEntry.getOpCode()) != "LTORG" &&
-            to_upper(currentEntry.getOpCode()) != "CSECT" &&
-            to_upper(currentEntry.getLable()) != "EXTREF" &&
-            to_upper(currentEntry.getLable()) != "EXTDEF") {
-                writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
+        
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && to_upper(currentEntry.getOperand()) != "NONE" && to_upper(currentEntry.getComment()) != ".Assumption") {
+            writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
+            lineNo++;
         }
-        lineNo++;
-        currentEntry = *sourceCodeTable.fetchNextEntry();
+        currentEntry = sourceCodeTable.fetchNextEntry();
     }
 
     if (this->to_upper(currentEntry.getOpCode()) == "END") {
@@ -258,7 +256,26 @@ void Pass1::mainLoop() {
 
 
 int Pass1::getLengthOf(string constant) {
-    return constant.length() - 3;
+    if (constant.c_str()[1] != '\''
+        || constant.c_str()[constant.length() - 1] != '\'') {
+        return -1;
+    }
+    if (toupper(constant.c_str()[0]) == 'X') {
+        if (constant.length() >= 5 && (constant.length() % 2) != 0) {
+            return ((int) constant.length() - 3 )/ 2;
+        } else {
+            return -1;
+        }
+
+    } else if (toupper(constant.c_str()[0]) == 'C') {
+        if (constant.length() >= 4) {
+            return (int) constant.length() - 3;
+        } else {
+            return -1;
+        }
+
+    }
+    return -1;
 }
 
 void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
@@ -270,7 +287,7 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
         outfile << "Line no.\tAddress   \tLabel   \t\tMnemonic\t\tOperands          \tComments\n"
-        "\t\t\t\t\t\t\t\t\t\tOp-code" << endl;
+                   "\t\t\t\t\t\t\t\t\t\tOp-code" << endl;
         outfile.close();
         return;
     } else if (lineNumber == -1) {
@@ -361,8 +378,13 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
             fixedOperand.append(" ");
         }
     }
+    fixedLable = to_upper(fixedLable);
+    fixedOpcode = to_upper(fixedOpcode);
+    if (currentEntry.getOpCode() != "BYTE" && currentEntry.getOperand().c_str()[0] != '=') {
+        fixedOperand = to_upper(fixedOperand);
+    }
     char stro[100];
-    sprintf(stro, "%-8d\t%06x\t\t%.8s\t\t%.8s\t\t%.18s\t%s",
+    sprintf(stro, "%-8d\t%06x\t\t%.8s\t\t%.8s\t\t%s\t%s",
             lineNumber,(locationCounter - lenOfCurrentInstruction),
             fixedLable.c_str(),
             fixedOpcode.c_str(),
@@ -417,27 +439,27 @@ string Pass1::to_upper(string str) {
 }
 
 int Pass1::valueOfExpression(string expression, SymTable symTable) {
-	vector<string> terms{explode(expression, '+', '-')};
-	bool minus[terms.size()];
-	if (expression.c_str()[0] == '-') {
+    vector<string> terms{explode(expression, '+', '-')};
+    bool minus[terms.size()];
+    if (expression.c_str()[0] == '-') {
         minus[0] = true;
-	} else {
+    } else {
         minus[0] = false;
-	}
-	int counter = 1;
-	for (int i = 1; i < expression.length(); i++) {
+    }
+    int counter = 1;
+    for (int i = 1; i < expression.length(); i++) {
         if (expression.c_str()[i] == '-') {
             minus[counter++] = true;
         } else if (expression.c_str()[i] == '+') {
             minus[counter++] = false;
         }
-	}
-	int value = 0;
-	stringstream stream;
+    }
+    int value = 0;
+    stringstream stream;
     stream << value;
     stream >> hex >> value;
     int i = 0;
-	for(auto term:terms) {
+    for(auto term:terms) {
 
         if (term.find(',') != std::string::npos) {
             return -1;
@@ -464,9 +486,10 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
                 value += numValue;
             }
         }
-    i++;
-	}
-	return value;
+        i++;
+    }
+    return value;
+
 }
 
 bool Pass1::is_number(const std::string& s)
@@ -477,13 +500,13 @@ bool Pass1::is_number(const std::string& s)
 }
 
 const vector<string> Pass1::explode(const string& s, const char& c, const char& c1) {
-	string buff{""};
-	vector<string> v;
-	for(auto n:s) {
-		if(n != c && n!= c1) buff+=n; else
-		if((n == c || n ==c1) && buff != "") { v.push_back(buff); buff = ""; }
-	}
-	if(buff != "") v.push_back(buff);
-	return v;
+    string buff{""};
+    vector<string> v;
+    for(auto n:s) {
+        if(n != c && n!= c1) buff+=n; else
+        if((n == c || n ==c1) && buff != "") { v.push_back(buff); buff = ""; }
+    }
+    if(buff != "") v.push_back(buff);
+    return v;
 }
 
