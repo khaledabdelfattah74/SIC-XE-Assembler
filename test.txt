@@ -10,12 +10,12 @@ LAB2C    START   1000
          STA     SAVEW,X
          LDA     =X'5f'
          LDA     =X'dF'
-         LDA     =C'8j5f'
-	 LDA     =c'8j5f'
-         LDA     =w'1524'
-         LDA     =w'-1524'
+         LDA     =C'8j5'
+	 LDA     =c'8j5'
+         LDA     =w'152'
+         LDA     =w'-152'
          LDA     =W'124'
-         LDA     =W'-1524'
+         LDA     =W'-152'
          LDA     =W'1624'
          LDA     =W'4095'
 
@@ -31,12 +31,10 @@ sajed    EQU     loop-1000
          STCH    OUTPUT,X
          TIX     #5
          JLT     LOOP
-FOUND    J       OUT
-ALPHA    WORD    fg
+FOUND    J       OUTPUT
+ALPHA    WORD    2
 SAVEW    RESW    2
 HEXCHAR  BYTE    X'61'
-HEXCHAR3  BYTE    X'61df'
-HEXCHAR4  BYTE    C'sgh'
 INPUT    RESB    1
 STRING   BYTE    C'String'
 OUTPUT   RESB    5

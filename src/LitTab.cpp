@@ -27,9 +27,6 @@ string LitTab::to_upper(string str) {
 }
 
 bool LitTab::insert(string name) {
-    string temp = to_upper(name.substr(0, 2));
-    temp.append(name.substr(2, name.length() - 2));
-    name = temp;
     int length = lengthOfInstruction(name);
     if (length == -1) {
         return false;

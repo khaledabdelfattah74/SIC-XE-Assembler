@@ -204,6 +204,9 @@ void Pass1::mainLoop() {
                 if (currentEntry.getOperand().c_str()[0] == '=') {
                     if (currentEntry.getOperand().c_str()[2] == '\''
                         && currentEntry.getOperand().c_str()[currentEntry.getOperand().length() - 1] == '\'') {
+                        string temp = to_upper(currentEntry.getOperand().substr(0, 2));
+                        temp.append(currentEntry.getOperand().substr(2, currentEntry.getOperand().length() - 2));
+                        currentEntry.setOperand(temp);
                         bool valid = this->litTab.insert(currentEntry.getOperand());
                         if (!valid) {
                             this->error = true;

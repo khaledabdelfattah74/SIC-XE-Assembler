@@ -6,43 +6,44 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 4       	001003		        		LDB     		#10              	
 5       	001006		        		LDX     		#0               	
 6       	001009		        		ADDR    		A,B              	
-7       	00100b		        		STA     		SAVEW,X          	
-8       	00100e		        		LDX     		#1               	
-9       	001011		        		STA     		SAVEW,X          	
-10      	001014		        		LDA     		=X'5f'           	
-11      	001017		        		LDA     		=X'df'           	
-12      	00101a		        		LDA     		=C'8j5f'         	
-13      	00101d		        		LDA     		=W'1524'         	
-14      	001020		        		LDA     		=W'-152'         	
-15      	001023		        		LDA     		=W'124'          	
-16      	001026		        		LDA     		=W'-152'         	
-17      	001029		        		LDA     		=W'1624'         	
-18      	00102c		        		LDA     		=W'4095'         	
-19      	00102c		        		        		                 	.Format 4
-20      	00102f		        		+SUB    		#12              	
-21      	001033		        		LDX     		#0               	
-22      	001036		        		LDCH    		HEXCHAR          	
-23      	001039		        		STA     		INPUT            	
-24      	00103c		LOOP    		LDCH    		STRING,X         	
-25      	00103f		        		COMP    		INPUT            	
-26      	001042		        		JEQ     		FOUND            	
-27      	001045		        		STCH    		OUTPUT,X         	
-28      	001048		        		TIX     		#5               	
-29      	00104b		        		JLT     		LOOP             	
-30      	00104e		FOUND   		J       		OUTPUT              	
-31      	001051		ALPHA   		WORD    		2                	
-32      	001054		SAVEW   		RESW    		2                	
-33      	00105a		HEXCHAR 		BYTE    		X'61'            	
-34      	00105c		INPUT   		RESB    		1                	
-35      	00105d		STRING  		BYTE    		C'String'        	
-36      	001063		OUTPUT  		RESB    		5                	
-37      	001068		=X'5f'  		BYTE    		X'5f'            	
-37      	001069		=X'df'  		BYTE    		X'df'            	
-37      	00106a		=C'8j5f'		BYTE    		C'8j5f'          	
-37      	00106e		=W'1524'		WORD    		1524             	
-37      	001071		=W'-152' 		WORD    		-152             	
-37      	001074		=W'124' 		WORD    		124              	
-37      	001077		=W'-154'		WORD    		-154            	
-37      	00107a		=W'1624'		WORD    		1624             	
-37      	00107d		=W'4095'		WORD    		4095             	
-37      	001080		        		END     		                 	
+7       	001000		        		STA     		SAVEW,X          	
+8       	001003		        		LDX     		#1               	
+9       	001006		        		STA     		SAVEW,X          	
+10      	001009		        		LDA     		=X'5f'           	
+11      	00100c		        		LDA     		=X'dF'           	
+12      	00100f		        		LDA     		=C'8j5'          	
+13      	001012		        		LDA     		=C'8j5'          	
+14      	001015		        		LDA     		=W'152'          	
+15      	001018		        		LDA     		=W'-152'         	
+16      	00101b		        		LDA     		=W'124'          	
+17      	00101e		        		LDA     		=W'-152'         	
+18      	001021		        		LDA     		=W'1624'         	
+19      	001024		        		LDA     		=W'4095'         	
+20      	001024		        		        		                 	.Format 4
+21      	001027		        		+SUB    		#12              	
+22      	00102b		        		LDX     		#0               	
+23      	00102e		        		LDCH    		HEXCHAR          	
+24      	001031		        		STA     		INPUT            	
+25      	001034		LOOP    		LDCH    		STRING,X         	
+26      	001037		        		COMP    		INPUT            	
+28      	000034		SAJED   		RESW    		NONE             	.Assumption
+28      	00103a		        		JEQ     		FOUND            	
+29      	00103d		        		STCH    		OUTPUT,X         	
+30      	001040		        		TIX     		#5               	
+31      	001043		        		JLT     		LOOP             	
+32      	001046		FOUND   		J       		OUTPUT           	
+33      	001049		ALPHA   		WORD    		2                	
+34      	00104c		SAVEW   		RESW    		2                	
+35      	001052		HEXCHAR 		BYTE    		X'61'            	
+36      	001053		INPUT   		RESB    		1                	
+37      	001054		STRING  		BYTE    		C'String'        	
+38      	00105a		OUTPUT  		RESB    		5                	
+39      	00105f		=X'5f'  		BYTE    		X'5f'            	
+39      	001060		=X'dF'  		BYTE    		X'dF'            	
+39      	001061		=C'8j5' 		BYTE    		C'8j5'           	
+39      	001064		=W'152' 		WORD    		152              	
+39      	001067		=W'-152'		WORD    		-152             	
+39      	00106a		=W'124' 		WORD    		124              	
+39      	00106d		=W'1624'		WORD    		1624             	
+39      	001070		=W'4095'		WORD    		4095             	
+39      	001073		        		END     		                 	

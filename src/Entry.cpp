@@ -37,3 +37,7 @@ string Entry::getComment() {
 bool Entry::isCommentLine() {
     return this->commentLine;
 }
+
+void Entry::setOperand(string operand) {
+    this->operand = operand;
+}
