@@ -1,3 +1,20 @@
+#ignore debugging files
+*.cmake
+*.xml
+*.bin
+*.c
+*.out
+*.log
+*.check_cache
+*.includecache
+*.cxx
+*.make
+*.internal
+*.cpp.o
+*.iml
+/.idea/
+/cmake-build-debug/
+
 # Prerequisites
 *.d
 
