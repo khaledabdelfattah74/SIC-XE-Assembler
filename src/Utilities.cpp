@@ -26,13 +26,13 @@ string Utilities::hexWord(string word)
 }
 string Utilities::hexByte(string byte)
 {
-	if(byte[0] == 'X') {
+	if(byte[0] == 'X' || byte[0] == 'x') {
 		return byte.substr(2, byte.length() - 3);
-	} else if(byte[0] == 'C') {
+	} else if(byte[0] == 'C' || byte[0] == 'c') {
 		string result;
 
-		for(auto i : byte) {
-			if(i != '\'' && i != 'C') {
+		for(auto i : byte.substr(1, byte.length())) {
+			if(i != '\'') {
 				stringstream ss;
 				ss << hex <<(int)i;
 				result += ss.str();
