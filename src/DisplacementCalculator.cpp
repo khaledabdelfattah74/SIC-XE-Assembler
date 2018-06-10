@@ -78,7 +78,8 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 					error = true;
 				}
 			} else {
-				entryToHandle->displacemnet = valueOfExpression(operand1);
+				Utilities util;
+				entryToHandle->displacemnet = util.decimalToHex(valueOfExpression(operand1));
 			}
 			break;
 		default:
@@ -112,7 +113,8 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 			entryToHandle->displacemnet = ss.str();
 		}
 	} else {
-		entryToHandle->displacemnet = valueOfExpression(operand1);
+		Utilities util;
+		entryToHandle->displacemnet = util.decimalToHex(valueOfExpression(operand1));
 	}
 	return targetAdress;
 }
