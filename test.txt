@@ -1,8 +1,7 @@
-.test
+.234567890123456789
 LAB2C    START   1000
          LDA     ALPHA
          LDB     #10
-.sajed
          LDX     #0
          ADDR    A,B
          STA     SAVEW,X
@@ -14,10 +13,11 @@ LAB2C    START   1000
          LDA     =W'1524'
          LDA     =W'-1524'
          LDA     =W'124'
-
          LDA     =W'-1524'
          LDA     =W'1624'
          LDA     =W'4095'
+
+.Format 4
          +SUB    #12
          LDX     #0
          LDCH    HEXCHAR
@@ -35,4 +35,6 @@ HEXCHAR  BYTE    X'61'
 INPUT    RESB    1
 STRING   BYTE    C'String'
 OUTPUT   RESB    5
+
          END
+

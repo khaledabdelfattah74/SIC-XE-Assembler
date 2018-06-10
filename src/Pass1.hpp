@@ -6,8 +6,9 @@
 //  Copyright © 2018 Khaled Abdelfattah. All rights reserved.
 //
 
-#ifndef UNTITLED_Pass1_hpp
-#define UNTITLED_Pass1_hpp
+
+#ifndef Pass1_hpp
+#define Pass1_hpp
 #include <stdio.h>
 #include "SymTable.hpp"
 #include "SourceCodeTable.hpp"

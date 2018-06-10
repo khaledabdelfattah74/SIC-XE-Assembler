@@ -1,24 +1,24 @@
 Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 										Op-code
-1       	000000		        		        		                 	.test
+1       	000000		        		        		                 	$¨
 2       	001000		LAB2C   		START   		1000             	
 3       	001000		        		LDA     		ALPHA            	
 4       	001003		        		LDB     		#10              	
-5       	001003		        		        		                 	.sajed
-6       	001006		        		LDX     		#0               	
-7       	001009		        		ADDR    		A,B              	
-8       	00100b		        		STA     		SAVEW,X          	
-9       	00100e		        		LDX     		#1               	
-10      	001011		        		STA     		SAVEW,X          	
-11      	001014		        		LDA     		=X'5f'           	
-12      	001017		        		LDA     		=X'df'           	
-13      	00101a		        		LDA     		=C'8j5f'         	
-14      	00101d		        		LDA     		=W'1524'         	
-15      	001020		        		LDA     		=W'-1524'        	
-16      	001023		        		LDA     		=W'124'          	
-17      	001026		        		LDA     		=W'-1524'        	
-18      	001029		        		LDA     		=W'1624'         	
-19      	00102c		        		LDA     		=W'4095'         	
+5       	001006		        		LDX     		#0               	
+6       	001009		        		ADDR    		A,B              	
+7       	00100b		        		STA     		SAVEW,X          	
+8       	00100e		        		LDX     		#1               	
+9       	001011		        		STA     		SAVEW,X          	
+10      	001014		        		LDA     		=X'5f'           	
+11      	001017		        		LDA     		=X'df'           	
+12      	00101a		        		LDA     		=C'8j5f'         	
+13      	00101d		        		LDA     		=W'1524'         	
+14      	001020		        		LDA     		=W'-1524'        	
+15      	001023		        		LDA     		=W'124'          	
+16      	001026		        		LDA     		=W'-1524'        	
+17      	001029		        		LDA     		=W'1624'         	
+18      	00102c		        		LDA     		=W'4095'         	
+19      	00102c		        		        		                 	.Format 4
 20      	00102f		        		+SUB    		#12              	
 21      	001033		        		LDX     		#0               	
 22      	001036		        		LDCH    		HEXCHAR          	

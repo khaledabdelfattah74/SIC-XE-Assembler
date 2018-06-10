@@ -26,6 +26,7 @@ bool LitTab::insert(string name) {
     }
     this->litTable.insert(make_pair(name.substr(1, name.length() - 1), *new Literal(name.substr(3, name.length() - 4),
                                                                                     length, --initialAddress)));
+
     this->nonAssignedLiterals.insert(make_pair(initialAddress, name.substr(1, name.length() - 1)));
     return true;
 }
@@ -72,6 +73,7 @@ int LitTab::assignCurrentLiterals(int currentAddress, int linNo, string outPath)
                 fixedLable.c_str(),
                 fixedOpcode.c_str(),
                 fixedOperand.c_str(),
+
                 dump.c_str());
         std::ofstream outfile;
         outfile.open(outPath, ios_base::app);
@@ -92,6 +94,7 @@ int LitTab::lengthOfInstruction(string name) {
             istringstream buffer(name.substr(4, 4));
             buffer >> intValue;
             if (name.length() <= 9 && name.length() >= 6 && intValue < 4096) {
+
                 return 3;
             } else {
                 return -1;
@@ -100,6 +103,7 @@ int LitTab::lengthOfInstruction(string name) {
             istringstream buffer(name.substr(3, 4));
             buffer >> intValue;
             if (name.length() <= 8 && name.length() >= 5 && intValue < 4096) {
+
                 return 3;
             } else {
                 return -1;

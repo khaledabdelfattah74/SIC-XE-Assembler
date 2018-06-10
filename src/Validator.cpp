@@ -20,6 +20,7 @@ const regex notValid ("([A-Z](\\w)*(\\+)[A-Z](\\w)*)|((\\d)+(\\-)[A-Z](\\w)*)");
 const regex literal ("(\\=)(C|W|X)\\'(\\w)+\\'");
 const regex literal2 ("(\\=)(C|W|X)\\'(\\-)(\\w)+\\'");
 
+
 Validator::Validator() {
     this->opTable = * new OpTable();
 }
@@ -43,11 +44,13 @@ bool Validator::check_vaidity(string operation, string operand) {
                  && !regex_match(operand, notRegester))
             return true;
         else if (regex_match(operand, literal) || regex_match(operand, literal2)) {
+
             string value = "";
             for (int i = 3; i < operand.length() - 1; i ++)
                 value += operand[i];
             if (operand[1] == 'W')
                 return regex_match(value, regex ("(\\-)\\d+")) || regex_match(value, regex ("\\d+"));
+
             else if (operand[1] == 'X')
                 return regex_match(value, regex ("(\\d|[A-F])+"));
             else if (operand[1] == 'C')

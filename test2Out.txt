@@ -1,7 +1,7 @@
 Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 										Op-code
-1       	000000		LAB2C   		start   		1000             	
-2       	000000		        		lda     		alpha            	
+1       	000000		LAB2C   		START   		1000             	
+2       	000000		        		LDA     		alpha            	
 3       	000003		        		ldb     		#10              	
 4       	000006		        		ldx     		#0               	
 5       	000009		        		addr    		a,b              	
@@ -12,7 +12,7 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 10      	000017		        		lda     		=x'df'           	
 11      	00001a		        		lda     		=c'8jf'          	
 12      	00001d		        		lda     		=w'1524'         	
-13      	000020		        		lda     		=w'-1524'        	
+13      	000020		        		lda     		=w'1524'         	
 14      	000023		        		lda     		=w'1624'         	
 15      	000026		        		lda     		=w'4095'         	
 16      	000026		        		        		                 	.format 4
@@ -37,7 +37,7 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 34      	000062		=x'df'  		BYTE    		x'df'            	
 34      	000063		=c'8jf' 		BYTE    		c'8jf'           	
 34      	000066		=w'1524'		WORD    		1524             	
-34      	000069		=w'-1524'		WORD    		-1524            	
+34      	000069		=w'1524'		WORD    		1524             	
 34      	00006c		=w'1624'		WORD    		1624             	
 34      	00006f		=w'4095'		WORD    		4095             	
 34      	000072		        		end     		                 	

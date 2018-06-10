@@ -452,6 +452,7 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
         i++;
     }
     return value;
+
 }
 
 bool Pass1::is_number(const std::string& s)
@@ -471,3 +472,4 @@ const vector<string> Pass1::explode(const string& s, const char& c, const char& 
     if(buff != "") v.push_back(buff);
     return v;
 }
+

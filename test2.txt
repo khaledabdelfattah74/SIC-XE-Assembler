@@ -1,5 +1,5 @@
-LAB2C start 1000
-lda alpha
+LAB2C START 1000
+LDA alpha
 ldb #10
 ldx #0
 addr a,b
@@ -10,7 +10,7 @@ lda =x'5f'
 lda =x'df'
 lda =c'8jf'
 lda =w'1524'
-lda =w'-1524'
+lda =w'1524'
 lda =w'1624'
 lda =w'4095'
 .format 4
