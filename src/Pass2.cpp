@@ -106,10 +106,10 @@ void debugUtilities() {
 	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
 
 }
-/*
+
 int main() {
 
-	IntermediateFileParser intermediateParser = *new IntermediateFileParser("/home/sajed/CLionProjects/untitled/testOut.txt");
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser("testOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
@@ -137,5 +137,5 @@ int main() {
 	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
-*/
+
 
