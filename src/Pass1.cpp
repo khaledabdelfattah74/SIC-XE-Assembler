@@ -135,6 +135,9 @@ void Pass1::mainLoop() {
                     symTab.insert(to_upper(currentEntry.getLable()), valueOfExp);
                 }
                 currentInstructionLength = 0;
+                currentEntry = * new Entry(currentEntry.getLable(), "RESW", "NONE", ".Assumption", false);
+                lineNo++;
+                writeCurrenLineToIntermediateFile(lineNo, valueOfExp, currentInstructionLength, currentEntry);
             } else if (to_upper(currentEntry.getOpCode()) == "ORG") {
                 if (currentEntry.getLable() == "") {
                     int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
@@ -211,10 +214,10 @@ void Pass1::mainLoop() {
             }
         }
 
-        if (to_upper(currentEntry.getOpCode()) != "LTORG") {
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && to_upper(currentEntry.getOperand()) != "NONE" && to_upper(currentEntry.getComment()) != ".Assumption") {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
+            lineNo++;
         }
-        lineNo++;
         currentEntry = sourceCodeTable.fetchNextEntry();
     }
 

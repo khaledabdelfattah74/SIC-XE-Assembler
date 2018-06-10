@@ -26,6 +26,7 @@ LAB2C    START   1000
          STA     INPUT
 LOOP     LDCH    STRING,X
          COMP    INPUT
+sajed    EQU     loop-1000
          JEQ     FOUND
          STCH    OUTPUT,X
          TIX     #5
