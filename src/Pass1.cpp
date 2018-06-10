@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "Validator.hpp"
+#include "Utilities.h"
 
 
 using namespace std;
@@ -39,6 +40,7 @@ int Pass1::getNumOfErrors() {
 }
 
 void Pass1::mainLoop() {
+    Utilities utilities;
     SymTable symTab;
     OpTable opTable;
     int startingAddress = 0;
@@ -58,14 +60,8 @@ void Pass1::mainLoop() {
 
 
     if (to_upper(currentEntry.getOpCode()) == "START") {
-        istringstream buffer(currentEntry.getOperand());
-        buffer >> startingAddress;
-        locctr = startingAddress;
-        stringstream stream;
-        stream << locctr;
-        stream >> hex >> locctr;
-        stream << startingAddress;
-        stream >> hex >> startingAddress;
+        locctr = utilities.hexToDecimal(currentEntry.getOperand());
+        startingAddress = utilities.hexToDecimal(currentEntry.getOperand());
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
         currentEntry = sourceCodeTable.fetchNextEntry();
@@ -121,7 +117,12 @@ void Pass1::mainLoop() {
                 locctr += currentInstructionLength;
             } else if (to_upper(currentEntry.getOpCode()) == "BYTE") {
                 currentInstructionLength = getLengthOf(currentEntry.getOperand());
-                locctr += currentInstructionLength;
+                if (currentInstructionLength == -1) {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else {
+                    locctr += currentInstructionLength;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "EQU") {
                 int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
                 if (valueOfExp == -1) {
@@ -209,9 +210,7 @@ void Pass1::mainLoop() {
                 }
             }
         }
-        stringstream stream;
-        stream << currentInstructionLength;
-        stream >> hex >> currentInstructionLength;
+
         if (to_upper(currentEntry.getOpCode()) != "LTORG") {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
         }
@@ -245,7 +244,26 @@ void Pass1::mainLoop() {
 
 
 int Pass1::getLengthOf(string constant) {
-    return constant.length() - 3;
+    if (constant.c_str()[1] != '\''
+        || constant.c_str()[constant.length() - 1] != '\'') {
+        return -1;
+    }
+    if (toupper(constant.c_str()[0]) == 'X') {
+        if (constant.length() >= 5 && (constant.length() % 2) != 0) {
+            return ((int) constant.length() - 3 )/ 2;
+        } else {
+            return -1;
+        }
+
+    } else if (toupper(constant.c_str()[0]) == 'C') {
+        if (constant.length() >= 4) {
+            return (int) constant.length() - 3;
+        } else {
+            return -1;
+        }
+
+    }
+    return -1;
 }
 
 void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
@@ -350,9 +368,11 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
     }
     fixedLable = to_upper(fixedLable);
     fixedOpcode = to_upper(fixedOpcode);
-    fixedOperand = to_upper(fixedOperand);
+    if (currentEntry.getOpCode() != "BYTE" && currentEntry.getOperand().c_str()[0] != '=') {
+        fixedOperand = to_upper(fixedOperand);
+    }
     char stro[100];
-    sprintf(stro, "%-8d\t%06x\t\t%.8s\t\t%.8s\t\t%.18s\t%s",
+    sprintf(stro, "%-8d\t%06x\t\t%.8s\t\t%.8s\t\t%s\t%s",
             lineNumber,(locationCounter - lenOfCurrentInstruction),
             fixedLable.c_str(),
             fixedOpcode.c_str(),

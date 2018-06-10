@@ -19,15 +19,28 @@ LitTab::~LitTab()
     //dtor
 }
 
+string LitTab::to_upper(string str) {
+    string upper_case_string = "";
+    for (char c : str)
+        upper_case_string += toupper(c);
+    return upper_case_string;
+}
+
 bool LitTab::insert(string name) {
+    string temp = to_upper(name.substr(0, 2));
+    temp.append(name.substr(2, name.length() - 2));
+    name = temp;
     int length = lengthOfInstruction(name);
     if (length == -1) {
         return false;
     }
-    this->litTable.insert(make_pair(name.substr(1, name.length() - 1), *new Literal(name.substr(3, name.length() - 4),
-                                                                                    length, --initialAddress)));
+    if (this->litTable.count(name.substr(1, name.length() - 1)) == 0) {
+        this->litTable.insert(
+                make_pair(name.substr(1, name.length() - 1), *new Literal(name.substr(3, name.length() - 4),
+                                                                          length, --initialAddress)));
 
-    this->nonAssignedLiterals.insert(make_pair(initialAddress, name.substr(1, name.length() - 1)));
+        this->nonAssignedLiterals.insert(make_pair(initialAddress, name.substr(1, name.length() - 1)));
+    }
     return true;
 }
 
@@ -39,7 +52,7 @@ int LitTab::assignCurrentLiterals(int currentAddress, int linNo, string outPath)
         string directive;
         string value;
         string dump = "";
-        if (litNameToBeAssigned.c_str()[0] == 'w' || litNameToBeAssigned.c_str()[0] == 'W') {
+        if (toupper(litNameToBeAssigned.c_str()[0]) == 'W') {
             directive = "WORD";
             value = litNameToBeAssigned.substr(2, litNameToBeAssigned.length() - 3);
         } else {

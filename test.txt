@@ -8,10 +8,11 @@ LAB2C    START   1000
          LDX     #1
          STA     SAVEW,X
          LDA     =X'5f'
-         LDA     =X'df'
+         LDA     =X'dF'
          LDA     =C'8j5f'
-         LDA     =W'1524'
-         LDA     =W'-1524'
+	 LDA     =c'8j5f'
+         LDA     =w'1524'
+         LDA     =w'-1524'
          LDA     =W'124'
          LDA     =W'-1524'
          LDA     =W'1624'
@@ -29,9 +30,11 @@ LOOP     LDCH    STRING,X
          TIX     #5
          JLT     LOOP
 FOUND    J       OUT
-ALPHA    WORD    2
+ALPHA    WORD    fg
 SAVEW    RESW    2
 HEXCHAR  BYTE    X'61'
+HEXCHAR3  BYTE    X'61df'
+HEXCHAR4  BYTE    C'sgh'
 INPUT    RESB    1
 STRING   BYTE    C'String'
 OUTPUT   RESB    5
