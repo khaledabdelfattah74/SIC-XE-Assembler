@@ -75,12 +75,6 @@ void Pass1::mainLoop() {
     while (sourceCodeTable.size() != 0 && to_upper(currentEntry.getOpCode()) != "END") {
         //this print is just necessary, I have no idea why!, with out it garbage values appears from under the ground to eat the zombies faces.
         cout << ".";
-
-        if (currentEntry.isCommentLine()) {
-            cout << "in";
-            cout << currentEntry.getOpCode() << currentEntry.getComment();
-            cout << "    " << currentEntry.isCommentLine() << "         ";
-        }
         if (currentEntry.isCommentLine() == false) {
             if(currentEntry.getLable().length() != 0 && to_upper(currentEntry.getOpCode()) != "EQU") {
                 bool repeated = symTab.found(to_upper(currentEntry.getLable()));
