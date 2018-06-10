@@ -1,0 +1,29 @@
+Line no.	Address   	Label   		Mnemonic		Operands          	Comments
+										Op-code
+1       	000000		        		        		                 	.234567890123456789
+2       	000000		LAB2C   		START   		                 	
+3       	000000		        		LDA     		ALPHA            	
+4       	000003		        		LDB     		#10              	
+5       	000006		        		LDX     		#0               	
+6       	000009		        		ADDR    		A,B              	
+7       	00000b		        		STA     		SAVEW,X          	
+8       	00000e		        		LDX     		#SAVEW               	
+9       	000011		        		STA     		SAVEW,X          	
+10      	000011		        		        		                 	.Format 4
+11      	000014		        		+SUB    		#12              	
+12      	000018		        		LDX     		#0               	
+13      	00001b		        		LDCH    		@HEXCHAR          	
+14      	00001e		        		STA     		INPUT            	
+15      	000021		ADD     		LDCH    		STRING,X         	
+16      	000024		        		COMP    		INPUT            	
+17      	000027		        		JEQ     		FOUND            	
+18      	00002a		        		STCH    		OUTPUT,X         	
+19      	00002d		        		TIX     		#5                             	
+21      	000030		FOUND   		J       		OUT              	
+22      	000033		ALPHA   		WORD    		2                	
+23      	000036		SAVEW   		RESW    		2                	
+24      	000018		HEXCHAR 		BYTE    		X'61'            	
+25      	000079		INPUT   		RESB    		1                	
+26      	00007a		STRING  		BYTE    		C'String'        	
+27      	00007a		OUTPUT  		RESB    		5                	
+28      	00007f		        		END     		#4               	

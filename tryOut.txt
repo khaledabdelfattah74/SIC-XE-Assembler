@@ -1,0 +1,56 @@
+Line no.	Address   	Label   		Mnemonic		Operands          	Comments
+										Op-code
+1       	000000		        		        		                 	.saasas
+2       	000000		        		        		                 	.123456789
+3       	001000		PROB1   		START   		1000             	
+						***Wrong operand prefix***
+4       	001000		sad     		#0      		                 	
+5       	001000		        		LDT     		#1               	
+6       	001003		        		LDA     		#0               	
+7       	001006		        		LDS     		#0               	
+8       	001009		OLOOP   		LDX     		#0               	
+						***Operand format is not compatible with operation***
+9       	001009		        		LDB     		#*               	
+10      	00100c		        		SUBR    		L,B              	
+11      	00100e		        		SUBR    		T,B              	
+12      	001010		        		J       		ILOOP            	
+13      	001013		ITR     		ADDR    		T,L              	
+14      	001013		        		        		                 	.
+15      	001015		+RMO    		LDA     		ass              	
+16      	001018		        		LDB     		SIZE             	
+						***Operand format is not compatible with operation***
+17      	001018		        		COMPR   		L                	
+18      	00101b		        		JLT     		OLOOP            	
+19      	00101e		        		LDX     		#0               	
+20      	001021		LOOP    		LDCH    		STR,X            	
+						***Wrong operand prefix***
+21      	001021		KHALED  		CSECT   		                 	
+22      	001024		        		JSUB    		WRITE            	
+23      	001027		        		TIX     		SIZE             	
+24      	00102a		        		JLT     		LOOP             	
+25      	00102d		        		J       		EXIT             	
+26      	001030		ILOOP   		LDCH    		STR,X            	
+27      	001033		        		RMO     		A,S              	
+28      	001035		        		ADDR    		T,X              	
+29      	001037		        		LDCH    		STR,X            	
+30      	00103a		        		COMPR   		S,A              	.sad 
+31      	00103c		        		JGT     		SWAP             	
+						***Operand format is not compatible with operation***
+32      	00103c		SWAPPING		COMPR   		dasdasd X,B      	.sad 
+33      	00103f		        		JLT     		ILOOP            	
+34      	001042		        		J       		ITR              	
+35      	001045		SWAP    		SUBR    		T,X              	
+36      	001047		        		STCH    		STR,X            	.cas 
+37      	00104a		        		RMO     		S,A              	
+38      	00104c		        		ADDR    		T,X              	
+39      	00104e		        		STCH    		STR,X            	
+40      	001051		        		J       		SWAPPING         	
+41      	001054		WRITE   		TD      		OUT              	
+42      	001057		        		JEQ     		WRITE            	
+43      	00105a		        		WD      		OUT              	
+44      	00105d		hamoksha		RSUB    		                 	.comment 
+45      	00105a		STR     		BYTE    		C'856484387195'  	
+46      	00106c		SIZE    		WORD    		12               	
+47      	00106f		OUT     		BYTE    		X'05'            	
+48      	001071		        		END     		PROB1            	
+						***End must be at the last line***

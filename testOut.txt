@@ -1,0 +1,48 @@
+Line no.	Address   	Label   		Mnemonic		Operands          	Comments
+										Op-code
+1       	000000		        		        		                 	.test
+2       	001000		LAB2C   		START   		1000             	
+3       	001000		        		LDA     		ALPHA            	
+4       	001003		        		LDB     		#10              	
+5       	001003		        		        		                 	.sajed
+6       	001006		        		LDX     		#0               	
+7       	001009		        		ADDR    		A,B              	
+8       	00100b		        		STA     		SAVEW,X          	
+9       	00100e		        		LDX     		#1               	
+10      	001011		        		STA     		SAVEW,X          	
+11      	001014		        		LDA     		=X'5f'           	
+12      	001017		        		LDA     		=X'df'           	
+13      	00101a		        		LDA     		=C'8j5f'         	
+14      	00101d		        		LDA     		=W'1524'         	
+15      	001020		        		LDA     		=W'-1524'        	
+16      	001023		        		LDA     		=W'124'          	
+17      	001026		        		LDA     		=W'-1524'        	
+18      	001029		        		LDA     		=W'1624'         	
+19      	00102c		        		LDA     		=W'4095'         	
+20      	00102f		        		+SUB    		#12              	
+21      	001033		        		LDX     		#0               	
+22      	001036		        		LDCH    		HEXCHAR          	
+23      	001039		        		STA     		INPUT            	
+24      	00103c		LOOP    		LDCH    		STRING,X         	
+25      	00103f		        		COMP    		INPUT            	
+26      	001042		        		JEQ     		FOUND            	
+27      	001045		        		STCH    		OUTPUT,X         	
+28      	001048		        		TIX     		#5               	
+29      	00104b		        		JLT     		LOOP             	
+30      	00104e		FOUND   		J       		OUT              	
+31      	001051		ALPHA   		WORD    		2                	
+32      	001054		SAVEW   		RESW    		2                	
+33      	00105a		HEXCHAR 		BYTE    		X'61'            	
+34      	00105c		INPUT   		RESB    		1                	
+35      	00105d		STRING  		BYTE    		C'String'        	
+36      	001063		OUTPUT  		RESB    		5                	
+37      	001068		=X'5f'  		BYTE    		X'5f'            	
+37      	001069		=X'df'  		BYTE    		X'df'            	
+37      	00106a		=C'8j5f'		BYTE    		C'8j5f'          	
+37      	00106e		=W'1524'		WORD    		1524             	
+37      	001071		=W'-1524'		WORD    		-1524            	
+37      	001074		=W'124' 		WORD    		124              	
+37      	001077		=W'-1524'		WORD    		-1524            	
+37      	00107a		=W'1624'		WORD    		1624             	
+37      	00107d		=W'4095'		WORD    		4095             	
+37      	001080		        		END     		                 	

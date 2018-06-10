@@ -1,0 +1,11 @@
+
+SymTable	Address
+
+INPUT   	105c
+HEXCHAR 	105a
+LOOP    	103c
+OUTPUT  	1063
+STRING  	105d
+FOUND   	104e
+SAVEW   	1054
+ALPHA   	1051
