@@ -4,6 +4,7 @@ LAB2C    START   1000
          LDB     #10
          LDX     #0
          ADDR    A,B
+	 org     1000
          STA     SAVEW,X
          LDX     #1
          STA     SAVEW,X
