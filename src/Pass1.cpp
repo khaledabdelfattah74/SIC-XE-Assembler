@@ -132,7 +132,7 @@ void Pass1::mainLoop() {
                     writeCurrenLineToIntermediateFile(-4, locctr, currentInstructionLength, currentEntry);
                     this->error = true;
                 } else {
-                    symTab.insert(to_upper(currentEntry.getLable()), valueOfExp);
+                    symTab.insert(to_upper(currentEntry.getLable()), valueOfExp, section_name);
                 }
                 currentInstructionLength = 0;
                 currentEntry = * new Entry(currentEntry.getLable(), "RESW", "NONE", ".Assumption", false);

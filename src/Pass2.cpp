@@ -106,7 +106,7 @@ void debugUtilities() {
 	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
 
 }
-/*
+
 int main() {
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser("testOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
@@ -124,6 +124,7 @@ int main() {
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	disCalc.handleDisplacement(&allEntryVector);
+	debugDisplacement(allEntryVector);
 	if(disCalc.getDisplacemnetError()) {
 		cout << "uncompletely assembled";
 		return 0;
@@ -131,11 +132,11 @@ int main() {
 	//debugLabelAddresses(labelAddresses);
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);
-	debugDisplacement(allEntryVector);
+
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
 	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
-*/
+
 
 

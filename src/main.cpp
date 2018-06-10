@@ -20,4 +20,3 @@ int main(int argc, const char * argv[]) {
     cout << endl << "An intermediate file was written to the path: " << pass.outPath << endl;
     return 0;
 }
-
