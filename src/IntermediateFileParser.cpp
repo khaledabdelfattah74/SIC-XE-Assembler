@@ -66,7 +66,7 @@ void IntermediateFileParser::eraseAnyForwardSpaces(string *str,int offset) {
 }
 
 void IntermediateFileParser::extractOperands(vector<string> *operandList,string operands) {
-	int x = operands.find(',');
+	int x = (int) operands.find(',');
 	if(x != (signed)operands.npos) {
 		string operand1 = operands.substr(0, x);
 		string operand2 = operands.substr(x + 1, operands.length());
@@ -99,15 +99,12 @@ bool IntermediateFileParser::validEntry(IntermediateFileParser::entry entryToVal
 }
 
 void IntermediateFileParser::removeSpaces(string *str) {
-	if(str->at(0) == ' ')
+	if(str->length() > 0 && str->at(0) == ' ')
 		return;
-	//cout << *str << endl;
 	for(auto it = str->begin();it != str->end();++it) {
-		//cout << *it << endl;
 		if(*it == ' ') {
 			str->erase(it,it+1);
 			it--;
 		}
 	}
-	//cout << *str << endl;
 }

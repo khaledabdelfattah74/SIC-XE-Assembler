@@ -86,6 +86,7 @@ string generateModificationRecords(vector<IntermediateFileParser::entry> entries
         }
         return modifications;
     }
+    return "";
 }
 
 string generateHeader(vector<IntermediateFileParser::entry> entries) {
@@ -130,6 +131,7 @@ string entry_to_object_code(IntermediateFileParser::entry entry) {
     } else if(operation_table.lengthOf(op_code) == 4) {
         object_code = forth_format_to_hex(entry);
     }
+    return "";
 }
 
 string forth_format_to_hex(IntermediateFileParser::entry entry) {
@@ -235,6 +237,7 @@ string register_to_hex(string reg) {
         case 'F':
             return "6";
     }
+    return "";
 }
 
 vector<bool> hex_string_to_binary(string hex) {

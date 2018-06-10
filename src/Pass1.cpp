@@ -47,7 +47,9 @@ void Pass1::mainLoop() {
     Entry currentEntry = *sourceCodeTable.fetchNextEntry();
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
-
+    
+    string section_name;
+    
     while (currentEntry.isCommentLine()) {
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
@@ -65,6 +67,9 @@ void Pass1::mainLoop() {
         stream >> hex >> startingAddress;
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
+        
+        section_name = to_upper(currentEntry.getLable());
+        
         currentEntry = *sourceCodeTable.fetchNextEntry();
     } else {
         locctr = 0;
@@ -83,7 +88,7 @@ void Pass1::mainLoop() {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-3, locctr, currentInstructionLength, currentEntry);
                 } else if (currentEntry.getLable().c_str()[0] < '0' || currentEntry.getLable().c_str()[0] > '9'){
-                    symTab.insert(to_upper(currentEntry.getLable()), locctr);
+                    symTab.insert(to_upper(currentEntry.getLable()), locctr, section_name);
                 } else {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-3, locctr, currentInstructionLength, currentEntry);
@@ -127,7 +132,7 @@ void Pass1::mainLoop() {
                         writeCurrenLineToIntermediateFile(-4, locctr, currentInstructionLength, currentEntry);
                         this->error = true;
                     } else {
-                        symTab.insert(to_upper(currentEntry.getLable()), valueOfExp);
+                        symTab.insert(to_upper(currentEntry.getLable()), valueOfExp, section_name);
                     }
                     currentInstructionLength = 0;
             } else if (to_upper(currentEntry.getOpCode()) == "ORG") {
@@ -188,6 +193,15 @@ void Pass1::mainLoop() {
                     writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
                     this->error = true;
                 }
+            } else if (to_upper(currentEntry.getOpCode()) == "CSECT") {
+                locctr = 0;
+                writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+                
+                section_name = to_upper(currentEntry.getLable());
+            } else if (to_upper(currentEntry.getLable()) == "EXTREF") {
+                writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+            } else if (to_upper(currentEntry.getLable()) == "EXTDEF") {
+                writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
             } else {
                 this->error = true;
                 writeCurrenLineToIntermediateFile(-2, locctr, currentInstructionLength, currentEntry);
@@ -208,8 +222,11 @@ void Pass1::mainLoop() {
         stringstream stream;
         stream << currentInstructionLength;
         stream >> hex >> currentInstructionLength;
-        if (to_upper(currentEntry.getOpCode()) != "LTORG") {
-            writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" &&
+            to_upper(currentEntry.getOpCode()) != "CSECT" &&
+            to_upper(currentEntry.getLable()) != "EXTREF" &&
+            to_upper(currentEntry.getLable()) != "EXTDEF") {
+                writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
         }
         lineNo++;
         currentEntry = *sourceCodeTable.fetchNextEntry();
@@ -371,8 +388,8 @@ void Pass1::printSymTable(SymTable symTable) {
                 symbolName.append(" ");
             }
         }
-       cout << symbolName << "\t" << hex << symbol.second << endl;
-       outfile << symbolName << "\t" << hex << symbol.second << endl;
+       cout << symbolName << "\t" << hex << symbol.second.first << endl;
+       outfile << symbolName << "\t" << hex << symbol.second.first << endl;
     }
     outfile.close();
 }
@@ -440,7 +457,7 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
             if (!symTable.found(to_upper(term))) {
                 return -2;
             }
-            int numValue = symTable.symbolTable[to_upper(term)];
+            int numValue = symTable.symbolTable[to_upper(term)].first;
             if (minus[i]) {
                 value -= numValue;
             } else {

@@ -12,6 +12,7 @@
 #include "AddresingModifier.h"
 #include "DisplacementCalculator.h"
 #include "Utilities.h"
+#include "ObjectProgramGenerator.h"
 
 using namespace std;
 
@@ -103,12 +104,14 @@ void debugUtilities() {
 }
 int main() {
 
-	IntermediateFileParser intermediateParser = *new IntermediateFileParser("C:\\FPC\\prog\\srcfileOut.txt");
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser("/Users/khaledabdelfattah/Desktop/tryOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
-	LabelProcessor labelProcessor = *new LabelProcessor();
+    //for (IntermediateFileParser::entry i : allEntryVector)
+      //  cout << i.label << " " << i.operationCode << endl;
+    LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
 	if(labelProcessor.getErrorFlag()) {
-		cout << "uncompletely assembled";
+		cout << "incompletely assembled";
 		return 0;
 	}
 	debugUtilities();
@@ -122,8 +125,8 @@ int main() {
 	debugEntriesVectors(allEntryVector);
 	debugAddressMode(allEntryVector);
 	debugDisplacement(allEntryVector);
-	//ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
-	//objGen.generate_program_code(allEntryVector);
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
+	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
 
