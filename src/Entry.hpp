@@ -16,18 +16,18 @@ using namespace std;
 
 class Entry {
 public:
-    Entry(string lable, string opCode, string operand, string comment, bool isCommentLine);
+    Entry(string lable, string opCode, string operand, string comment, string isCommentLine);
     string getLable();
     string getOpCode();
     string getOperand();
     string getComment();
-    bool isCommentLine();
+    string isCommentLine();
 private:
     string lable;
     string opCode;
     string operand;
     string comment;
-    bool commentLine;
+    string commentLine;
 };
 
 #endif /* Entry_hpp */

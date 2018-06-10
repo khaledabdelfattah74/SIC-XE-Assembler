@@ -6,9 +6,11 @@
 //  Copyright © 2018 Khaled Abdelfattah. All rights reserved.
 //
 
+#include <iostream>
 #include "Entry.hpp"
 
-Entry::Entry(string lable, string opCode, string operand, string comment, bool commentLine) {
+using namespace std;
+Entry::Entry(string lable, string opCode, string operand, string comment, string commentLine) {
     this->lable = lable;
     this->opCode = opCode;
     this->operand = operand;
@@ -32,6 +34,6 @@ string Entry::getComment() {
     return this->comment;
 }
 
-bool Entry::isCommentLine() {
+string Entry::isCommentLine() {
     return this->commentLine;
 }

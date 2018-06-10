@@ -48,11 +48,15 @@ void Pass1::mainLoop() {
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
     lineNo++;
 
-    while (currentEntry.isCommentLine()) {
+
+    while (currentEntry.isCommentLine() == "1") {
+        cout << currentEntry.getOpCode() << " " << currentEntry.isCommentLine() << " " << currentEntry.getComment();
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
         currentEntry = *sourceCodeTable.fetchNextEntry();
     }
+
+
 
     if (to_upper(currentEntry.getOpCode()) == "START") {
         istringstream buffer(currentEntry.getOperand());
@@ -74,8 +78,7 @@ void Pass1::mainLoop() {
     int currentInstructionLength = 0;
     while (sourceCodeTable.size() != 0 && to_upper(currentEntry.getOpCode()) != "END") {
         //this print is just necessary, I have no idea why!, with out it garbage values appears from under the ground to eat the zombies faces.
-        cout << ".";
-        if (currentEntry.isCommentLine() == false) {
+        if (currentEntry.isCommentLine() == "0") {
             if(currentEntry.getLable().length() != 0 && to_upper(currentEntry.getOpCode()) != "EQU") {
                 bool repeated = symTab.found(to_upper(currentEntry.getLable()));
                 if (repeated) {

@@ -1,43 +1,46 @@
 Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 										Op-code
-1       	000000		LAB2C   		START   		1000             	
-2       	000000		        		LDA     		alpha            	
-3       	000003		        		ldb     		#10              	
-4       	000006		        		ldx     		#0               	
-5       	000009		        		addr    		a,b              	
-6       	00000b		        		sta     		savew,x          	
-7       	00000e		        		ldx     		#1               	
-8       	000011		        		sta     		savew,x          	
-9       	000014		        		lda     		=x'5f'           	
-10      	000017		        		lda     		=x'df'           	
-11      	00001a		        		lda     		=c'8jf'          	
-12      	00001d		        		lda     		=w'1524'         	
-13      	000020		        		lda     		=w'1524'         	
-14      	000023		        		lda     		=w'1624'         	
-15      	000026		        		lda     		=w'4095'         	
-16      	000026		        		        		                 	.format 4
-17      	000029		        		+sub    		#12              	
-18      	00002d		        		ldx     		#0               	
-19      	000030		        		ldch    		hexchar          	
-20      	000033		        		sta     		input            	
-21      	000036		loop    		ldch    		string,x         	
-22      	000039		        		comp    		input            	
-23      	00003c		        		jeq     		found            	
-24      	00003f		        		stch    		output,x         	
-25      	000042		        		tix     		#5               	
-26      	000045		        		jlt     		loop             	
-27      	000048		found   		j       		out              	
-28      	00004b		alpha   		word    		2                	
-29      	00004e		savew   		resw    		2                	
-30      	000054		hexachar		byte    		x'61'            	
-31      	000056		input   		resb    		1                	
-32      	000057		string  		byte    		'String'         	
-33      	00005c		output  		resb    		5                	
-34      	000061		=x'5f'  		BYTE    		x'5f'            	
-34      	000062		=x'df'  		BYTE    		x'df'            	
-34      	000063		=c'8jf' 		BYTE    		c'8jf'           	
-34      	000066		=w'1524'		WORD    		1524             	
-34      	000069		=w'1524'		WORD    		1524             	
-34      	00006c		=w'1624'		WORD    		1624             	
-34      	00006f		=w'4095'		WORD    		4095             	
-34      	000072		        		end     		                 	
+1       	000000		        		        		                 	.23456789
+2       	000000		        		        		                 	.sajed
+3       	001000		LAB2C   		START   		1000             	
+4       	001000		        		LDA     		alpha            	
+5       	001003		        		ldb     		#10              	
+6       	001006		        		ldx     		#0               	
+7       	001009		        		addr    		a,b              	
+8       	00100b		        		sta     		savew,x          	
+9       	00100e		        		ldx     		#1               	
+10      	001011		        		sta     		savew,x          	
+11      	001014		        		lda     		=x'5f'           	
+12      	001017		        		lda     		=x'df'           	
+13      	00101a		        		lda     		=c'8jf'          	
+14      	00101d		        		lda     		=w'1524'         	
+15      	00101d		        		        		                 	.sajed
+16      	001020		        		lda     		=w'1524'         	
+17      	001023		        		lda     		=w'1624'         	
+18      	001026		        		lda     		=w'4095'         	
+19      	001026		        		        		                 	.format 4
+20      	001029		        		+sub    		#12              	
+21      	00102d		        		ldx     		#0               	
+22      	001030		        		ldch    		hexchar          	
+23      	001033		        		sta     		input            	
+24      	001036		loop    		ldch    		string,x         	
+25      	001039		        		comp    		input            	
+26      	00103c		        		jeq     		found            	
+27      	00103f		        		stch    		output,x         	
+28      	001042		        		tix     		#5               	
+29      	001045		        		jlt     		loop             	
+30      	001048		found   		j       		out              	
+31      	00104b		alpha   		word    		2                	
+32      	00104e		savew   		resw    		2                	
+33      	001054		hexachar		byte    		x'61'            	
+34      	001056		input   		resb    		1                	
+35      	001057		string  		byte    		'String'         	
+36      	00105c		output  		resb    		5                	
+37      	001061		=x'5f'  		BYTE    		x'5f'            	
+37      	001062		=x'df'  		BYTE    		x'df'            	
+37      	001063		=c'8jf' 		BYTE    		c'8jf'           	
+37      	001066		=w'1524'		WORD    		1524             	
+37      	001069		=w'1524'		WORD    		1524             	
+37      	00106c		=w'1624'		WORD    		1624             	
+37      	00106f		=w'4095'		WORD    		4095             	
+37      	001072		        		end     		                 	
