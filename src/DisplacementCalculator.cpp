@@ -61,7 +61,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 				operand1.erase(0,1);
 			}
-			if((operand1.find('-')  == operand1.npos || operand1(0)  == '-') && operand1.find('+') == operand1.npos) {
+			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-') && operand1.find('+') == operand1.npos) {
 				if(addresses.count(operand1) > 0) {
 					ss << hex << addresses[operand1];
 					entryToHandle->displacemnet = ss.str();
@@ -97,13 +97,13 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 	if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 		operand1.erase(0,1);
 	}
-	if((operand1.find('-')  == operand1.npos || operand1(0)  == '-') && operand1.find('+') == operand1.npos) {
+	if((operand1.find('-')  == operand1.npos || operand1[0]  == '-') && operand1.find('+') == operand1.npos) {
 		stringstream ss;
 		if(addresses.count(operand1) > 0) {
 			ss << hex << addresses[operand1];
 			ss >> targetAdress;
 		}
-		if (isdigit(operand1.at(0)) || operand1(0)  == '-') {
+		if (isdigit(operand1.at(0)) || operand1[0]  == '-') {
 			istringstream iss(operand1);
 			int value;
 			iss >> value;
