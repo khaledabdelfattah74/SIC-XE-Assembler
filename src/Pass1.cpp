@@ -50,7 +50,6 @@ void Pass1::mainLoop() {
 
 
     while (currentEntry.isCommentLine() == "1") {
-        cout << currentEntry.getOpCode() << " " << currentEntry.isCommentLine() << " " << currentEntry.getComment();
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
         currentEntry = *sourceCodeTable.fetchNextEntry();
