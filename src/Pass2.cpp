@@ -122,6 +122,7 @@ int main() {
 	addressModifier.setVectorAddressingMode(&allEntryVector);
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
+	cout << "HERE "<<labelAddresses["=W'-152'"]<<endl;
 	disCalc.handleDisplacement(&allEntryVector);
 	debugDisplacement(allEntryVector);
 	if(disCalc.getDisplacemnetError()) {
