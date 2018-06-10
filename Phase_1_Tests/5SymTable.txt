@@ -1,0 +1,9 @@
+
+SymTable	Address
+
+INDEX   	1153
+THREE   	1150
+LOOP    	1006
+ZERO    	114d
+ALPHA   	101e
+K300    	114a

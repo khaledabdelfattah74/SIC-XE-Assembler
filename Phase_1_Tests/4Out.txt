@@ -1,0 +1,16 @@
+Line no.	Address   	Label   		Mnemonic		Operands          	Comments
+										Op-code
+1       	001000		PRBN06  		START   		1000             	
+2       	001000		        		LDX     		ZERO             	
+3       	001003		        		LDCH    		BLANK            	
+4       	001006		LOOP    		STCH    		STR,X            	
+5       	001009		        		TIX     		K20              	
+6       	00100c		        		JLT     		LOOP             	
+7       	00100f		STR     		BYTE    		C'0123456789'    	
+8       	001019		STR2    		BYTE    		C'0123456789666565656565'	
+9       	001019		        		        		                 	. OUT OF RANGE
+10      	00102f		BLANK   		BYTE    		C' '             	
+11      	001030		BUFFER  		RESB    		90050            	
+12      	016ff2		K20     		WORD    		20               	
+13      	016ff5		ZERO    		WORD    		0                	
+14      	016ff8		        		END     		PRBN06           	
