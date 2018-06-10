@@ -1,0 +1,10 @@
+Line no.	Address   	Label   		Mnemonic		Operands          	Comments
+										Op-code
+1       	001000		PRBN01  		START   		1000             	
+2       	001000		        		LDA     		BETA             	.Undefined Symbol 
+3       	001003		        		MUL     		GAMMA            	
+4       	001006		        		STA     		ALPHA            	
+5       	001009		ALPHA   		RESW    		1                	
+6       	00100c		BETAS   		WORD    		25               	
+7       	00100f		GAMMA   		WORD    		4                	
+8       	001012		        		END     		PRBN01           	
