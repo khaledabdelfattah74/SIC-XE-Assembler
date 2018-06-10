@@ -1,6 +1,6 @@
 Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 										Op-code
-1       	000000		        		        		                 	.234567890123456789
+1       	000000		        		        		                 	$¨
 2       	001000		LAB2C   		START   		1000             	
 3       	001000		        		LDA     		ALPHA            	
 4       	001003		        		LDB     		#10              	
@@ -42,7 +42,7 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 37      	00106e		=W'1524'		WORD    		1524             	
 37      	001071		=W'-1524'		WORD    		-1524            	
 37      	001074		=W'124' 		WORD    		124              	
-37      	001077		=W'-154'		WORD    		-154            	
+37      	001077		=W'-1524'		WORD    		-1524            	
 37      	00107a		=W'1624'		WORD    		1624             	
 37      	00107d		=W'4095'		WORD    		4095             	
 37      	001080		        		END     		                 	

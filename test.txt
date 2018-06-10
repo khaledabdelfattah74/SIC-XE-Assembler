@@ -35,4 +35,6 @@ HEXCHAR  BYTE    X'61'
 INPUT    RESB    1
 STRING   BYTE    C'String'
 OUTPUT   RESB    5
+
          END
+

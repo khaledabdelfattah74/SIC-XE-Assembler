@@ -137,6 +137,7 @@ string ObjectProgramGenerator::third_format_to_hex(IntermediateFileParser::entry
             operand.insert(0,"0");
     }
     //vector<bool> operand_binary = hex_string_to_binary(operand);
+
     string object_hex = binary_to_hex_string(entry_start_binary).substr(3,3);
     object_hex.append(operand);
     return  object_hex;

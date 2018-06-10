@@ -106,6 +106,7 @@ void debugUtilities() {
 	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
 
 }
+/*
 int main() {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser("testOut.txt");
@@ -131,5 +132,6 @@ int main() {
 	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
+*/
 
 

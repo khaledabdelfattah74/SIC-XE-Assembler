@@ -1,0 +1,34 @@
+LAB2C START 1000
+LDA alpha
+ldb #10
+ldx #0
+addr a,b
+sta savew,x
+ldx #1
+sta savew,x
+lda =x'5f'
+lda =x'df'
+lda =c'8jf'
+lda =w'1524'
+lda =w'1524'
+lda =w'1624'
+lda =w'4095'
+.format 4
++sub #12
+ldx #0
+ldch hexchar
+sta input
+loop ldch string,x
+comp input
+jeq found
+stch output,x
+tix #5
+jlt loop
+found j out
+alpha word 2
+savew resw 2
+hexachar byte x'61'
+input resb 1
+string byte 'String'
+output resb 5
+end

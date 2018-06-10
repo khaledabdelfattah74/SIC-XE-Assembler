@@ -1,0 +1,50 @@
+.saasas
+.123456789
+PROB1    START   1000
+         sad    #0
+         LDT    #1
+         LDA    #0
+         LDS    #0
+OLOOP    LDX    #0
+         LDB     #*
+         SUBR    L,B
+         SUBR    T,B
+         J       ILOOP
+ITR      ADDR    T,L
+.
+      +RMO   LDA  ass
+         LDB     SIZE
+         COMPR   L
+         JLT     OLOOP
+         LDX    #0
+LOOP     LDCH    STR,X
+KHALED CSECT
+         JSUB    WRITE
+         TIX     SIZE
+         JLT     LOOP
+         J       EXIT
+ILOOP    LDCH    STR,X
+         RMO     A,S
+         ADDR    T,X
+         LDCH    STR,X
+         COMPR   S,A    .sad
+         JGT     SWAP
+SWAPPING                                                                 COMPR  dasdasd  X,B .sad
+         JLT     ILOOP
+         J       ITR
+SWAP     SUBR    T,X
+         STCH    STR,X .cas
+         RMO     S,A
+         ADDR    T,X
+         STCH    STR,X
+         J       SWAPPING
+WRITE    TD      OUT
+         JEQ     WRITE
+         WD      OUT
+ hamoksha        RSUB      .comment
+STR      BYTE    C'856484387195'
+SIZE     WORD    12
+OUT      BYTE    X'05'
+      END     PROB1
+OU      BYTE    X'05'
+OT      BYTE    X'05'
