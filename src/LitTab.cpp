@@ -19,13 +19,6 @@ LitTab::~LitTab()
     //dtor
 }
 
-string LitTab::to_upper(string str) {
-    string upper_case_string = "";
-    for (char c : str)
-        upper_case_string += toupper(c);
-    return upper_case_string;
-}
-
 bool LitTab::insert(string name) {
     int length = lengthOfInstruction(name);
     if (length == -1) {

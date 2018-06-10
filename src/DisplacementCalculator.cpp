@@ -61,7 +61,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 				operand1.erase(0,1);
 			}
-			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-') && operand1.find('+') == operand1.npos) {
+			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
 				if(addresses.count(operand1) > 0) {
 					ss << hex << addresses[operand1];
 					entryToHandle->displacemnet = ss.str();
@@ -97,7 +97,8 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 	if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 		operand1.erase(0,1);
 	}
-	if((operand1.find('-')  == operand1.npos || operand1[0]  == '-') && operand1.find('+') == operand1.npos) {
+
+	if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
 		stringstream ss;
 		if(addresses.count(operand1) > 0) {
 			ss << hex << addresses[operand1];
@@ -119,9 +120,11 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp,int ta) {
 	string operand1 = entryToHandle->operand.at(0);
 	if(addresses.count(operand1) == 0) {
+		cout << "HERE";
 		error = true;
 	}
-
+	cout << addresses[operand1]<<endl;
+	cout << disp << endl;
 	if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 			operand1.erase(0,1);
 	}
@@ -147,6 +150,7 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 		}
 	} else {
 		cout << "Error : invalid address p" << endl;
+		cout << operand1 << endl;
 	}
 }
 
