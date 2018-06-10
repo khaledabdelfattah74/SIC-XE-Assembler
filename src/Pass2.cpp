@@ -123,7 +123,10 @@ int main() {
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	disCalc.handleDisplacement(&allEntryVector);
-
+	if(disCalc.getDisplacemnetError()) {
+		cout << "uncompletely assembled";
+		return 0;
+	}
 	//debugLabelAddresses(labelAddresses);
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);

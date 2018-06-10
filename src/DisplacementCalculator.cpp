@@ -72,6 +72,10 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 					iss >> value;
 					ss << hex << value;
 					entryToHandle->displacemnet = ss.str();
+					return;
+				}
+				if(addresses.count(operand1) == 0) {
+					error = true;
 				}
 			} else {
 
@@ -114,6 +118,10 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 
 void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp,int ta) {
 	string operand1 = entryToHandle->operand.at(0);
+	if(addresses.count(operand1) == 0) {
+		error = true;
+	}
+
 	if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 			operand1.erase(0,1);
 	}
@@ -140,4 +148,8 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 	} else {
 		cout << "Error : invalid address p" << endl;
 	}
+}
+
+bool DisplacementCalculator::getDisplacemnetError() {
+	return error;
 }

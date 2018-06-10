@@ -9,9 +9,11 @@ public:
 	DisplacementCalculator(unordered_map<string,string> labelAddresses);
 	virtual ~DisplacementCalculator();
 	void handleDisplacement(vector<IntermediateFileParser::entry> *vectorToCalculate);
+	bool getDisplacemnetError();
 private:
 	string base = "";
 	bool canBase = false;
+	bool error = false;
 	OpTable operations;
 	unordered_map<string,string> addresses;
 	void handle(IntermediateFileParser::entry *entryToHandle);
