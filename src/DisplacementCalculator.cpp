@@ -176,9 +176,6 @@ int DisplacementCalculator::valueOfExpression(string expression) {
     }
 
     int value = 0;
-    stringstream stream;
-    stream << value;
-    stream >> hex >> value;
     int i = 0;
     for(auto term:terms) {
 
@@ -187,17 +184,13 @@ int DisplacementCalculator::valueOfExpression(string expression) {
             return -1;
         } else if (is_number(term)) {
             istringstream buffer(term);
-
             buffer >> numValue;
-            stringstream stream;
-            stream << numValue;
-            stream >> hex >> numValue;
-
         } else {
             if (addresses.count(term) == 0) {
                 return -2;
             }
-            numValue = addresses[term];
+            Utilities util;
+            numValue = util.hexToDecimal(addresses[term]);
         }
         switch(operations[i]) {
             case '-' :

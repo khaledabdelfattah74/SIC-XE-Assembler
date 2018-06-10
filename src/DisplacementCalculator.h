@@ -3,7 +3,7 @@
 
 #include "IntermediateFileParser.hpp"
 #include "OpTable.hpp"
-
+#include "Utilities.h"
 class DisplacementCalculator {
 public:
 	DisplacementCalculator(unordered_map<string,string> labelAddresses);
