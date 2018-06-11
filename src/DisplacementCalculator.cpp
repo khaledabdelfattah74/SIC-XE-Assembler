@@ -146,6 +146,8 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 	string operand1 = entryToHandle->operand.at(0);
 	if(addresses.count(operand1) == 0) {
 		cout << "HERE";
+		errorMessage += "**operand " + operand1 + " is undefined/n";
+		errorMessage += getEntrySrc(*entryToHandle);
 		error = true;
 	}
 	cout << addresses[operand1]<<endl;
@@ -172,10 +174,17 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 			entryToHandle->b = 1;
 		} else {
 			cout << "Error : invalid address b" << endl;
+			errorMessage += "**displacement error\n";
+			errorMessage += getEntrySrc(*entryToHandle);
+			error = true;
 		}
 	} else {
 		cout << "Error : invalid address p" << endl;
 		cout << operand1 << endl;
+		cout << "Error : invalid address b" << endl;
+		errorMessage += "**displacement error\n";
+		errorMessage += getEntrySrc(*entryToHandle);
+		error = true;
 	}
 }
 
@@ -255,4 +264,18 @@ const vector<string> DisplacementCalculator::explode(const string& s, const char
     }
     if(buff != "") v.push_back(buff);
     return v;
+}
+
+string DisplacementCalculator::getEntrySrc(IntermediateFileParser::entry entry) {
+	string result;
+	result += entry.address + " " + entry.operationCode + " ";
+	for(int i = 0;i < entry.operand.size();i++) {
+		result += entry.operand[i] + ",";
+	}
+	result.erase(result.length() - 1,1);
+	result += "\n";
+	return result;
+}
+string DisplacementCalculator::getErrorMessage() {
+	return errorMessage;
 }
