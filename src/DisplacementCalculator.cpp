@@ -78,6 +78,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			cout << 4 << endl;
 			if(entryToHandle->operand.capacity() == 0) {
 				cout << "Error : no operand or may be +RSUB";
+				entryToHandle->displacemnet = "0000000000";
 				return;
 			}
 			operand1 = entryToHandle->operand.at(0);
@@ -121,6 +122,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entryToHandle) {
 	if(entryToHandle->operand.capacity() == 0) {
 		cout << "Error : no operand or may be RSUB";
+		entryToHandle->displacemnet = "000000";
 		return 0;
 	}
 	int targetAdress = 0;
@@ -155,10 +157,6 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 }
 
 void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp,int ta) {
-	if(entryToHandle->operand.capacity() == 0) {
-		cout << "Error : no operand or may be RSUB";
-		return;
-	}
 	string operand1 = entryToHandle->operand.at(0);
 	if(addresses.count(operand1) == 0) {
 		cout << "HERE";
