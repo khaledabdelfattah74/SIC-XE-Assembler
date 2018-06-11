@@ -1,4 +1,8 @@
 #include "AddresingModifier.h"
+#include <regex>
+#include <algorithm>
+
+const regex expression ("(\\w)+(\\-|\\+)(\\w)+");
 
 AddresingModifier::AddresingModifier() {
 	// TODO Auto-generated constructor stub
@@ -11,6 +15,36 @@ AddresingModifier::~AddresingModifier() {
 
 void AddresingModifier::setVectorAddressingMode(vector<IntermediateFileParser::entry> *vectorToSet) {
 	for (auto it = vectorToSet->begin(); it != vectorToSet->end(); ++it) {
+        if (it->operationCode == "START" || it->operationCode == "CSECT") {
+            cur_sec_name = it->label;
+            ext_labels.clear();
+        }
+        if (it->operationCode == "EXTREF") {
+            string label = "";
+            for (char i = 0; i < it->operand[0].length(); i++) {
+                if (it->operand[0][i] == ',') {
+                    ext_labels.push_back(label);
+                    label = "";
+                    continue;
+                }
+                label += it->operand[0][i];
+            }
+        }
+        if (regex_match(it->operand[0], expression)) {
+            string label = "";
+            for (char i = 0; i < it->operand[0].length(); i++) {
+                if (it->operand[0][i] == '+' || it->operand[0][i] == '-') {
+                    if (find(ext_labels.begin(), ext_labels.end(), label) != ext_labels.end()) {
+                        it->need_modification_record = true;
+                        it->expression_labels.push_back(label);
+                    }
+                    label = "";
+                    continue;
+                }
+                label += it->operand[0][i];
+            }
+
+        }
 		setAddressingMode(&*it);
 	}
 }
@@ -53,5 +87,4 @@ void AddresingModifier::setAddressingMode(IntermediateFileParser::entry *entryTo
 			entryToSet->i = 1;
 		}
 	}
-	//cout<< entryToSet->getAddressingMode()<<endl;
 }

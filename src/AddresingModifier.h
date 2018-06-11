@@ -10,6 +10,8 @@ public:
 	void setVectorAddressingMode(vector<IntermediateFileParser::entry> *vectorToSet);
 private:
 	void setAddressingMode(IntermediateFileParser::entry *entryToSet);
+    string cur_sec_name;
+    vector<string> ext_labels;
 };
 
 #endif

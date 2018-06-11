@@ -10,15 +10,17 @@
 #include <sstream>
 #include <fstream>
 #include "Pass1.hpp"
-
+#include "ExpressionEvaluator.hpp"
 using namespace std;
 
 
 int main(int argc, const char * argv[]) {
+    ExpressionEvaluator e = *new ExpressionEvaluator();
+    cout << e.evaluate("1001-1000+100-100+1") << endl;
     //Validator v = *new Validator();
     //cout << v.check_vaidity("LDA", "=X'123'") << endl;
     //cout << regex_match("A,X", twoRegesters) << endl;
-    string path = "/home/sajed/CLionProjects/untitled/test.txt";
+    string path = "/Users/khaledabdelfattah/Documents/workspace/SIC/try.txt";
     Pass1 pass(path);
     cout << endl << "An intermediate file was written to the path: " << pass.outPath << endl;
 /*int main(int argc, const char * argv[]) {

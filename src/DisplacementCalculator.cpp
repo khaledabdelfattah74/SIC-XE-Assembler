@@ -61,7 +61,8 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 				operand1.erase(0,1);
 			}
-			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
+			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') &&
+               operand1.find('+') == operand1.npos) {
 				if(addresses.count(operand1) > 0) {
 					ss << hex << addresses[operand1];
 					entryToHandle->displacemnet = ss.str();

@@ -76,7 +76,7 @@ SourceCodeTable SicParser::parse(string path) {
                     entry = *new Entry("", fields[0], "", comment, false);
                     break;
                 case 2:
-                    if (opIndex == 0)
+                    if (opIndex == 0 || to_upper(fields[0]) == "EXTREF" || to_upper(fields[0]) == "EXTDEF")
                         entry = *new Entry("", fields[0], fields[1], comment, false);
                     else
                         entry = *new Entry(fields[0], fields[1], "", comment, false);

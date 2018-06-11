@@ -27,6 +27,8 @@ public:
 			int e = 0;
 			string displacemnet = "";
 			bool isAbs;
+            bool need_modification_record = false;
+            vector<string> expression_labels;
 			string getAddressingMode() {
 				string mode = to_string(n) + to_string(i)+to_string(x)+to_string(b)+to_string(p)+to_string(e);
 				return mode;

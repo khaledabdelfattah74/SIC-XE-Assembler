@@ -199,12 +199,14 @@ void Pass1::mainLoop() {
             } else if (to_upper(currentEntry.getOpCode()) == "CSECT") {
                 locctr = 0;
                 writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-                
                 section_name = to_upper(currentEntry.getLable());
-            } else if (to_upper(currentEntry.getLable()) == "EXTREF") {
+                goto Fetch;
+            } else if (to_upper(currentEntry.getOpCode()) == "EXTREF") {
                 writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-            } else if (to_upper(currentEntry.getLable()) == "EXTDEF") {
+                goto Fetch;
+            } else if (to_upper(currentEntry.getOpCode()) == "EXTDEF") {
                 writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+                goto Fetch;
             } else {
                 this->error = true;
                 writeCurrenLineToIntermediateFile(-2, locctr, currentInstructionLength, currentEntry);
@@ -226,10 +228,14 @@ void Pass1::mainLoop() {
             }
         }
         
-        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && to_upper(currentEntry.getOperand()) != "NONE" && to_upper(currentEntry.getComment()) != ".Assumption") {
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" &&
+            to_upper(currentEntry.getOpCode()) != "ORG" &&
+            to_upper(currentEntry.getOperand()) != "NONE" &&
+            to_upper(currentEntry.getComment()) != ".Assumption") {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
             lineNo++;
         }
+    Fetch:
         currentEntry = sourceCodeTable.fetchNextEntry();
     }
 
@@ -480,8 +486,7 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
             if (!symTable.found(to_upper(term))) {
                 return -2;
             }
-
-            numValue = symTable.symbolTable[to_upper(term)];
+            numValue = symTable.symbolTable[to_upper(term)].first;
         }
         switch(operations[i]) {
             case '-' :
