@@ -52,7 +52,7 @@ bool Validator::check_vaidity(string operation, string operand) {
                 return regex_match(value, regex ("(\\-)\\d+")) || regex_match(value, regex ("\\d+"));
 
             else if (operand[1] == 'X')
-                return regex_match(value, regex ("(\\d|[A-F])+"));
+                return regex_match(value, regex ("(\\d|[A-F]|[a-f])+"));
             else if (operand[1] == 'C')
                 return regex_match(value, regex ("\\w+"));
         } else

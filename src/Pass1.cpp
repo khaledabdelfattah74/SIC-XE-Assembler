@@ -256,7 +256,7 @@ int Pass1::getLengthOf(string constant) {
         return -1;
     }
     if (toupper(constant.c_str()[0]) == 'X') {
-        if (constant.length() >= 5 && (constant.length() % 2) != 0 && regex_match(constant.substr(2, constant.length() - 2), regex ("(\\d|[A-F])+"))) {
+        if (constant.length() >= 5 && (constant.length() % 2) != 0 && regex_match(constant.substr(2, constant.length() - 3), regex ("(\\d|[A-F]|[a-f])+"))) {
             return ((int) constant.length() - 3 )/ 2;
         } else {
             return -1;

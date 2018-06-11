@@ -1,7 +1,7 @@
 /*
  * Utilities.h
  *
- *  Created on: ??þ/??þ/????
+ *  Created on:
  *      Author: ecc
  */
 
