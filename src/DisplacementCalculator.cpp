@@ -110,7 +110,13 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 				}
 			} else {
 				Utilities util;
-				entryToHandle->displacemnet = util.decimalToHex(valueOfExpression(operand1));
+				int decimalValue = valueOfExpression(operand1);
+				if(decimalValue < 0) {
+					errorMessage += "**invalid expression";
+					errorMessage += getEntrySrc(*entryToHandle);
+				} else {
+					entryToHandle->displacemnet = util.decimalToHex(decimalValue);
+				}
 			}
 			break;
 		default:
@@ -151,7 +157,13 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 		}
 	} else {
 		Utilities util;
-		entryToHandle->displacemnet = util.decimalToHex(valueOfExpression(operand1));
+		int decimalValue = valueOfExpression(operand1);
+		if(decimalValue < 0) {
+			errorMessage += "**invalid expression";
+			errorMessage += getEntrySrc(*entryToHandle);
+		} else {
+			entryToHandle->displacemnet = util.decimalToHex(decimalValue);
+		}
 	}
 	return targetAdress;
 }
