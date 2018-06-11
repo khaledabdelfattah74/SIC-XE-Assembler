@@ -1,0 +1,55 @@
+Line no.	Address   	Label   		Mnemonic		Operands          	Comments
+										Op-code
+1       	000000		        		        		                 	.234567890123456789
+2       	001000		LAB2C   		START   		1000             	
+3       	001000		        		LDA     		ALPHA            	
+4       	001003		        		LDB     		#10              	
+5       	001006		        		LDX     		#0               	
+6       	001009		        		ADDR    		A,B              	
+7       	0003e8		        		STA     		SAVEW,X          	
+8       	0003eb		        		LDX     		#1               	
+9       	0003ee		        		STA     		SAVEW,X          	
+10      	0003f1		        		LDA     		=X'5f'           	
+11      	0003f4		        		LDA     		=X'df'           	
+12      	0003f7		        		LDA     		=C'8j5'          	
+13      	0003fa		        		LDA     		=W'1552'         	
+14      	0003fd		        		LDA     		=W'-152'         	
+15      	000400		        		LDA     		=W'124'          	
+16      	000403		        		LDA     		=W'-152'         	
+17      	000406		        		LDA     		=W'1624'         	
+18      	000409		        		LDA     		=W'4095'         	
+19      	000409		        		        		                 	.Format 4
+20      	00040c		        		+SUB    		#12              	
+21      	000410		        		LDX     		#0               	
+22      	000413		        		LDCH    		HEXCHAR          	
+23      	000416		        		STA     		INPUT            	
+24      	000419		LOOP    		LDCH    		STRING,X         	
+25      	00041c		        		COMP    		INPUT            	
+27      	000031		SAJED   		RESW    		NONE             	.Assumption
+28      	000801		SAJED1  		RESW    		NONE             	.Assumption
+29      	1001a8		SAJED2  		RESW    		NONE             	.Assumption
+30      	000095		SAJED3  		RESW    		NONE             	.Assumption
+31      	0003e9		SAJED4  		RESW    		NONE             	.Assumption
+32      	ffff41		SAJED5  		RESW    		NONE             	.Assumption
+33      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
+34      	000031		SAJED7  		RESW    		NONE             	.Assumption
+34      	00041f		        		JEQ     		FOUND            	
+35      	000422		        		STCH    		OUTPUT,X         	
+36      	000425		        		TIX     		#5               	
+37      	000428		        		JLT     		LOOP             	
+38      	00042b		FOUND   		J       		OUTPUT           	
+39      	00042e		ALPHA   		WORD    		2                	
+40      	000431		SAVEW   		RESW    		2                	
+41      	000437		HEXCHAR 		BYTE    		X'6145fd56'      	
+42      	00043b		INPUT   		RESB    		1                	
+43      	00043c		STRING  		BYTE    		X'F4'            	
+44      	00043d		OUTPUT  		RESB    		5                	
+45      	000442		=X'5f'  		BYTE    		X'5f'            	
+45      	000443		=X'df'  		BYTE    		X'df'            	
+45      	000444		=C'8j5' 		BYTE    		C'8j5'           	
+45      	000447		=W'1552'		WORD    		1552             	
+45      	00044a		=W'-152'		WORD    		-152             	
+45      	00044d		=W'124' 		WORD    		124              	
+45      	000450		=W'1624'		WORD    		1624             	
+45      	000453		=W'4095'		WORD    		4095             	
+45      	000456		        		END     		                 	

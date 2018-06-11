@@ -70,7 +70,7 @@ OpTable::OpTable() {
         {"+STX", 4},
         {"SUB", 3},
         {"+SUB", 4},
-        {"SUBR", 3},
+        {"SUBR", 2},
         {"TD", 3},
         {"+TD", 4},
         {"TIX", 3},

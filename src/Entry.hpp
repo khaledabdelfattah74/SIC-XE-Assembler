@@ -20,6 +20,7 @@ public:
     string getLable();
     string getOpCode();
     string getOperand();
+    void setOperand(string);
     string getComment();
     bool isCommentLine();
 private:

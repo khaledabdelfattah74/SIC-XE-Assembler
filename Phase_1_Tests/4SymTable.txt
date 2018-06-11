@@ -1,0 +1,10 @@
+
+SymTable	Address
+
+ZERO    	16ff5
+K20     	16ff2
+BUFFER  	1030
+LOOP    	1006
+STR     	100f
+STR2    	1019
+BLANK   	102f

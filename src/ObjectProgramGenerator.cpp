@@ -14,7 +14,7 @@ void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser
     output.append(generate_text_records(entries));
     output.append(generate_modification_records(entries));
     output.append(generate_end_record(entries));
-    write_string_to_file(output,"ObjectCode.txt");
+    write_string_to_file(output,"/home/sajed/CLionProjects/untitled/ObjectCode.txt");
 }
 
 string ObjectProgramGenerator::generate_text_records(vector<IntermediateFileParser::entry> entries) const {
@@ -137,6 +137,7 @@ string ObjectProgramGenerator::third_format_to_hex(IntermediateFileParser::entry
             operand.insert(0,"0");
     }
     //vector<bool> operand_binary = hex_string_to_binary(operand);
+
     string object_hex = binary_to_hex_string(entry_start_binary).substr(3,3);
     object_hex.append(operand);
     return  object_hex;

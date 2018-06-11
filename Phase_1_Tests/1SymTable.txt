@@ -1,0 +1,6 @@
+
+SymTable	Address
+
+GAMMA   	100f
+BETA    	100c
+ALPHA   	1009

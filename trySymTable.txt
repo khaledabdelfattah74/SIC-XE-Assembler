@@ -1,0 +1,17 @@
+
+SymTable	Address
+
+OUT     	106f
+STR     	1060
+HAMOKSHA	105d
++RMO    	1015
+OLOOP   	1009
+ITR     	1013
+SAD     	1000
+SWAPPING	103f
+SIZE    	106c
+ILOOP   	1030
+KHALED  	1024
+WRITE   	1054
+LOOP    	1021
+SWAP    	1045

@@ -6,6 +6,7 @@
 //  Copyright © 2018 Khaled Abdelfattah. All rights reserved.
 //
 
+
 #ifndef Pass1_hpp
 #define Pass1_hpp
 #include <stdio.h>
@@ -36,7 +37,7 @@ private:
     void printSymTable(SymTable);
     void printLitTable(LitTab litTable);
     int valueOfExpression(string, SymTable);
-    const vector<string> explode(const string&, const char&, const char&);
+    const vector<string> explode(const string&, const char&, const char&, const char&, const char&);
     bool is_number(const std::string&);
 };
 

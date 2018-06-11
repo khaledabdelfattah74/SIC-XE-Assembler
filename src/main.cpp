@@ -20,6 +20,14 @@
 
 using namespace std;
 
+
+/*int main(int argc, const char * argv[]) {
+    //Validator v = *new Validator();
+    //cout << v.check_vaidity("LDA", "=X'123'") << endl;
+    //cout << regex_match("A,X", twoRegesters) << endl;
+    string path = "/home/sajed/CLionProjects/untitled/test.txt";
+    Pass1 pass(path);
+    cout << endl << "An intermediate file was written to the path: " << pass.outPath << endl;
 /*int main(int argc, const char * argv[]) {
     Validator v = *new Validator();
     //cout << v.check_vaidity("LDA", "=X'123'") << endl;
@@ -34,6 +42,7 @@ using namespace std;
     SourceCodeTable table = parser.parse(path);
     Entry entry = *table.fetchNextEntry();
     cout << entry.getLable() << " " << entry.getOpCode() << " " << entry.getOperand() << " " << entry.getComment() << endl;*/
-  /*  return 0;
-}
-*/
+/*  return 0;
+ */
+/*}*/
+
