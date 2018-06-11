@@ -33,6 +33,18 @@ LAB2C    START   0000
 LOOP     LDCH    STRING,X
 	 lda     test
 	 lda     none
+v1	 lda     4095
+v2       lda     4096
+v3       lda     #4095
+v4       lda     #4096
+v5       lda     @4095
+v6	 lda     @4096
+.v7	 lda     -4095
+.v8       lda     -4096
+.v9       lda     #-4095
+.v10      lda     #-4096
+.v11      lda     @-4095
+.v12	 lda     @-4096
          COMP    INPUT
 	 LDA     1000
 sajed    EQU     loop-1000
@@ -44,7 +56,7 @@ b5       equ     500
 	 BAse	 1500
 	 LDA     b1
 	 nobase
-	 lda     b11
+.	 lda     b11
 	 LDA     b3
          LDA     b2
 	 resw    3500
