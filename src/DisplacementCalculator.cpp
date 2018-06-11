@@ -42,6 +42,8 @@ void DisplacementCalculator::handleDisplacement(
 			it--;
 		} else if(entryToCheck.operationCode == "NOBASE" || entryToCheck.operationCode == "nobase") {
 			canBase = false;
+			vectorToCalculate->erase(it,it+1);
+			it--;
 		} else {
 			handle(&*it);
 		}
