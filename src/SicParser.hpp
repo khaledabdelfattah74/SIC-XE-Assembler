@@ -24,6 +24,7 @@ public:
 private:
     string get_comment(vector<string> strings, int start);
     string get_quoted_operand(string);
+    string get_operand(vector<string>, int);
     string to_upper(string str);
     ;
 };

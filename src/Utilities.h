@@ -30,6 +30,9 @@ public:
 	bool is_number(const std::string& s);
 	int valueOfExpression(string expression);
 	int stringToDecimal(string str);
+
+private:
+	string to_upper(string str);
 };
 
 #endif /* SRC_UTILITIES_H_ */

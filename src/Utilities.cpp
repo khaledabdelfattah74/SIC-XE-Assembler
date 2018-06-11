@@ -67,7 +67,7 @@ string Utilities::convertExpression(string oldExpression, unordered_map<string, 
 	if (oldExpression.c_str()[0] == '-') {
 		operations[0] = "-";
 	} else {
-		operations[0] = "+";
+		operations[0] = "";
 	}
 	int counter = 1;
 	for (int i = 1; i < oldExpression.length(); i++) {
@@ -87,9 +87,13 @@ string Utilities::convertExpression(string oldExpression, unordered_map<string, 
 			newExpression+=term;
 			continue;
 		}
-		string hexaValue = addresses[term];
-		int decimalValue = hexToDecimal(hexaValue);
-		newExpression += intToString(decimalValue);
+        if (addresses.count(to_upper(term)) > 0) {
+            string hexaValue = addresses[to_upper(term)];
+            int decimalValue = hexToDecimal(hexaValue);
+            newExpression += intToString(decimalValue);
+        } else {
+		    return "error";
+		}
 
 	}
 	return newExpression;
@@ -101,7 +105,7 @@ string Utilities::convertExpression(string oldExpression, unordered_map<string, 
 	if (oldExpression.c_str()[0] == '-') {
 		operations[0] = "-";
 	} else {
-		operations[0] = "+";
+		operations[0] = "";
 	}
 	int counter = 1;
 	for (int i = 1; i < oldExpression.length(); i++) {
@@ -121,7 +125,11 @@ string Utilities::convertExpression(string oldExpression, unordered_map<string, 
 			newExpression+=term;
 			continue;
 		}
-		newExpression += intToString(addresses[term]);
+        if (addresses.count(to_upper(term)) > 0) {
+            newExpression += intToString(addresses[to_upper(term)]);
+        } else {
+		    return "error";
+		}
 	}
 	return newExpression;
 }
@@ -155,4 +163,11 @@ int Utilities::stringToDecimal(string str){
 	istringstream ss(str);
 	ss >> value;
 	return value;
+}
+
+string Utilities::to_upper(string str) {
+    string upper_case_string = "";
+    for (char c : str)
+        upper_case_string += toupper(c);
+    return upper_case_string;
 }

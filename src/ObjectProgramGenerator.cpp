@@ -77,6 +77,7 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
 
 string ObjectProgramGenerator::generate_modification_records(vector<IntermediateFileParser::entry> entries) {
     Utilities utilities;
+    string modifications;
     if(entries[0].address == "000000") {
         string modifications;
         for (int i = 0; i < entries.size(); ++i) {
@@ -100,11 +101,9 @@ string ObjectProgramGenerator::generate_modification_records(vector<Intermediate
                 modifications.append(hex_modification_address);
                 modifications.append("05\n");
             }
-        
         }
-        return modifications;
     }
-    return "";
+    return modifications;
 }
 
 
