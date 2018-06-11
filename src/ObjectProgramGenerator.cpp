@@ -69,20 +69,19 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
 
 string ObjectProgramGenerator::generate_modification_records(vector<IntermediateFileParser::entry> entries) {
     Utilities utilities;
+    string modifications;
     if(entries[0].address == "000000") {
-        string modifications;
-        for (int i = 0; i < entries.size(); ++i) {
-            if(entries[i].e) {
-                modifications.append("M");
-                int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
-                string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
-                modifications.append(hex_modification_address);
-                modifications.append("05\n");
-            }
-        }
-        return modifications;
+    	for (int i = 0; i < entries.size(); ++i) {
+    		if(entries[i].e && !entries[i].i && !entries[i].p && !entries[i].b) {
+    			modifications.append("M");
+    			int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
+    			string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
+    			modifications.append(hex_modification_address);
+    			modifications.append("05\n");
+    		}
+    	}
     }
-    return "";
+    return modifications;
 }
 
 

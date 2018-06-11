@@ -20,9 +20,26 @@
 #include <regex>
 #include "Validator.hpp"
 #include "Utilities.h"
+#include "ExpressionEvaluator.hpp"
 
 
 using namespace std;
+
+
+const string errors[11] = {
+        "Duplicate lable definition",//-1
+        "Wrong operand prefix",//-2
+        "Invalid symbol name",//-3
+        "Can not have forward reference here",//-4
+        "Invalid expression",//-5
+        "This instruction can not have lable",//-6
+        "This instruction can not have operand",//-7
+        "No END statement",//-8
+        "Invalid literal",//-9
+        "Operand format is not compatible with operation",//-10
+        "End must be at the last line"//-11
+        };
+
 Pass1::Pass1(string path) {
     this->outPath.append(path, 0, path.length() - 4);
     this->symTablePath = this->outPath;
@@ -38,6 +55,10 @@ Pass1::Pass1(string path) {
 
 int Pass1::getNumOfErrors() {
     return this->numOfErrors;
+}
+
+string Pass1::getErrorsReport() {
+    return this->errorReport;
 }
 
 void Pass1::mainLoop() {
@@ -61,11 +82,22 @@ void Pass1::mainLoop() {
 
 
     if (to_upper(currentEntry.getOpCode()) == "START") {
-        locctr = utilities.hexToDecimal(currentEntry.getOperand());
-        startingAddress = utilities.hexToDecimal(currentEntry.getOperand());
-        writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-        lineNo++;
-        currentEntry = sourceCodeTable.fetchNextEntry();
+        string operand = currentEntry.getOperand();
+        if (operand[0] == '-' || operand.size() > 4) {
+            writeCurrenLineToIntermediateFile(-10, locctr, 0, currentEntry);
+            this->error = true;
+            locctr = 0;
+            startingAddress = 0;
+            writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+            lineNo++;
+            currentEntry = sourceCodeTable.fetchNextEntry();
+        } else {
+            locctr = utilities.hexToDecimal(currentEntry.getOperand());
+            startingAddress = utilities.hexToDecimal(currentEntry.getOperand());
+            writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+            lineNo++;
+            currentEntry = sourceCodeTable.fetchNextEntry();
+        }
     } else {
         locctr = 0;
         startingAddress = 0;
@@ -102,20 +134,39 @@ void Pass1::mainLoop() {
                     this->error = true;
                 }
             } else if (to_upper(currentEntry.getOpCode()) == "WORD") {
-                currentInstructionLength = 3;
-                locctr += currentInstructionLength;
+                string operand = currentEntry.getOperand();
+                if ((operand[0] == '-' && operand.size() <=5)
+                        || operand.size() <= 4) {
+                    currentInstructionLength = 3;
+                    locctr += currentInstructionLength;
+                } else {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "RESW") {
+                string operand = currentEntry.getOperand();
                 istringstream buffer(currentEntry.getOperand());
                 int numOfWords = 0;
                 buffer >> numOfWords;
-                currentInstructionLength = 3 * numOfWords;
-                locctr += currentInstructionLength;
+                if (operand[0] == '-' || operand.size() > 4) {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else {
+                    currentInstructionLength = 3 * numOfWords;
+                    locctr += currentInstructionLength;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "RESB") {
+                string operand = currentEntry.getOperand();
                 istringstream buffer(currentEntry.getOperand());
                 int numOfBytes = 0;
                 buffer >> numOfBytes;
-                currentInstructionLength = numOfBytes;
-                locctr += currentInstructionLength;
+                if (operand[0] == '-' || operand.size() > 4) {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else {
+                    currentInstructionLength = numOfBytes;
+                    locctr += currentInstructionLength;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "BYTE") {
                 currentInstructionLength = getLengthOf(currentEntry.getOperand());
                 if (currentInstructionLength == -1) {
@@ -126,7 +177,7 @@ void Pass1::mainLoop() {
                 }
             } else if (to_upper(currentEntry.getOpCode()) == "EQU") {
                 int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
-                if (valueOfExp == -1) {
+                if (valueOfExp < 0) {
                     writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
                     this->error = true;
                 } else if (valueOfExp == -2) {
@@ -142,7 +193,7 @@ void Pass1::mainLoop() {
             } else if (to_upper(currentEntry.getOpCode()) == "ORG") {
                 if (currentEntry.getLable() == "") {
                     int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
-                    if (valueOfExp == -1) {
+                    if (valueOfExp < 0) {
                         writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
                         this->error = true;
                     } else if (valueOfExp == -2) {
@@ -158,14 +209,7 @@ void Pass1::mainLoop() {
                 }
             } else if (to_upper(currentEntry.getOpCode()) == "BASE") {
                 if (currentEntry.getLable() == "") {
-                    int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
-                    if (valueOfExp == -1) {
-                        writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
-                        this->error = true;
-                    } else {
-                        this->baseAvailable = true;
-                        this->base = valueOfExp;
-                    }
+                    this->baseAvailable = true;
                     currentInstructionLength = 0;
                 } else {
                     writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
@@ -174,7 +218,7 @@ void Pass1::mainLoop() {
             } else if (to_upper(currentEntry.getOpCode()) == "NOBASE") {
                 if (currentEntry.getLable() == "") {
                     if (currentEntry.getOperand() == "") {
-                        this->baseAvailable = true;
+                        this->baseAvailable = false;
                         this->base = 0;
                         currentInstructionLength = 0;
                     } else {
@@ -218,7 +262,7 @@ void Pass1::mainLoop() {
             }
         }
 
-        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && to_upper(currentEntry.getOperand()) != "NONE" && to_upper(currentEntry.getComment()) != ".Assumption") {
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && (to_upper(currentEntry.getOperand()) != "NONE" || to_upper(currentEntry.getComment()) != ".ASSUMPTION")) {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
             lineNo++;
         }
@@ -275,9 +319,7 @@ int Pass1::getLengthOf(string constant) {
 
 void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
                                               int lenOfCurrentInstruction, Entry currentEntry) {
-    if (lineNumber < 0) {
-        numOfErrors++;
-    }
+
     if (lineNumber == 0) {
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
@@ -285,73 +327,17 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
                    "\t\t\t\t\t\t\t\t\t\tOp-code" << endl;
         outfile.close();
         return;
-    } else if (lineNumber == -1) {
+    } else if (lineNumber < 0) {
+        numOfErrors++;
+        errorReport += "\n" + errors[(lineNumber*-1) - 1] + "\n";
+
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Duplicate lable definition***" << endl;
+        outfile << "\t\t\t\t\t\t***" << errors[(lineNumber*-1) - 1] << "***" << endl;
         outfile.close();
-        return;
-    } else if (lineNumber == -2) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Wrong operand prefix***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -3) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Invalid symbol name***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -4) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Can not have forward reference here***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -5) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Invalid expression***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -6) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***This instruction can not have lable***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -7) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***This instruction can not have operand***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -8) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***No END statement***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -9) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Invalid literal***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -10) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Operand format is not compatible with operation***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -11) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***End must be at the last line***" << endl;
-        outfile.close();
-        return;
+
     }
+
     string fixedLable = currentEntry.getLable();
     int length = (int) fixedLable.length();
     if (length < 8) {
@@ -390,6 +376,14 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
             fixedOpcode.c_str(),
             fixedOperand.c_str(),
             currentEntry.getComment().c_str());
+
+    if (lineNumber < 0) {
+        errorReport += "Error code : ";
+        errorReport += stro;
+        errorReport += "\n";
+        return;
+    }
+
     ofstream outfile;
     outfile.open(outPath, ios_base::app);
     outfile << stro << endl;
@@ -438,6 +432,17 @@ string Pass1::to_upper(string str) {
     return upper_case_string;
 }
 
+int Pass1::valueOfExpression(string expression, SymTable symTable) {
+    ExpressionEvaluator expressionEvaluator;
+    Utilities utilities;
+    string convertedExp = utilities.convertExpression(expression, symTable.symbolTable);
+    if (convertedExp == "error") {
+        return -2;
+    }
+    return expressionEvaluator.evaluate(convertedExp);
+}
+
+/*
 int Pass1::valueOfExpression(string expression, SymTable symTable) {
     vector<string> terms{explode(expression, '+', '-', '*', '/')};
     char operations[terms.size()];
@@ -493,8 +498,8 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
         i++;
     }
     return value;
-
 }
+*/
 
 bool Pass1::is_number(const std::string& s)
 {

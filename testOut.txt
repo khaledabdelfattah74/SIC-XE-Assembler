@@ -1,55 +1,105 @@
 Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 										Op-code
 1       	000000		        		        		                 	.234567890123456789
-2       	001000		LAB2C   		START   		1000             	
-3       	001000		        		LDA     		ALPHA            	
-4       	001003		        		LDB     		#10              	
-5       	001006		        		LDX     		#0               	
-6       	001009		        		ADDR    		A,B              	
-7       	0003e8		        		STA     		SAVEW,X          	
-8       	0003eb		        		LDX     		#1               	
-9       	0003ee		        		STA     		SAVEW,X          	
-10      	0003f1		        		LDA     		=X'5f'           	
-11      	0003f4		        		LDA     		=X'df'           	
-12      	0003f7		        		LDA     		=C'8j5'          	
-13      	0003fa		        		LDA     		=W'1552'         	
-14      	0003fd		        		LDA     		=W'-152'         	
-15      	000400		        		LDA     		=W'124'          	
-16      	000403		        		LDA     		=W'-152'         	
-17      	000406		        		LDA     		=W'1624'         	
-18      	000409		        		LDA     		=W'4095'         	
-19      	000409		        		        		                 	.Format 4
-20      	00040c		        		+SUB    		#12              	
-21      	000410		        		LDX     		#0               	
-22      	000413		        		LDCH    		HEXCHAR          	
-23      	000416		        		STA     		INPUT            	
-24      	000419		LOOP    		LDCH    		STRING,X         	
-25      	00041c		        		COMP    		INPUT            	
-27      	000031		SAJED   		RESW    		NONE             	.Assumption
-28      	000801		SAJED1  		RESW    		NONE             	.Assumption
-29      	1001a8		SAJED2  		RESW    		NONE             	.Assumption
-30      	000095		SAJED3  		RESW    		NONE             	.Assumption
-31      	0003e9		SAJED4  		RESW    		NONE             	.Assumption
-32      	ffff41		SAJED5  		RESW    		NONE             	.Assumption
-33      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
-34      	000031		SAJED7  		RESW    		NONE             	.Assumption
-34      	00041f		        		JEQ     		FOUND            	
-35      	000422		        		STCH    		OUTPUT,X         	
-36      	000425		        		TIX     		#5               	
-37      	000428		        		JLT     		LOOP             	
-38      	00042b		FOUND   		J       		OUTPUT           	
-39      	00042e		ALPHA   		WORD    		2                	
-40      	000431		SAVEW   		RESW    		2                	
-41      	000437		HEXCHAR 		BYTE    		X'6145fd56'      	
-42      	00043b		INPUT   		RESB    		1                	
-43      	00043c		STRING  		BYTE    		X'F4'            	
-44      	00043d		OUTPUT  		RESB    		5                	
-45      	000442		=X'5f'  		BYTE    		X'5f'            	
-45      	000443		=X'df'  		BYTE    		X'df'            	
-45      	000444		=C'8j5' 		BYTE    		C'8j5'           	
-45      	000447		=W'1552'		WORD    		1552             	
-45      	00044a		=W'-152'		WORD    		-152             	
-45      	00044d		=W'124' 		WORD    		124              	
-45      	000450		=W'1624'		WORD    		1624             	
-45      	000453		=W'4095'		WORD    		4095             	
-45      	000456		        		END     		                 	
+2       	000000		LAB2C   		START   		0000             	
+3       	000000		        		        		                 	 .        LDA     ALPHA
+4       	000000		        		LDB     		#10              	
+5       	000003		        		LDX     		#0               	
+6       	000006		        		ADDR    		A,B              	
+7       	000006		        		        		                 		. org     1000
+8       	000006		        		        		                 	  .       STA     SAVEW,X
+9       	000006		        		        		                 	   .      STA     SAVEW,X
+10      	000008		        		LDA     		=X'5f'           	
+11      	00000b		        		LDA     		=X'df'           	
+12      	00000e		        		LDA     		=C'8j5'          	
+13      	000011		        		LDA     		=W'1552'         	
+14      	000014		        		LDA     		=W'-152'         	
+15      	000017		        		LDA     		=W'124'          	
+16      	00001a		        		LDA     		=W'-152'         	
+17      	00001d		        		LDA     		=W'1624'         	
+18      	000020		        		LDA     		=W'4095'         	
+19      	000023		=X'5f'  		BYTE    		X'5f'            	
+19      	000024		=X'df'  		BYTE    		X'df'            	
+19      	000025		=C'8j5' 		BYTE    		C'8j5'           	
+19      	000028		=W'1552'		WORD    		1552             	
+19      	00002b		=W'-152'		WORD    		-152             	
+19      	00002e		=W'124' 		WORD    		124              	
+19      	000031		=W'1624'		WORD    		1624             	
+19      	000034		=W'4095'		WORD    		4095             	
+19      	000037		        		WORD    		-1000            	
+20      	00003a		        		RESW    		1                	
+21      	00003a		        		        		                 	 .       resw     -1
+22      	00003a		        		        		                 	   .     resw     9999
+23      	00003a		        		        		                 	.        resw     10000
+24      	00003d		        		BASE    		ALPHA            	
+25      	00003d		        		        		                 	.Format 4
+26      	00003d		        		+SUB    		#12              	
+27      	000041		        		LDX     		#0               	
+28      	000044		        		LDCH    		HEXCHAR          	
+29      	000047		        		STA     		INPUT            	
+30      	00004a		LOOP    		LDCH    		STRING,X         	
+31      	00004a		        		        		                 	.	 lda     test
+32      	00004a		        		        		                 	.	 lda     none
+33      	00004d		V1      		LDA     		4095             	
+34      	00004d		        		        		                 	.v2       lda     4096
+35      	000050		V3      		LDA     		#4095            	
+36      	000050		        		        		                 	.v4       lda     #4096
+37      	000053		V5      		LDA     		@4095            	
+38      	000053		        		        		                 	.v6	 lda     @4096
+39      	000053		        		        		                 	.v7	 lda     -4095
+40      	000053		        		        		                 	..v8       lda     -4096
+41      	000053		        		        		                 	.v9       lda     #-4095
+42      	000053		        		        		                 	..v10      lda     #-4096
+43      	000053		        		        		                 	.v11      lda     @-4095
+44      	000053		        		        		                 	.v12	 lda     @-4096
+45      	000056		        		COMP    		INPUT            	
+46      	000059		        		LDA     		1000             	
+						***Invalid expression***
+48      	fffc62		SAJED   		RESW    		NONE             	.Assumption
+49      	000fa0		B1      		RESW    		NONE             	.Assumption
+50      	000fa0		B11     		RESW    		NONE             	.Assumption
+51      	0003e8		B2      		RESW    		NONE             	.Assumption
+52      	0007d0		B3      		RESW    		NONE             	.Assumption
+53      	0001f4		B5      		RESW    		NONE             	.Assumption
+53      	00005c		        		BASE    		LOOP-1000        	
+						***Operand format is not compatible with operation***
+54      	00005c		        		LDA     		4000-LOOP        	
+55      	00005c		        		LDA     		LOOP-LOOP+1000   	
+56      	00005f		        		LDA     		1000             	
+57      	000062		        		LDA     		2000             	
+58      	000065		        		LDA     		500              	
+59      	000068		        		BASE    		1500             	
+60      	000068		        		LDA     		B1               	
+61      	00006b		        		NOBASE  		                 	
+62      	00006b		        		        		                 	.	 lda     b11
+63      	00006b		        		LDA     		B3               	
+64      	00006e		        		LDA     		B2               	
+65      	000071		        		RESW    		3500             	
+66      	002975		        		BASE    		4000             	
+67      	002975		        		RESW    		3000             	
+68      	004c9d		TEST    		WORD    		5                	
+69      	004c9d		        		        		                 		. LDA     b5
+71      	000432		SAJED1  		RESW    		NONE             	.Assumption
+72      	012110		SAJED2  		RESW    		NONE             	.Assumption
+73      	00000a		SAJED3  		RESW    		NONE             	.Assumption
+74      	00001a		SAJED4  		RESW    		NONE             	.Assumption
+75      	000310		SAJED5  		RESW    		NONE             	.Assumption
+						***Invalid expression***
+76      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
+						***Invalid expression***
+77      	fffc62		SAJED7  		RESW    		NONE             	.Assumption
+77      	004ca0		        		JEQ     		FOUND            	
+78      	004ca3		        		STCH    		OUTPUT,X         	
+79      	004ca6		        		TIX     		#5               	
+80      	004ca6		        		        		                 	     .    JLT     LOOP
+81      	004ca9		        		NOBASE  		                 	
+82      	004ca9		FOUND   		J       		OUTPUT           	
+83      	004cac		ALPHA   		WORD    		2                	
+84      	004caf		SAVEW   		RESW    		2                	
+85      	004cb5		HEXCHAR 		BYTE    		X'6145fd56'      	
+86      	004cb9		INPUT   		RESB    		1                	
+87      	004cba		BESO    		BYTE    		C'F4   '         	
+88      	004cbf		        		BYTE    		C'F5    '        	
+89      	004cc5		STRING  		RESW    		1                	
+90      	004cc8		OUTPUT  		RESB    		5                	
+91      	004ccd		        		END     		                 	

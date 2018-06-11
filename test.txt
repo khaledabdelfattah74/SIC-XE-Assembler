@@ -1,13 +1,13 @@
 .234567890123456789
-LAB2C    START   1000
-         LDA     ALPHA
+LAB2C    START   0000
+ .        LDA     ALPHA
          LDB     #10
          LDX     #0
          ADDR    A,B
-	 org     1000
-         STA     SAVEW,X
-         LDX     #1
-         STA     SAVEW,X
+	. org     1000
+  .       STA     SAVEW,X
+
+   .      STA     SAVEW,X
          LDA     =X'5f'
          LDA     =X'df'
          LDA     =C'8j5'
@@ -18,15 +18,58 @@ LAB2C    START   1000
          LDA     =W'-152'
          LDA     =W'1624'
          LDA     =W'4095'
-
+	ltorg
+	word     -1000
+	resw     1
+ .       resw     -1
+   .     resw     9999
+.        resw     10000
+         BAse    alpha
 .Format 4
          +SUB    #12
          LDX     #0
          LDCH    HEXCHAR
          STA     INPUT
 LOOP     LDCH    STRING,X
+.	 lda     test
+.	 lda     none
+v1	 lda     4095
+.v2       lda     4096
+v3       lda     #4095
+.v4       lda     #4096
+v5       lda     @4095
+.v6	 lda     @4096
+.v7	 lda     -4095
+..v8       lda     -4096
+.v9       lda     #-4095
+..v10      lda     #-4096
+.v11      lda     @-4095
+.v12	 lda     @-4096
          COMP    INPUT
+	 LDA     1000
 sajed    EQU     loop-1000
+b1       equ     4000
+b11      equ     4000
+b2       equ     1000
+b3       equ     2000
+b5       equ     500
+         BASE    loop-1000
+         LDA     4000-loop
+         LDA     loop-loop+1000
+         LDA     1000
+         LDA     2000
+         LDA     500
+	 BAse	 1500
+	 LDA     b1
+	 nobase
+.	 lda     b11
+	 LDA     b3
+         LDA     b2
+	 resw    3500
+	 BASE    4000
+	 resw    3000
+test     word    5
+	. LDA     b5
 sajed1   EQU     loop+1000
 sajed2   EQU     loop*1000
 sajed3   EQU     loop/7
@@ -37,13 +80,18 @@ sajed7   EQU     loop-1000
          JEQ     FOUND
          STCH    OUTPUT,X
          TIX     #5
-         JLT     LOOP
+     .    JLT     LOOP
+	 nobaSe
 FOUND    J       OUTPUT
 ALPHA    WORD    2
 SAVEW    RESW    2
 HEXCHAR  BYTE    X'6145fd56'
 INPUT    RESB    1
-STRING   BYTE    X'F4'
+beso     BYTE    C'F4   '
+         BYTE    C'F5    '
+
+
+STRING   RESW    1
 OUTPUT   RESB    5
 
          END

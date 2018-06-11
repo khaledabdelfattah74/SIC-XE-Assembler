@@ -8,6 +8,7 @@
 
 #include "Validator.hpp"
 #include <regex>
+#include "iostream"
 
 const regex twoRegisters ("(A|B|X|L|T|F|S|P),(A|B|X|L|T|F|S|P)");
 const regex oneRegister ("(A|B|X|L|T|F|S|P)");
@@ -34,6 +35,7 @@ bool Validator::check_vaidity(string operation, string operand) {
     } else if (operation == "RSUB") {
         return operand.length() == 0;
     } else if (regex_match(operand, expression)) {
+        cout << operand << regex_match(operand, notValid) << endl;
         return !regex_match(operand, notValid);
     } else {
         if (regex_match(operand, oneRegister))
