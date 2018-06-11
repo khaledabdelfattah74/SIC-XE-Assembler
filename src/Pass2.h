@@ -19,7 +19,9 @@ class Pass2 {
         Pass2();
         virtual ~Pass2();
         int excute(string);
+        string getErrorMessage();
     private:
+        string errorMessage;
         void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug);
         void debugLabelAddresses(unordered_map<string,string> addresses);
         void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug);

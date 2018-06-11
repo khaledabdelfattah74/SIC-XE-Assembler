@@ -136,10 +136,10 @@ int Pass2::excute(string outPath) {
 	cout << allEntryVector.size() << endl;
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
-	if(labelProcessor.getErrorFlag()) {
+	/*if(labelProcessor.getErrorFlag()) {
 		cout << "uncompletely assembled";
 		return 0;
-	}
+	}*/
 	debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector);
@@ -150,6 +150,7 @@ int Pass2::excute(string outPath) {
 	debugDisplacement(allEntryVector);
 	if(disCalc.getDisplacemnetError()) {
 		cout << "uncompletely assembled";
+		errorMessage = disCalc.getErrorMessage();
 		return 0;
 	}
 	//debugLabelAddresses(labelAddresses);
@@ -159,6 +160,10 @@ int Pass2::excute(string outPath) {
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
 	objGen.generate_program_code(allEntryVector);
 	return 1;
+}
+
+string Pass2::getErrorMessage() {
+	return errorMessage;
 }
 
 
