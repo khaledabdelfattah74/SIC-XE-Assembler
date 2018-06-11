@@ -11,7 +11,7 @@ LAB2C    START   1000
          LDA     =X'5f'
          LDA     =X'df'
          LDA     =C'8j5'
-	 LDT     =c' '
+
          LDA     =w'1552'
          LDA     =w'-152'
          LDA     =W'124'
@@ -44,7 +44,7 @@ SAVEW    RESW    2
 HEXCHAR  BYTE    X'6145fd56'
 INPUT    RESB    1
 STRING   BYTE    X'F4'
-OUTPUT10   RESB    5
+OUTPUT   RESB    5
 
          END
 
