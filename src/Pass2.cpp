@@ -153,9 +153,9 @@ int Pass2::excute(string outPath) {
 	//debugLabelAddresses(labelAddresses);
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);
-/*
+
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
-	objGen.generate_program_code(allEntryVector);*/
+	objGen.generate_program_code(allEntryVector);
 	return 1;
 }
 
