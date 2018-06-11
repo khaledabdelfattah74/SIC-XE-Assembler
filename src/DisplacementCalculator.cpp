@@ -94,7 +94,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 					int value;
 					iss >> value;
 					ss << hex << value;
-					if(value > 1048575) {
+					if(value > 1048575 || value < 0) {
 						error = true;
 						errorMessage += "\n**address out of range\n";
 						errorMessage += getEntrySrc(*entryToHandle);
@@ -139,7 +139,7 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 			istringstream iss(operand1);
 			int value;
 			iss >> value;
-			if(value > 4095) {
+			if(value > 4095 || value < 0) {
 				error = true;
 				errorMessage += "\n**address out of range\n";
 				errorMessage += getEntrySrc(*entryToHandle);
@@ -158,7 +158,7 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 	string operand1 = entryToHandle->operand.at(0);
 	if(addresses.count(operand1) == 0) {
 		cout << "HERE";
-		errorMessage += "**operand " + operand1 + " is undefined/n";
+		errorMessage += "**operand " + operand1 + " is undefined\n";
 		errorMessage += getEntrySrc(*entryToHandle);
 		error = true;
 	}
