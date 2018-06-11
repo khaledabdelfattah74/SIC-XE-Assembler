@@ -131,7 +131,6 @@ void Pass2::debugUtilities() {
 int Pass2::excute(string outPath) {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser(outPath);
-	cout << ".size()" << endl;
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 	cout << allEntryVector.size() << endl;
 	LabelProcessor labelProcessor = *new LabelProcessor();
