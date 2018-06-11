@@ -148,7 +148,7 @@ int Pass2::excute(string outPath) {
 	disCalc.handleDisplacement(&allEntryVector);
 	debugDisplacement(allEntryVector);
 	if(disCalc.getDisplacemnetError()) {
-		cout << "uncompletely assembled";
+		cout << "uncompletely assembled\n";
 		errorMessage = disCalc.getErrorMessage();
 		return 0;
 	}

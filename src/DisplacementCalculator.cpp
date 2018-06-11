@@ -182,7 +182,7 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 		cout << "Error : invalid address p" << endl;
 		cout << operand1 << endl;
 		cout << "Error : invalid address b" << endl;
-		errorMessage += "**displacement error\n";
+		errorMessage += "\n**displacement error\n";
 		errorMessage += getEntrySrc(*entryToHandle);
 		error = true;
 	}
@@ -273,6 +273,7 @@ string DisplacementCalculator::getEntrySrc(IntermediateFileParser::entry entry) 
 		result += entry.operand[i] + ",";
 	}
 	result.erase(result.length() - 1,1);
+	result += "\n";
 	result += "\n";
 	return result;
 }
