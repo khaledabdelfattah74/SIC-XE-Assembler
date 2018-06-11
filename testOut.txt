@@ -12,47 +12,45 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 10      	0003f1		        		LDA     		=X'5f'           	
 11      	0003f4		        		LDA     		=X'df'           	
 12      	0003f7		        		LDA     		=C'8j5'          	
-						***Invalid symbol name***
-						***Wrong operand prefix***
-13      	0003f7		LDT     		=C'     		'                	
-14      	0003fa		        		LDA     		=W'1552'         	
-15      	0003fd		        		LDA     		=W'-152'         	
-16      	000400		        		LDA     		=W'124'          	
-17      	000403		        		LDA     		=W'-152'         	
-18      	000406		        		LDA     		=W'1624'         	
-19      	000409		        		LDA     		=W'4095'         	
-20      	000409		        		        		                 	.Format 4
-21      	00040c		        		+SUB    		#12              	
-22      	000410		        		LDX     		#0               	
-23      	000413		        		LDCH    		HEXCHAR          	
-24      	000416		        		STA     		INPUT            	
-25      	000419		LOOP    		LDCH    		STRING,X         	
-26      	00041c		        		COMP    		INPUT            	
-28      	000031		SAJED   		RESW    		NONE             	.Assumption
-29      	000801		SAJED1  		RESW    		NONE             	.Assumption
-30      	1001a8		SAJED2  		RESW    		NONE             	.Assumption
-31      	000095		SAJED3  		RESW    		NONE             	.Assumption
-32      	0003e9		SAJED4  		RESW    		NONE             	.Assumption
-33      	ffff41		SAJED5  		RESW    		NONE             	.Assumption
+13      	0003fa		        		LDA     		=C'8j5'          	
+14      	0003fd		        		LDA     		=W'1552'         	
+15      	000400		        		LDA     		=W'-152'         	
+16      	000403		        		LDA     		=W'124'          	
+17      	000406		        		LDA     		=W'-152'         	
+18      	000409		        		LDA     		=W'1624'         	
+19      	00040c		        		LDA     		=W'4095'         	
+20      	00040c		        		        		                 	.Format 4
+21      	00040f		        		+SUB    		#12              	
+22      	000413		        		LDX     		#0               	
+23      	000416		        		LDCH    		HEXCHAR          	
+24      	000419		        		STA     		INPUT            	
+25      	00041c		LOOP    		LDCH    		STRING,X         	
+26      	00041f		        		COMP    		INPUT            	
+28      	000034		SAJED   		RESW    		NONE             	.Assumption
+29      	000804		SAJED1  		RESW    		NONE             	.Assumption
+30      	100d60		SAJED2  		RESW    		NONE             	.Assumption
+31      	000096		SAJED3  		RESW    		NONE             	.Assumption
+32      	0003ec		SAJED4  		RESW    		NONE             	.Assumption
+33      	ffff3e		SAJED5  		RESW    		NONE             	.Assumption
 34      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
-35      	000031		SAJED7  		RESW    		NONE             	.Assumption
-35      	00041f		        		JEQ     		FOUND            	
-36      	000422		        		STCH    		OUTPUT,X         	
-37      	000425		        		TIX     		#5               	
-38      	000428		        		JLT     		LOOP             	
-39      	00042b		FOUND   		J       		OUTPUT           	
-40      	00042e		ALPHA   		WORD    		2                	
-41      	000431		SAVEW   		RESW    		2                	
-42      	000437		HEXCHAR 		BYTE    		X'6145fd56'      	
-43      	00043b		INPUT   		RESB    		1                	
-44      	00043c		STRING  		BYTE    		X'F4'            	
-45      	00043d		OUTPUT10		RESB    		5                	
-46      	000442		=X'5f'  		BYTE    		X'5f'            	
-46      	000443		=X'df'  		BYTE    		X'df'            	
-46      	000444		=C'8j5' 		BYTE    		C'8j5'           	
-46      	000447		=W'1552'		WORD    		1552             	
-46      	00044a		=W'-152'		WORD    		-152             	
-46      	00044d		=W'124' 		WORD    		124              	
-46      	000450		=W'1624'		WORD    		1624             	
-46      	000453		=W'4095'		WORD    		4095             	
-46      	000456		        		END     		                 	
+35      	000034		SAJED7  		RESW    		NONE             	.Assumption
+35      	000422		        		JEQ     		FOUND            	
+36      	000425		        		STCH    		OUTPUT,X         	
+37      	000428		        		TIX     		#5               	
+38      	00042b		        		JLT     		LOOP             	
+39      	00042e		FOUND   		J       		OUTPUT           	
+40      	000431		ALPHA   		WORD    		2                	
+41      	000434		SAVEW   		RESW    		2                	
+42      	00043a		HEXCHAR 		BYTE    		X'6145fd56'      	
+43      	00043e		INPUT   		RESB    		1                	
+44      	00043f		STRING  		BYTE    		C'String'        	
+45      	000445		OUTPUT  		RESB    		5                	
+46      	00044a		=X'5f'  		BYTE    		X'5f'            	
+46      	00044b		=X'df'  		BYTE    		X'df'            	
+46      	00044c		=C'8j5' 		BYTE    		C'8j5'           	
+46      	00044f		=W'1552'		WORD    		1552             	
+46      	000452		=W'-152'		WORD    		-152             	
+46      	000455		=W'124' 		WORD    		124              	
+46      	000458		=W'1624'		WORD    		1624             	
+46      	00045b		=W'4095'		WORD    		4095             	
+46      	00045e		        		END               
