@@ -2,7 +2,7 @@
 #include <regex>
 #include <algorithm>
 
-const regex expression ("(\\w)+(\\-|\\+)(\\w)+");
+const regex expression ("((\\w)+(\\-|\\+|\\*|\\\\))*(\\w)+");
 
 AddresingModifier::AddresingModifier() {
 	// TODO Auto-generated constructor stub

@@ -209,10 +209,12 @@ int Pass2::excute(string outPath) {
 	//debugLabelAddresses(labelAddresses);
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);
-
+    
+    string object_code = "";
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(labelAddresses, container);
     for (ControlSection section : sections)
-        objGen.generate_program_code(section.get_enteries());
+        object_code += objGen.generate_program_code(section.get_enteries());
+    objGen.write_string_to_file(object_code, "/Users/khaledabdelfattah/Desktop/ObjectCode.txt");
 	return 1;
 }
 

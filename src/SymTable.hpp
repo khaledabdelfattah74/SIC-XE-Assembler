@@ -19,10 +19,10 @@ class SymTable {
 public:
     SymTable();
     virtual ~SymTable();
-    void insert(string, int, string);
+    void insert(string, int);
     bool found(string);
     int size();
-    unordered_map<string, pair<int, string>> symbolTable;
+    unordered_map<string, int> symbolTable;
 };
 
 #endif /* SymTable_hpp */

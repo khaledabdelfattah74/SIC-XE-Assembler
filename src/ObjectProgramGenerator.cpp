@@ -14,7 +14,7 @@ ObjectProgramGenerator::ObjectProgramGenerator(unordered_map<string,string> labe
     this->labelAddresses = labelAddresses;
 }
 
-void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries) {
+string ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries) {
     string output;
     output.append(generate_header_record(entries));
     output.append(generate_definition_record(entries));
@@ -22,7 +22,7 @@ void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser
     output.append(generate_text_records(entries));
     output.append(generate_modification_records(entries));
     output.append(generate_end_record(entries));
-    write_string_to_file(output, "/Users/khaledabdelfattah/Desktop/ObjectCode.txt");
+    return output;
 }
 
 string ObjectProgramGenerator::generate_text_records(vector<IntermediateFileParser::entry> entries) const {
@@ -349,7 +349,7 @@ string ObjectProgramGenerator::generate_header_record(vector<IntermediateFilePar
 string ObjectProgramGenerator::generate_end_record(vector<IntermediateFileParser::entry> entries) {
     string end_record;
     end_record.append("E");
-    end_record.append(entries[0].address);
+    end_record.append(entries[0].address + "\n");
     return end_record;
 }
 
@@ -359,31 +359,33 @@ void ObjectProgramGenerator::write_string_to_file(string str, string file_path) 
 }
 
 string ObjectProgramGenerator::generate_definition_record(vector<IntermediateFileParser::entry> entries) {
-    vector<string> ext_def = this->container[this->porgram_name].get_ext_def();
+    vector<string> ext_def = this->container[entries[0].label].get_ext_def();
     if (ext_def.size() == 0)
         return "";
     string define_record = "D";
     for (string label : ext_def) {
         define_record += label;
         if (label.length() < 6)
-            for (int i = 0; i <= 6; i++)
+            for (int i = (int) label.length(); i <= 6; i++)
                 define_record += " ";
         define_record += this->labelAddresses[label];
     }
+    define_record += "\n";
     return define_record;
 }
 
 string ObjectProgramGenerator::generate_referenc_recod(vector<IntermediateFileParser::entry> entries) {
-    vector<string> ext_ref = this->container[this->porgram_name].get_ext_ref();
+    vector<string> ext_ref = this->container[entries[0].label].get_ext_ref();
     if (ext_ref.size() == 0)
         return "";
     string refer_record = "R";
     for (string label : ext_ref) {
         refer_record += label;
         if (label.length() < 6)
-            for (int i = 0; i <= 6; i++)
+            for (int i = (int) label.length(); i <= 6; i++)
                 refer_record += " ";
     }
+    refer_record += "\n";
     return refer_record;
 }
 

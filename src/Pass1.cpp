@@ -115,7 +115,7 @@ void Pass1::mainLoop() {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-3, locctr, currentInstructionLength, currentEntry);
                 } else if (currentEntry.getLable().c_str()[0] < '0' || currentEntry.getLable().c_str()[0] > '9'){
-                    symTab.insert(to_upper(currentEntry.getLable()), locctr, section_name);
+                    symTab.insert(to_upper(currentEntry.getLable()), locctr);
                 } else {
                     this->error = true;
                     writeCurrenLineToIntermediateFile(-3, locctr, currentInstructionLength, currentEntry);
@@ -183,7 +183,7 @@ void Pass1::mainLoop() {
                     writeCurrenLineToIntermediateFile(-4, locctr, currentInstructionLength, currentEntry);
                     this->error = true;
                 } else {
-                    symTab.insert(to_upper(currentEntry.getLable()), valueOfExp, section_name);
+                    symTab.insert(to_upper(currentEntry.getLable()), valueOfExp);
                 }
                 currentInstructionLength = 0;
                 currentEntry = * new Entry(currentEntry.getLable(), "RESW", "NONE", ".Assumption", false);
@@ -417,8 +417,8 @@ void Pass1::printSymTable(SymTable symTable) {
                 symbolName.append(" ");
             }
         }
-       cout << symbolName << "\t" << hex << symbol.second.first << endl;
-       outfile << symbolName << "\t" << hex << symbol.second.first << endl;
+       cout << symbolName << "\t" << hex << symbol.second << endl;
+       outfile << symbolName << "\t" << hex << symbol.second << endl;
     }
     outfile.close();
 }

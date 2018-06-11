@@ -18,8 +18,8 @@ SymTable::SymTable() {
 SymTable::~SymTable() {
 }
 
-void SymTable::insert(string lable, int address, string sectionName) {
-    this->symbolTable.insert(make_pair(lable, make_pair(address, sectionName)));
+void SymTable::insert(string lable, int address) {
+    this->symbolTable.insert(make_pair(lable, address));
 }
 
 int SymTable::size() {

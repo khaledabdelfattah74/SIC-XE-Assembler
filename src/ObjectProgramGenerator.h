@@ -13,7 +13,7 @@ public:
     ObjectProgramGenerator(unordered_map<string,string> labelAddresses,
                            unordered_map<string, ControlSection>);
     
-    void generate_program_code(vector<IntermediateFileParser::entry>);
+    string generate_program_code(vector<IntermediateFileParser::entry>);
 
     string generate_modification_records(vector<IntermediateFileParser::entry> entries);
 
