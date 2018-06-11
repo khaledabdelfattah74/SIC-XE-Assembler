@@ -103,7 +103,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 					return;
 				}
 				if(addresses.count(operand1) == 0) {
-					errorMessage += "**operand " + operand1 + " is undefined/n";
+					errorMessage += "**operand " + operand1 + " is undefined\n";
 					errorMessage += getEntrySrc(*entryToHandle);
 					error = true;
 				}
