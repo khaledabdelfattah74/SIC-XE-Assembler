@@ -23,6 +23,22 @@
 
 
 using namespace std;
+
+
+const string errors[11] = {
+        "Duplicate lable definition",
+        "Wrong operand prefix",
+        "Invalid symbol name",
+        "Can not have forward reference here",
+        "Invalid expression",
+        "This instruction can not have lable",
+        "This instruction can not have operand",
+        "No END statement",
+        "Invalid literal",
+        "Operand format is not compatible with operation",
+        "End must be at the last line"
+        };
+
 Pass1::Pass1(string path) {
     this->outPath.append(path, 0, path.length() - 4);
     this->symTablePath = this->outPath;
@@ -38,6 +54,10 @@ Pass1::Pass1(string path) {
 
 int Pass1::getNumOfErrors() {
     return this->numOfErrors;
+}
+
+string Pass1::getErrorsReport() {
+    return this->errorReport;
 }
 
 void Pass1::mainLoop() {
@@ -275,9 +295,7 @@ int Pass1::getLengthOf(string constant) {
 
 void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounter,
                                               int lenOfCurrentInstruction, Entry currentEntry) {
-    if (lineNumber < 0) {
-        numOfErrors++;
-    }
+
     if (lineNumber == 0) {
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
@@ -285,73 +303,17 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
                    "\t\t\t\t\t\t\t\t\t\tOp-code" << endl;
         outfile.close();
         return;
-    } else if (lineNumber == -1) {
+    } else if (lineNumber < 0) {
+        numOfErrors++;
+        errorReport += "\n" + errors[(lineNumber*-1) - 1] + "\n";
+
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Duplicate lable definition***" << endl;
+        outfile << "\t\t\t\t\t\t***" << (lineNumber*-1) - 1 << "***" << endl;
         outfile.close();
-        return;
-    } else if (lineNumber == -2) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Wrong operand prefix***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -3) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Invalid symbol name***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -4) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Can not have forward reference here***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -5) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Invalid expression***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -6) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***This instruction can not have lable***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -7) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***This instruction can not have operand***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -8) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***No END statement***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -9) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Invalid literal***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -10) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***Operand format is not compatible with operation***" << endl;
-        outfile.close();
-        return;
-    } else if (lineNumber == -11) {
-        ofstream outfile;
-        outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***End must be at the last line***" << endl;
-        outfile.close();
-        return;
+
     }
+
     string fixedLable = currentEntry.getLable();
     int length = (int) fixedLable.length();
     if (length < 8) {
@@ -390,6 +352,14 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
             fixedOpcode.c_str(),
             fixedOperand.c_str(),
             currentEntry.getComment().c_str());
+
+    if (lineNumber < 0) {
+        errorReport += "Error code : ";
+        errorReport += stro;
+        errorReport += "\n";
+        return;
+    }
+
     ofstream outfile;
     outfile.open(outPath, ios_base::app);
     outfile << stro << endl;

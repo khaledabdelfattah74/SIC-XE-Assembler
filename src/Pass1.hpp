@@ -26,7 +26,9 @@ public:
     int programLength;
     LitTab litTab;
     int getNumOfErrors();
+    string getErrorsReport();
 private:
+    string errorReport = "";
     int numOfErrors = 0;
     bool baseAvailable = false;
     int base = 0;

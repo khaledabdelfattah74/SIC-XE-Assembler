@@ -28,6 +28,7 @@ int main(int argc, const char * argv[]) {
             cout << "Pass2 assembled unsuccessfully";
         }
    } else {
-        cout << "Pass1 assembled unsuccessfully" << " : # of errors = " << pass1.getNumOfErrors();
+        cout << "Pass1 assembled unsuccessfully" << " : # of errors = " << pass1.getNumOfErrors() << endl;
+        cout << pass1.getErrorsReport();
     }
 }
