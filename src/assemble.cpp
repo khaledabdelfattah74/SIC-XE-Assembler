@@ -15,8 +15,13 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
 
-    //Pass I
     string path = "/home/sajed/CLionProjects/untitled/test.txt";
+
+    string objectCodePath = "";
+    objectCodePath.append(path, 0, path.length() - 4);
+    objectCodePath.append("ObjectCode.txt");
+    remove(objectCodePath.c_str());
+    //Pass I
     Pass1 pass1(path);
     cout << endl << "An intermediate file was written to the path: " << pass1.outPath << endl;
 
@@ -24,7 +29,7 @@ int main(int argc, const char * argv[]) {
         cout << "Pass1 assembled successfully" << endl << endl;
         //Pass II
         Pass2 pass2;
-        int successful = pass2.excute(pass1.outPath);
+        int successful = pass2.excute(pass1.outPath, objectCodePath);
         if (!successful) {
             cout << pass2.getErrorMessage();
         }

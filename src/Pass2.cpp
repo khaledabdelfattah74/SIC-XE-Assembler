@@ -128,7 +128,7 @@ void Pass2::debugUtilities() {
 
 }
 
-int Pass2::excute(string outPath) {
+int Pass2::excute(string outPath, string objectCodePath) {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser(outPath);
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
@@ -156,7 +156,7 @@ int Pass2::excute(string outPath) {
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);
 
-	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(objectCodePath);
 	objGen.generate_program_code(allEntryVector);
 	return 1;
 }

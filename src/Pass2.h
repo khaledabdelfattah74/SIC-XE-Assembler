@@ -18,7 +18,7 @@ class Pass2 {
     public:
         Pass2();
         virtual ~Pass2();
-        int excute(string);
+        int excute(string, string);
         string getErrorMessage();
     private:
         string errorMessage;

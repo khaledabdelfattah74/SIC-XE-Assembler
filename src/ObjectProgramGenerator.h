@@ -10,6 +10,8 @@
 
 class ObjectProgramGenerator {
 public:
+    ObjectProgramGenerator(string);
+    ~ObjectProgramGenerator();
     void generate_program_code(vector<IntermediateFileParser::entry>);
 
     string generate_modification_records(vector<IntermediateFileParser::entry> entries);
@@ -37,6 +39,9 @@ public:
     string generate_end_record(vector<IntermediateFileParser::entry> entries);
 
     void write_string_to_file(string str, string file_path);
+
+private:
+    string objectCodePath;
 };
 
 

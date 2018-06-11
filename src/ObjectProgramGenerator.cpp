@@ -8,13 +8,21 @@
 
 string generateModificationRecords();
 
+ObjectProgramGenerator::ObjectProgramGenerator(string objectCodePath) {
+    this->objectCodePath = objectCodePath;
+}
+
+ObjectProgramGenerator::~ObjectProgramGenerator() {
+
+}
+
 void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries) {
     string output;
     output.append(generate_header_record(entries));
     output.append(generate_text_records(entries));
     output.append(generate_modification_records(entries));
     output.append(generate_end_record(entries));
-    write_string_to_file(output,"/home/sajed/CLionProjects/untitled/ObjectCode.txt");
+    write_string_to_file(output,objectCodePath);
 }
 
 string ObjectProgramGenerator::generate_text_records(vector<IntermediateFileParser::entry> entries) const {
