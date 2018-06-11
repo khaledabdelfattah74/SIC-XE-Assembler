@@ -1,13 +1,13 @@
 .234567890123456789
 LAB2C    START   0000
-         LDA     ALPHA
+ .        LDA     ALPHA
          LDB     #10
          LDX     #0
          ADDR    A,B
-	 org     1000
-         STA     SAVEW,X
+	. org     1000
+  .       STA     SAVEW,X
 
-         STA     SAVEW,X
+   .      STA     SAVEW,X
          LDA     =X'5f'
          LDA     =X'df'
          LDA     =C'8j5'
@@ -31,18 +31,18 @@ LAB2C    START   0000
          LDCH    HEXCHAR
          STA     INPUT
 LOOP     LDCH    STRING,X
-	 lda     test
-	 lda     none
+.	 lda     test
+.	 lda     none
 v1	 lda     4095
-v2       lda     4096
+.v2       lda     4096
 v3       lda     #4095
-v4       lda     #4096
+.v4       lda     #4096
 v5       lda     @4095
-v6	 lda     @4096
+.v6	 lda     @4096
 .v7	 lda     -4095
-.v8       lda     -4096
+..v8       lda     -4096
 .v9       lda     #-4095
-.v10      lda     #-4096
+..v10      lda     #-4096
 .v11      lda     @-4095
 .v12	 lda     @-4096
          COMP    INPUT
@@ -63,7 +63,7 @@ b5       equ     500
 	 BASE    4000
 	 resw    3000
 test     word    5
-	 LDA     b5
+	. LDA     b5
 sajed1   EQU     loop+1000
 sajed2   EQU     loop*1000
 sajed3   EQU     loop/7
@@ -74,7 +74,7 @@ sajed7   EQU     loop-1000
          JEQ     FOUND
          STCH    OUTPUT,X
          TIX     #5
-         JLT     LOOP
+     .    JLT     LOOP
 	 nobaSe
 FOUND    J       OUTPUT
 ALPHA    WORD    2

@@ -20,6 +20,7 @@
 #include <regex>
 #include "Validator.hpp"
 #include "Utilities.h"
+#include "ExpressionEvaluator.hpp"
 
 
 using namespace std;
@@ -268,7 +269,7 @@ void Pass1::mainLoop() {
             }
         }
 
-        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && (to_upper(currentEntry.getOperand()) != "NONE" || to_upper(currentEntry.getComment()) != ".Assumption")) {
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && (to_upper(currentEntry.getOperand()) != "NONE" || to_upper(currentEntry.getComment()) != ".ASSUMPTION")) {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
             lineNo++;
         }
@@ -439,6 +440,17 @@ string Pass1::to_upper(string str) {
 }
 
 int Pass1::valueOfExpression(string expression, SymTable symTable) {
+    ExpressionEvaluator expressionEvaluator;
+    Utilities utilities;
+    string convertedExp = utilities.convertExpression(expression, symTable.symbolTable);
+    if (convertedExp == "error") {
+        return -2;
+    }
+    return expressionEvaluator.evaluate(convertedExp);
+}
+
+/*
+int Pass1::valueOfExpression(string expression, SymTable symTable) {
     vector<string> terms{explode(expression, '+', '-', '*', '/')};
     char operations[terms.size()];
     if (expression.c_str()[0] == '-') {
@@ -493,8 +505,8 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
         i++;
     }
     return value;
-
 }
+*/
 
 bool Pass1::is_number(const std::string& s)
 {
