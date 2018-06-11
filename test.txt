@@ -53,6 +53,12 @@ b11      equ     4000
 b2       equ     1000
 b3       equ     2000
 b5       equ     500
+         BASE    loop-1000
+         LDA     4000-loop
+         LDA     loop-loop+1000
+         LDA     1000
+         LDA     2000
+         LDA     500
 	 BAse	 1500
 	 LDA     b1
 	 nobase

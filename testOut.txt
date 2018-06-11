@@ -54,42 +54,52 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 44      	000053		        		        		                 	.v12	 lda     @-4096
 45      	000056		        		COMP    		INPUT            	
 46      	000059		        		LDA     		1000             	
+						***Invalid expression***
 48      	fffc62		SAJED   		RESW    		NONE             	.Assumption
 49      	000fa0		B1      		RESW    		NONE             	.Assumption
 50      	000fa0		B11     		RESW    		NONE             	.Assumption
 51      	0003e8		B2      		RESW    		NONE             	.Assumption
 52      	0007d0		B3      		RESW    		NONE             	.Assumption
 53      	0001f4		B5      		RESW    		NONE             	.Assumption
-53      	00005c		        		BASE    		1500             	
-54      	00005c		        		LDA     		B1               	
-55      	00005f		        		NOBASE  		                 	
-56      	00005f		        		        		                 	.	 lda     b11
-57      	00005f		        		LDA     		B3               	
-58      	000062		        		LDA     		B2               	
-59      	000065		        		RESW    		3500             	
-60      	002969		        		BASE    		4000             	
-61      	002969		        		RESW    		3000             	
-62      	004c91		TEST    		WORD    		5                	
-63      	004c91		        		        		                 		. LDA     b5
-65      	000432		SAJED1  		RESW    		NONE             	.Assumption
-66      	012110		SAJED2  		RESW    		NONE             	.Assumption
-67      	00000a		SAJED3  		RESW    		NONE             	.Assumption
-68      	00001a		SAJED4  		RESW    		NONE             	.Assumption
-69      	000310		SAJED5  		RESW    		NONE             	.Assumption
-70      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
-71      	fffc62		SAJED7  		RESW    		NONE             	.Assumption
-71      	004c94		        		JEQ     		FOUND            	
-72      	004c97		        		STCH    		OUTPUT,X         	
-73      	004c9a		        		TIX     		#5               	
-74      	004c9a		        		        		                 	     .    JLT     LOOP
-75      	004c9d		        		NOBASE  		                 	
-76      	004c9d		FOUND   		J       		OUTPUT           	
-77      	004ca0		ALPHA   		WORD    		2                	
-78      	004ca3		SAVEW   		RESW    		2                	
-79      	004ca9		HEXCHAR 		BYTE    		X'6145fd56'      	
-80      	004cad		INPUT   		RESB    		1                	
-81      	004cae		BESO    		BYTE    		C'F4   '         	
-82      	004cb3		        		BYTE    		C'F5    '        	
-83      	004cb9		STRING  		RESW    		1                	
-84      	004cbc		OUTPUT  		RESB    		5                	
-85      	004cc1		        		END     		                 	
+53      	00005c		        		BASE    		LOOP-1000        	
+						***Operand format is not compatible with operation***
+54      	00005c		        		LDA     		4000-LOOP        	
+55      	00005c		        		LDA     		LOOP-LOOP+1000   	
+56      	00005f		        		LDA     		1000             	
+57      	000062		        		LDA     		2000             	
+58      	000065		        		LDA     		500              	
+59      	000068		        		BASE    		1500             	
+60      	000068		        		LDA     		B1               	
+61      	00006b		        		NOBASE  		                 	
+62      	00006b		        		        		                 	.	 lda     b11
+63      	00006b		        		LDA     		B3               	
+64      	00006e		        		LDA     		B2               	
+65      	000071		        		RESW    		3500             	
+66      	002975		        		BASE    		4000             	
+67      	002975		        		RESW    		3000             	
+68      	004c9d		TEST    		WORD    		5                	
+69      	004c9d		        		        		                 		. LDA     b5
+71      	000432		SAJED1  		RESW    		NONE             	.Assumption
+72      	012110		SAJED2  		RESW    		NONE             	.Assumption
+73      	00000a		SAJED3  		RESW    		NONE             	.Assumption
+74      	00001a		SAJED4  		RESW    		NONE             	.Assumption
+75      	000310		SAJED5  		RESW    		NONE             	.Assumption
+						***Invalid expression***
+76      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
+						***Invalid expression***
+77      	fffc62		SAJED7  		RESW    		NONE             	.Assumption
+77      	004ca0		        		JEQ     		FOUND            	
+78      	004ca3		        		STCH    		OUTPUT,X         	
+79      	004ca6		        		TIX     		#5               	
+80      	004ca6		        		        		                 	     .    JLT     LOOP
+81      	004ca9		        		NOBASE  		                 	
+82      	004ca9		FOUND   		J       		OUTPUT           	
+83      	004cac		ALPHA   		WORD    		2                	
+84      	004caf		SAVEW   		RESW    		2                	
+85      	004cb5		HEXCHAR 		BYTE    		X'6145fd56'      	
+86      	004cb9		INPUT   		RESB    		1                	
+87      	004cba		BESO    		BYTE    		C'F4   '         	
+88      	004cbf		        		BYTE    		C'F5    '        	
+89      	004cc5		STRING  		RESW    		1                	
+90      	004cc8		OUTPUT  		RESB    		5                	
+91      	004ccd		        		END     		                 	

@@ -8,6 +8,7 @@
 
 #include "Validator.hpp"
 #include <regex>
+#include "iostream"
 
 const regex twoRegisters ("(A|B|X|L|T|F|S|P),(A|B|X|L|T|F|S|P)");
 const regex oneRegister ("(A|B|X|L|T|F|S|P)");
@@ -15,7 +16,7 @@ const regex indexing ("(\\w)+,X");
 const regex memoryAddressing ("(#|@)*([A-Z])(\\w)*");
 const regex immediateAddressing ("(#|@)*(\\d)+");
 const regex notRegester ("(#|@)*(A|B|X|L|T|F|S|P)");
-const regex expression ("(\\w)+(\\-|\\+)(\\w)+");
+const regex expression ("(\\w)+((\\-|\\+)(\\w)+)+");
 const regex notValid ("([A-Z](\\w)*(\\+)[A-Z](\\w)*)|((\\d)+(\\-)[A-Z](\\w)*)");
 const regex literal ("(\\=)(C|W|X)\\'(\\w|\\s)+\\'");
 const regex literal2 ("(\\=)(C|W|X)\\'(\\-)(\\w|\\s)+\\'");
@@ -34,6 +35,7 @@ bool Validator::check_vaidity(string operation, string operand) {
     } else if (operation == "RSUB") {
         return operand.length() == 0;
     } else if (regex_match(operand, expression)) {
+        cout << operand << regex_match(operand, notValid) << endl;
         return !regex_match(operand, notValid);
     } else {
         if (regex_match(operand, oneRegister))

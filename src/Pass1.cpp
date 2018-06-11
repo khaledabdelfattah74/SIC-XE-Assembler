@@ -177,7 +177,7 @@ void Pass1::mainLoop() {
                 }
             } else if (to_upper(currentEntry.getOpCode()) == "EQU") {
                 int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
-                if (valueOfExp == -1) {
+                if (valueOfExp < 0) {
                     writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
                     this->error = true;
                 } else if (valueOfExp == -2) {
@@ -193,7 +193,7 @@ void Pass1::mainLoop() {
             } else if (to_upper(currentEntry.getOpCode()) == "ORG") {
                 if (currentEntry.getLable() == "") {
                     int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
-                    if (valueOfExp == -1) {
+                    if (valueOfExp < 0) {
                         writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
                         this->error = true;
                     } else if (valueOfExp == -2) {
@@ -209,14 +209,7 @@ void Pass1::mainLoop() {
                 }
             } else if (to_upper(currentEntry.getOpCode()) == "BASE") {
                 if (currentEntry.getLable() == "") {
-                    int valueOfExp = valueOfExpression(currentEntry.getOperand(), symTab);
-                    if (valueOfExp == -1) {
-                        writeCurrenLineToIntermediateFile(-5, locctr, currentInstructionLength, currentEntry);
-                        this->error = true;
-                    } else {
-                        this->baseAvailable = true;
-                        this->base = valueOfExp;
-                    }
+                    this->baseAvailable = true;
                     currentInstructionLength = 0;
                 } else {
                     writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
