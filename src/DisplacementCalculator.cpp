@@ -30,7 +30,8 @@ void DisplacementCalculator::handleDisplacement(
 					Utilities util;
 					int decimalValue = valueOfExpression(operand1);
 					if(decimalValue < 0) {
-						errorMessage += "**invalid expression";
+						error = true;
+						errorMessage += "**invalid expression\n";
 						errorMessage += getEntrySrc(*it);
 					} else {
 						base = util.decimalToHex(decimalValue);
@@ -119,6 +120,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 				Utilities util;
 				int decimalValue = valueOfExpression(operand1);
 				if(decimalValue < 0) {
+					error = true;
 					errorMessage += "**invalid expression";
 					errorMessage += getEntrySrc(*entryToHandle);
 				} else {
@@ -166,8 +168,10 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 		Utilities util;
 		int decimalValue = valueOfExpression(operand1);
 		if(decimalValue < 0) {
-			errorMessage += "**invalid expression";
+			error = true;
+			errorMessage += "**invalid expression\n";
 			errorMessage += getEntrySrc(*entryToHandle);
+			entryToHandle->displacemnet = util.decimalToHex(decimalValue);
 		} else {
 			entryToHandle->displacemnet = util.decimalToHex(decimalValue);
 		}
