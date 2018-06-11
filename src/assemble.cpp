@@ -21,11 +21,12 @@ int main(int argc, const char * argv[]) {
     cout << endl << "An intermediate file was written to the path: " << pass1.outPath << endl;
 
     if(!pass1.error) {
+        cout << "Pass1 assembled successfully" << endl << endl;
         //Pass II
         Pass2 pass2;
         int successful = pass2.excute(pass1.outPath);
         if (!successful) {
-            cout << "Pass2 assembled unsuccessfully";
+            cout << pass2.getErrorMessage();
         }
    } else {
         cout << "Pass1 assembled unsuccessfully" << " : # of errors = " << pass1.getNumOfErrors() << endl;

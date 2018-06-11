@@ -26,17 +26,17 @@ using namespace std;
 
 
 const string errors[11] = {
-        "Duplicate lable definition",
-        "Wrong operand prefix",
-        "Invalid symbol name",
-        "Can not have forward reference here",
-        "Invalid expression",
-        "This instruction can not have lable",
-        "This instruction can not have operand",
-        "No END statement",
-        "Invalid literal",
-        "Operand format is not compatible with operation",
-        "End must be at the last line"
+        "Duplicate lable definition",//-1
+        "Wrong operand prefix",//-2
+        "Invalid symbol name",//-3
+        "Can not have forward reference here",//-4
+        "Invalid expression",//-5
+        "This instruction can not have lable",//-6
+        "This instruction can not have operand",//-7
+        "No END statement",//-8
+        "Invalid literal",//-9
+        "Operand format is not compatible with operation",//-10
+        "End must be at the last line"//-11
         };
 
 Pass1::Pass1(string path) {
@@ -81,11 +81,22 @@ void Pass1::mainLoop() {
 
 
     if (to_upper(currentEntry.getOpCode()) == "START") {
-        locctr = utilities.hexToDecimal(currentEntry.getOperand());
-        startingAddress = utilities.hexToDecimal(currentEntry.getOperand());
-        writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-        lineNo++;
-        currentEntry = sourceCodeTable.fetchNextEntry();
+        string operand = currentEntry.getOperand();
+        if (operand[0] == '-' || operand.size() > 4) {
+            writeCurrenLineToIntermediateFile(-10, locctr, 0, currentEntry);
+            this->error = true;
+            locctr = 0;
+            startingAddress = 0;
+            writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+            lineNo++;
+            currentEntry = sourceCodeTable.fetchNextEntry();
+        } else {
+            locctr = utilities.hexToDecimal(currentEntry.getOperand());
+            startingAddress = utilities.hexToDecimal(currentEntry.getOperand());
+            writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+            lineNo++;
+            currentEntry = sourceCodeTable.fetchNextEntry();
+        }
     } else {
         locctr = 0;
         startingAddress = 0;
@@ -122,20 +133,39 @@ void Pass1::mainLoop() {
                     this->error = true;
                 }
             } else if (to_upper(currentEntry.getOpCode()) == "WORD") {
-                currentInstructionLength = 3;
-                locctr += currentInstructionLength;
+                string operand = currentEntry.getOperand();
+                if ((operand[0] == '-' && operand.size() <=5)
+                        || operand.size() <= 4) {
+                    currentInstructionLength = 3;
+                    locctr += currentInstructionLength;
+                } else {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "RESW") {
+                string operand = currentEntry.getOperand();
                 istringstream buffer(currentEntry.getOperand());
                 int numOfWords = 0;
                 buffer >> numOfWords;
-                currentInstructionLength = 3 * numOfWords;
-                locctr += currentInstructionLength;
+                if (operand[0] == '-' || operand.size() > 4) {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else {
+                    currentInstructionLength = 3 * numOfWords;
+                    locctr += currentInstructionLength;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "RESB") {
+                string operand = currentEntry.getOperand();
                 istringstream buffer(currentEntry.getOperand());
                 int numOfBytes = 0;
                 buffer >> numOfBytes;
-                currentInstructionLength = numOfBytes;
-                locctr += currentInstructionLength;
+                if (operand[0] == '-' || operand.size() > 4) {
+                    writeCurrenLineToIntermediateFile(-10, locctr, currentInstructionLength, currentEntry);
+                    this->error = true;
+                } else {
+                    currentInstructionLength = numOfBytes;
+                    locctr += currentInstructionLength;
+                }
             } else if (to_upper(currentEntry.getOpCode()) == "BYTE") {
                 currentInstructionLength = getLengthOf(currentEntry.getOperand());
                 if (currentInstructionLength == -1) {
@@ -238,7 +268,7 @@ void Pass1::mainLoop() {
             }
         }
 
-        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && to_upper(currentEntry.getOperand()) != "NONE" && to_upper(currentEntry.getComment()) != ".Assumption") {
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && (to_upper(currentEntry.getOperand()) != "NONE" || to_upper(currentEntry.getComment()) != ".Assumption")) {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
             lineNo++;
         }
@@ -309,7 +339,7 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
 
         ofstream outfile;
         outfile.open(outPath, ios_base::app);
-        outfile << "\t\t\t\t\t\t***" << (lineNumber*-1) - 1 << "***" << endl;
+        outfile << "\t\t\t\t\t\t***" << errors[(lineNumber*-1) - 1] << "***" << endl;
         outfile.close();
 
     }

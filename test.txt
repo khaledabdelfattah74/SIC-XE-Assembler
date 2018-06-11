@@ -1,23 +1,29 @@
 .234567890123456789
-LAB2C    START   1000
+LAB2C    START   0000
          LDA     ALPHA
          LDB     #10
          LDX     #0
          ADDR    A,B
 	 org     1000
          STA     SAVEW,X
-         LDX     
+
          STA     SAVEW,X
          LDA     =X'5f'
-         LDA     =X'df3'
+         LDA     =X'df'
          LDA     =C'8j5'
 
          LDA     =w'1552'
          LDA     =w'-152'
          LDA     =W'124'
-         LDA     =W'-15s2'
+         LDA     =W'-152'
          LDA     =W'1624'
          LDA     =W'4095'
+	ltorg
+	word     -1000
+	resw     1
+ .       resw     -1
+   .     resw     9999
+.        resw     10000
          BAse    alpha
 .Format 4
          +SUB    #12
@@ -25,20 +31,26 @@ LAB2C    START   1000
          LDCH    HEXCHAR
          STA     INPUT
 LOOP     LDCH    STRING,X
-loop     lda     
+	 lda     test
+	 lda     none
          COMP    INPUT
 	 LDA     1000
 sajed    EQU     loop-1000
 b1       equ     4000
+b11      equ     4000
 b2       equ     1000
 b3       equ     2000
 b5       equ     500
 	 BAse	 1500
 	 LDA     b1
+	 nobase
+	 lda     b11
 	 LDA     b3
          LDA     b2
-
+	 resw    3500
 	 BASE    4000
+	 resw    3000
+test     word    5
 	 LDA     b5
 sajed1   EQU     loop+1000
 sajed2   EQU     loop*1000
@@ -64,6 +76,5 @@ beso     BYTE    C'F4   '
 STRING   RESW    1
 OUTPUT   RESB    5
 
-  saf     END
-sta   5
+         END
 
