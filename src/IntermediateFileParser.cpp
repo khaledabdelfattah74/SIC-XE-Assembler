@@ -107,9 +107,13 @@ void IntermediateFileParser::removeSpaces(string *str) {
 	if(str->at(0) == ' ')
 		return;
 	//cout << *str << endl;
+	bool comment = false;
 	for(auto it = str->begin();it != str->end();++it) {
 		//cout << *it << endl;
-		if(*it == ' ') {
+		if(*it == ' '|| *it == '.'|| comment) {
+			if(*it == '.') {
+				comment = true;
+			}
 			str->erase(it,it+1);
 			it--;
 		}
