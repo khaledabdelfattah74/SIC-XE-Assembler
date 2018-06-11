@@ -18,38 +18,43 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 16      	000403		        		LDA     		=W'-152'         	
 17      	000406		        		LDA     		=W'1624'         	
 18      	000409		        		LDA     		=W'4095'         	
-19      	000409		        		        		                 	.Format 4
-20      	00040c		        		+SUB    		#12              	
-21      	000410		        		LDX     		#0               	
-22      	000413		        		LDCH    		HEXCHAR          	
-23      	000416		        		STA     		INPUT            	
-24      	000419		LOOP    		LDCH    		STRING,X         	
-25      	00041c		        		COMP    		INPUT            	
-27      	000031		SAJED   		RESW    		NONE             	.Assumption
-28      	000801		SAJED1  		RESW    		NONE             	.Assumption
-29      	1001a8		SAJED2  		RESW    		NONE             	.Assumption
-30      	000095		SAJED3  		RESW    		NONE             	.Assumption
-31      	0003e9		SAJED4  		RESW    		NONE             	.Assumption
-32      	ffff41		SAJED5  		RESW    		NONE             	.Assumption
-33      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
-34      	000031		SAJED7  		RESW    		NONE             	.Assumption
-34      	00041f		        		JEQ     		FOUND            	
-35      	000422		        		STCH    		OUTPUT,X         	
-36      	000425		        		TIX     		#5               	
-37      	000428		        		JLT     		LOOP             	
-38      	00042b		FOUND   		J       		OUTPUT           	
-39      	00042e		ALPHA   		WORD    		2                	
-40      	000431		SAVEW   		RESW    		2                	
-41      	000437		HEXCHAR 		BYTE    		X'6145fd56'      	
-42      	00043b		INPUT   		RESB    		1                	
-43      	00043c		STRING  		BYTE    		X'F4'            	
-44      	00043d		OUTPUT  		RESB    		5                	
-45      	000442		=X'5f'  		BYTE    		X'5f'            	
-45      	000443		=X'df'  		BYTE    		X'df'            	
-45      	000444		=C'8j5' 		BYTE    		C'8j5'           	
-45      	000447		=W'1552'		WORD    		1552             	
-45      	00044a		=W'-152'		WORD    		-152             	
-45      	00044d		=W'124' 		WORD    		124              	
-45      	000450		=W'1624'		WORD    		1624             	
-45      	000453		=W'4095'		WORD    		4095             	
-45      	000456		        		END     		                 	
+19      	00040c		        		BASE    		ALPHA            	
+20      	00040c		        		        		                 	.Format 4
+21      	00040c		        		+SUB    		#12              	
+22      	000410		        		LDX     		#0               	
+23      	000413		        		LDCH    		HEXCHAR          	
+24      	000416		        		STA     		INPUT            	
+25      	000419		LOOP    		LDCH    		STRING,X         	
+26      	00041c		        		COMP    		INPUT            	
+28      	000031		SAJED   		RESW    		NONE             	.Assumption
+28      	00041f		        		BASE    		1500             	
+30      	000801		SAJED1  		RESW    		NONE             	.Assumption
+31      	1001a8		SAJED2  		RESW    		NONE             	.Assumption
+32      	000095		SAJED3  		RESW    		NONE             	.Assumption
+33      	0003e9		SAJED4  		RESW    		NONE             	.Assumption
+34      	ffff41		SAJED5  		RESW    		NONE             	.Assumption
+35      	fffc18		SAJED6  		RESW    		NONE             	.Assumption
+36      	000031		SAJED7  		RESW    		NONE             	.Assumption
+36      	00041f		        		JEQ     		FOUND            	
+37      	000422		        		STCH    		OUTPUT,X         	
+38      	000425		        		TIX     		#5               	
+39      	000428		        		JLT     		LOOP             	
+40      	00042b		        		NOBASE  		                 	
+41      	00042b		FOUND   		J       		OUTPUT           	
+42      	00042e		ALPHA   		WORD    		2                	
+43      	000431		SAVEW   		RESW    		2                	
+44      	000437		HEXCHAR 		BYTE    		X'6145fd56'      	
+45      	00043b		INPUT   		RESB    		1                	
+46      	00043c		BESO    		BYTE    		C'F4   '         	
+47      	000441		        		BYTE    		C'F5    '        	
+48      	000447		STRING  		RESW    		1                	
+49      	00044a		OUTPUT  		RESB    		5                	
+50      	00044f		=X'5f'  		BYTE    		X'5f'            	
+50      	000450		=X'df'  		BYTE    		X'df'            	
+50      	000451		=C'8j5' 		BYTE    		C'8j5'           	
+50      	000454		=W'1552'		WORD    		1552             	
+50      	000457		=W'-152'		WORD    		-152             	
+50      	00045a		=W'124' 		WORD    		124              	
+50      	00045d		=W'1624'		WORD    		1624             	
+50      	000460		=W'4095'		WORD    		4095             	
+50      	000463		        		END     		                 	

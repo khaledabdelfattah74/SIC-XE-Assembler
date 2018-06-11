@@ -18,7 +18,7 @@ LAB2C    START   1000
          LDA     =W'-152'
          LDA     =W'1624'
          LDA     =W'4095'
-
+         BAse    alpha
 .Format 4
          +SUB    #12
          LDX     #0
@@ -27,6 +27,7 @@ LAB2C    START   1000
 LOOP     LDCH    STRING,X
          COMP    INPUT
 sajed    EQU     loop-1000
+	 BAse	 1500
 sajed1   EQU     loop+1000
 sajed2   EQU     loop*1000
 sajed3   EQU     loop/7
@@ -38,12 +39,17 @@ sajed7   EQU     loop-1000
          STCH    OUTPUT,X
          TIX     #5
          JLT     LOOP
+	 nobaSe
 FOUND    J       OUTPUT
 ALPHA    WORD    2
 SAVEW    RESW    2
 HEXCHAR  BYTE    X'6145fd56'
 INPUT    RESB    1
-STRING   BYTE    X'F4'
+beso     BYTE    C'F4   '
+         BYTE    C'F5    '
+
+
+STRING   RESW    1
 OUTPUT   RESB    5
 
          END

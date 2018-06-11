@@ -83,18 +83,25 @@ SourceCodeTable SicParser::parse(string path) {
                         entry = *new Entry(fields[0], fields[1], "", comment, false);
                     break;
                 case 3:
-                    if (opIndex == 0)
-
-                        entry = *new Entry("", fields[0], get_quoted_operand(line), comment, false);
-                    else
+                    if (opIndex == 0) {
+                        string operand;
+                        if (fields[1][1] == '\'' || fields[1][2] == '\'') {
+                            operand = get_quoted_operand(line);
+                        } else {
+                            operand = get_operand(fields, flag);
+                        }
+                        entry = *new Entry("", fields[0], operand, comment, false);
+                    } else
                         entry = *new Entry(fields[0], fields[1], fields[2], comment, false);
                     break;
                 default:
                     // Error
-                    string operand = "";
-                    for (int i = 2; i < flag; i ++)
-                        operand += fields[i] + " ";
-                    operand = operand.substr(0, operand.length() - 1);
+                    string operand;
+                    if (fields[2][1] == '\'' || fields[2][2] == '\'') {
+                        operand = get_quoted_operand(line);
+                    } else {
+                        operand = get_operand(fields, flag);
+                    }
                     entry = *new Entry(fields[0], fields[1], operand, comment, false);
                     break;
             }
@@ -123,9 +130,13 @@ string SicParser::get_quoted_operand(string line) {
     string operand = "";
     while(i < line.size()) {
         if (line[i] == '\'') {
-            operand.append(line.substr(i - 1, 2));
+            if (line[i-2] == '=') {
+                operand.append(line.substr(i - 2, 3));
+            } else {
+                operand.append(line.substr(i - 1, 2));
+            }
             i++;
-            while(i < line.size() || line[i] == '\'') {
+            while(i < line.size() || line[i] == '\'' || line[i] == '.') {
                 operand.append(line.substr(i,1));
                 i++;
             }
@@ -135,5 +146,13 @@ string SicParser::get_quoted_operand(string line) {
         }
         i++;
     }
+    return operand;
+}
+
+string SicParser::get_operand(vector<string> fields, int flag) {
+    string operand = "";
+    for (int i = flag - 2; i < flag; i++)
+        operand += fields[i] + " ";
+    operand = operand.substr(0, operand.length() - 1);
     return operand;
 }

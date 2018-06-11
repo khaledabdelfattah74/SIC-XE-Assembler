@@ -1,7 +1,8 @@
 
 SymTable	Address
 
-STRING  	43c
+STRING  	447
+BESO    	43c
 HEXCHAR 	437
 SAVEW   	431
 SAJED2  	1001a8
@@ -14,6 +15,6 @@ SAJED7  	31
 ALPHA   	42e
 SAJED4  	3e9
 SAJED6  	fffffc18
-OUTPUT  	43d
+OUTPUT  	44a
 SAJED5  	ffffff41
 FOUND   	42b

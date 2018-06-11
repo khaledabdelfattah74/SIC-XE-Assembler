@@ -174,7 +174,7 @@ void Pass1::mainLoop() {
             } else if (to_upper(currentEntry.getOpCode()) == "NOBASE") {
                 if (currentEntry.getLable() == "") {
                     if (currentEntry.getOperand() == "") {
-                        this->baseAvailable = true;
+                        this->baseAvailable = false;
                         this->base = 0;
                         currentInstructionLength = 0;
                     } else {
