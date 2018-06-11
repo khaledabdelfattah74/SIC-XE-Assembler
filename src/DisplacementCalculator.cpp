@@ -123,7 +123,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 				int decimalValue = valueOfExpression(operand1);
 				if(decimalValue < 0) {
 					error = true;
-					errorMessage += "**invalid expression";
+					errorMessage += "\n**invalid expression\n";
 					errorMessage += getEntrySrc(*entryToHandle);
 				} else {
 					entryToHandle->displacemnet = util.decimalToHex(decimalValue);
