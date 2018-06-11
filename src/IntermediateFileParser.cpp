@@ -131,6 +131,7 @@ string IntermediateFileParser::getLiteral(string *str) {
 			break;
 		}
 	}
-	str->erase(0,len+2);
+
+	str->erase(0,max(len,8)+2);
 	return result;
 }
