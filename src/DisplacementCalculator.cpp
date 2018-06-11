@@ -13,7 +13,30 @@ void DisplacementCalculator::handleDisplacement(
 		vector<IntermediateFileParser::entry> *vectorToCalculate) {
 	for (auto it = vectorToCalculate->begin(); it != vectorToCalculate->end();
 			++it) {
-		handle(&*it);
+		IntermediateFileParser::entry entryToCheck = *it;
+		if(entryToCheck.operationCode == "BASE" || entryToCheck.operationCode == "base"){
+			canBase = true;
+			string operand1 = entryToCheck.operand[0];
+			if(operand1[0] == '#' || operand1[0] == '@') {
+				operand1.erase(0,1);
+			}
+			if(operand1[0] == '*'){
+				base = entryToCheck.address;
+			} else {
+				if(is_number(operand1)) {
+					Utilities util;
+					base = util.decimalToHex(util.stringToDecimal(operand1));
+				}else{
+					base = addresses[operand1];
+				}
+			}
+			vectorToCalculate->erase(it,it+1);
+			it--;
+		} else if(entryToCheck.operationCode == "NOBASE" || entryToCheck.operationCode == "nobase") {
+			canBase = false;
+		} else {
+			handle(&*it);
+		}
 	}
 }
 

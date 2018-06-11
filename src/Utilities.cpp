@@ -149,3 +149,10 @@ bool Utilities::is_number(const std::string& s) {
 		++it;
 	return !s.empty() && it == s.end();
 }
+
+int Utilities::stringToDecimal(string str){
+	int value;
+	istringstream ss(str);
+	ss >> value;
+	return value;
+}
