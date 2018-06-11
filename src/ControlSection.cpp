@@ -8,12 +8,8 @@
 
 #include "ControlSection.hpp"
 
-ControlSection::ControlSection(string sec_name, vector<IntermediateFileParser::entry> entries,
-                               vector<string> ext_ref, vector<string> ext_def) {
-    this->sec_name = sec_name;
-    this->entries = entries;
-    this->ext_ref = ext_ref;
-    this->ext_def = ext_def;
+ControlSection::ControlSection() {
+   
 }
 
 string ControlSection::get_sec_name() {

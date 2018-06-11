@@ -15,7 +15,6 @@
 #include "Utilities.h"
 #include "ObjectProgramGenerator.h"
 #include "Pass2.h"
-#include "SectionsContainer.hpp"
 
 using namespace std;
 
@@ -139,7 +138,11 @@ vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry>
             sec_name = entry.label;
         }
         if (entry.operationCode == "CSECT") {
-            ControlSection section = *new ControlSection(sec_name, sec_entries, ext_ref, ext_def);
+            ControlSection section = *new ControlSection();
+            section.sec_name = sec_name;
+            section.entries = sec_entries;
+            section.ext_ref = ext_ref;
+            section.ext_def = ext_def;
             sections.push_back(section);
             sec_name = entry.label;
             sec_entries.clear();
@@ -147,14 +150,20 @@ vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry>
             ext_ref.clear();
         }
         if (entry.operationCode == "EXTREF") {
-            ext_ref.insert(ext_ref.end(), entry.operand.begin(), entry.operand.end());
+            //ext_ref.insert(ext_ref.end(), entry.operand.begin(), entry.operand.end());
+            ext_ref = entry.operand;
         }
         if (entry.operationCode == "EXTDEF") {
-            ext_ref.insert(ext_def.end(), entry.operand.begin(), entry.operand.end());
+            //ext_ref.insert(ext_def.end(), entry.operand.begin(), entry.operand.end());
+            ext_def = entry.operand;
         }
         sec_entries.push_back(entry);
         if (entry.operationCode == "END") {
-            ControlSection section = *new ControlSection(sec_name, sec_entries, ext_ref, ext_def);
+            ControlSection section = *new ControlSection();
+            section.sec_name = sec_name;
+            section.entries = sec_entries;
+            section.ext_ref = ext_ref;
+            section.ext_def = ext_def;
             sections.push_back(section);
             sec_name = entry.label;
             sec_entries.clear();
@@ -171,9 +180,10 @@ int Pass2::excute(string outPath) {
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 
     vector<ControlSection> sections  = get_sections(allEntryVector);
-    SectionsContainer container = SectionsContainer::get_instance();
+    //SectionsContainer container = SectionsContainer::get_instance();
+    unordered_map<string, ControlSection> container;
     for (ControlSection c : sections)
-        container.insert(c.get_sec_name(), c);
+        container[c.sec_name] = c;
     
     cout << allEntryVector.size() << endl;
 	LabelProcessor labelProcessor = *new LabelProcessor();
@@ -184,7 +194,7 @@ int Pass2::excute(string outPath) {
 	}*/
 	debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
-	addressModifier.setVectorAddressingMode(&allEntryVector);
+	addressModifier.setVectorAddressingMode(&allEntryVector, container);
     
     
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
@@ -200,9 +210,9 @@ int Pass2::excute(string outPath) {
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);
 
-	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
-    for (ControlSection sections : sections)
-        objGen.generate_program_code(sections.get_enteries(), labelAddresses);
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(labelAddresses, container);
+    for (ControlSection section : sections)
+        objGen.generate_program_code(section.get_enteries());
 	return 1;
 }
 

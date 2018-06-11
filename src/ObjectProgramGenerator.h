@@ -5,13 +5,15 @@
 #ifndef SIC_XE_ASSEMBLER_OBJECTCODEGENERATOR_H
 #define SIC_XE_ASSEMBLER_OBJECTCODEGENERATOR_H
 
-
+#include "ControlSection.hpp"
 #include "IntermediateFileParser.hpp"
-#include "SectionsContainer.hpp"
+#include <unordered_map>
 class ObjectProgramGenerator {
 public:
-    ObjectProgramGenerator();
-    void generate_program_code(vector<IntermediateFileParser::entry>, unordered_map<string,string> labelAddresses);
+    ObjectProgramGenerator(unordered_map<string,string> labelAddresses,
+                           unordered_map<string, ControlSection>);
+    
+    void generate_program_code(vector<IntermediateFileParser::entry>);
 
     string generate_modification_records(vector<IntermediateFileParser::entry> entries);
 
@@ -43,7 +45,7 @@ public:
 
     void write_string_to_file(string str, string file_path);
 private:
-    SectionsContainer container;
+    unordered_map<string, ControlSection> container;
     string porgram_name;
     unordered_map<string,string> labelAddresses;
 };

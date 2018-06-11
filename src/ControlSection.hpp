@@ -17,16 +17,16 @@
 using namespace std;
 class ControlSection {
 public:
-    ControlSection(string sec_name, vector<IntermediateFileParser::entry>,
-                   vector<string> ext_ref, vector<string> ext_def);
+    ControlSection();
     string get_sec_name();
     vector<IntermediateFileParser::entry> get_enteries();
     vector<string> get_ext_ref();
     vector<string> get_ext_def();
-private:
     string sec_name;
     vector<IntermediateFileParser::entry> entries;
     vector<string> ext_ref;
     vector<string> ext_def;
+private:
+    
 };
 #endif /* ControlSection_hpp */

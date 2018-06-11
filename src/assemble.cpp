@@ -16,7 +16,7 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 
     //Pass I
-    string path = "/home/sajed/CLionProjects/untitled/test.txt";
+    string path = "/Users/khaledabdelfattah/Desktop/try2.txt";
     Pass1 pass1(path);
     cout << endl << "An intermediate file was written to the path: " << pass1.outPath << endl;
 

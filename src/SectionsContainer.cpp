@@ -9,7 +9,7 @@
 #include "SectionsContainer.hpp"
 
 SectionsContainer SectionsContainer::get_instance() {
-    if (this->container == nullptr)
+    if (!container)
         container = new SectionsContainer();
     return *container;
 }

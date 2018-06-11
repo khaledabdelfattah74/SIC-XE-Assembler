@@ -8,10 +8,13 @@
 
 string generateModificationRecords();
 
-void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries,
-                                                   unordered_map<string,string> labelAddresses) {
-    this->container = SectionsContainer::get_instance();
+ObjectProgramGenerator::ObjectProgramGenerator(unordered_map<string,string> labelAddresses,
+                                               unordered_map<string, ControlSection> container) {
+    this->container = container;
     this->labelAddresses = labelAddresses;
+}
+
+void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries) {
     string output;
     output.append(generate_header_record(entries));
     output.append(generate_definition_record(entries));
@@ -19,7 +22,7 @@ void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser
     output.append(generate_text_records(entries));
     output.append(generate_modification_records(entries));
     output.append(generate_end_record(entries));
-    write_string_to_file(output,"../ObjectCode.txt");
+    write_string_to_file(output, "/Users/khaledabdelfattah/Desktop/ObjectCode.txt");
 }
 
 string ObjectProgramGenerator::generate_text_records(vector<IntermediateFileParser::entry> entries) const {
@@ -90,8 +93,7 @@ string ObjectProgramGenerator::generate_modification_records(vector<Intermediate
                     modifications.append("+");
                     modifications.append(label + "\n");
                 }
-            }
-            if(entries[i].e) {
+            } else if(entries[i].e) {
                 modifications.append("M");
                 int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
                 string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
@@ -358,7 +360,7 @@ void ObjectProgramGenerator::write_string_to_file(string str, string file_path) 
 }
 
 string ObjectProgramGenerator::generate_definition_record(vector<IntermediateFileParser::entry> entries) {
-    vector<string> ext_def = this->container.get_section(this->porgram_name).get_ext_def();
+    vector<string> ext_def = this->container[this->porgram_name].get_ext_def();
     if (ext_def.size() == 0)
         return "";
     string define_record = "D";
@@ -373,7 +375,7 @@ string ObjectProgramGenerator::generate_definition_record(vector<IntermediateFil
 }
 
 string ObjectProgramGenerator::generate_referenc_recod(vector<IntermediateFileParser::entry> entries) {
-    vector<string> ext_ref = this->container.get_section(this->porgram_name).get_ext_ref();
+    vector<string> ext_ref = this->container[this->porgram_name].get_ext_ref();
     if (ext_ref.size() == 0)
         return "";
     string refer_record = "R";

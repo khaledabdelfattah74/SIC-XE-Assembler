@@ -15,7 +15,7 @@ const regex indexing ("(\\w)+,X");
 const regex memoryAddressing ("(#|@)*([A-Z])(\\w)*");
 const regex immediateAddressing ("(#|@)*(\\d)+");
 const regex notRegester ("(#|@)*(A|B|X|L|T|F|S|P)");
-const regex expression ("(\\w)+(\\-|\\+)(\\w)+");
+const regex expression ("((\\w)+(\\-|\\+|\\*|\\\\))*(\\w)+");
 const regex notValid ("([A-Z](\\w)*(\\+)[A-Z](\\w)*)|((\\d)+(\\-)[A-Z](\\w)*)");
 const regex literal ("(\\=)(C|W|X)\\'(\\w|\\s)+\\'");
 const regex literal2 ("(\\=)(C|W|X)\\'(\\-)(\\w|\\s)+\\'");

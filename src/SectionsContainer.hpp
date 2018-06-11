@@ -23,7 +23,7 @@ public:
     ControlSection get_section(string sec_name);
 private:
     SectionsContainer();
-    SectionsContainer *container = nullptr;
+    static SectionsContainer *container;
     unordered_map<string, ControlSection> sections;
 };
 #endif /* SectionsContainer_hpp */

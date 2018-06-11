@@ -63,7 +63,7 @@ string Utilities::intToString(int decimal) {
 }
 string Utilities::convertExpression(string oldExpression, unordered_map<string, string> addresses) {
 	vector<string> terms { explode(oldExpression, '+', '-', '*', '/') };
-	string operations[terms.size()];
+	string operations[100];
 	if (oldExpression.c_str()[0] == '-') {
 		operations[0] = "-";
 	} else {
@@ -97,7 +97,7 @@ string Utilities::convertExpression(string oldExpression, unordered_map<string, 
 
 string Utilities::convertExpression(string oldExpression, unordered_map<string, int> addresses) {
 	vector<string> terms { explode(oldExpression, '+', '-', '*', '/') };
-	string operations[terms.size()];
+	string operations[100];
 	if (oldExpression.c_str()[0] == '-') {
 		operations[0] = "-";
 	} else {

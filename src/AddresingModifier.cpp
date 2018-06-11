@@ -1,7 +1,6 @@
 #include "AddresingModifier.h"
 #include <regex>
 #include <algorithm>
-#include "SectionsContainer.hpp"
 
 const regex expression ("(\\w)+(\\-|\\+)(\\w)+");
 
@@ -14,13 +13,13 @@ AddresingModifier::~AddresingModifier() {
 	// TODO Auto-generated destructor stub
 }
 
-void AddresingModifier::setVectorAddressingMode(vector<IntermediateFileParser::entry> *vectorToSet) {
-    SectionsContainer c = SectionsContainer::get_instance();
+void AddresingModifier::setVectorAddressingMode(vector<IntermediateFileParser::entry> *vectorToSet,
+                                                unordered_map<string, ControlSection> container) {
     vector<string> ext_labels;
 	for (auto it = vectorToSet->begin(); it != vectorToSet->end(); ++it) {
         if (it->operationCode == "START" || it->operationCode == "CSECT") {
             cur_sec_name = it->label;
-            ext_labels = c.get_section(cur_sec_name).get_ext_ref();
+            ext_labels = container[cur_sec_name].get_ext_ref();
         }
         if (regex_match(it->operand[0], expression)) {
             string label = "";
