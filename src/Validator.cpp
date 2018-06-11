@@ -35,7 +35,6 @@ bool Validator::check_vaidity(string operation, string operand) {
     } else if (operation == "RSUB") {
         return operand.length() == 0;
     } else if (regex_match(operand, expression)) {
-        std::cout << operand;
         return (!regex_match(operand, notValid)) || operation == "WORD";
     } else {
         if (regex_match(operand, oneRegister))

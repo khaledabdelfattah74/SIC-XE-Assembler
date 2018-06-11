@@ -27,6 +27,15 @@ LAB2C    START   0000
          BAse    alpha
 .Format 4
          +SUB    #12
+	 +sub    12
+ 	 +sub    loop
+ 	 +sub    #loop
+ 	 +sub    @loop
+ 	 +sub    @loop
+ 	 +sub    @loop-500
+ 	 +sub    #loop-500
+ 	 +sub    loop-500
+
          LDX     #0
          LDCH    HEXCHAR
          STA     INPUT
@@ -47,16 +56,15 @@ v5       lda     @4095
 .v12	 lda     @-4096
          COMP    INPUT
 	 LDA     1000
-<<<<<<< HEAD
+
 .sajed    EQU     loop-1000
-=======
->>>>>>> 0d365813ef9d3ddb07e7e9e47943afc3c81145f4
+
 b1       equ     4000
 b11      equ     4000
 b2       equ     1000
 b3       equ     2000
 b5       equ     500
-         BASE    loop-1000
+    .     BASE    loop-1000
          LDA     loop-loop+1000
          LDA     1000
          LDA     2000
@@ -73,13 +81,11 @@ b5       equ     500
 test     word    5
 	. LDA     b5
 sajed1   LDA     loop+1000
-sajed2   LDA     loop-1000
+.sajed2   LDA     loop-1000
 sajed4   LDA     loop-1000+952
-<<<<<<< HEAD
-sajed6   LDA     loop-sajed1+HEXCHAR-FOUND
-=======
-sajed6   LDA     loop-sajed1+HEXCHAR
->>>>>>> 0d365813ef9d3ddb07e7e9e47943afc3c81145f4
+
+.sajed6   LDA     loop-sajed1+HEXCHAR-found
+
          JEQ     FOUND
          STCH    OUTPUT,X
          TIX     #5
