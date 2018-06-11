@@ -13,12 +13,17 @@
 #include <unordered_map>
 #include <vector>
 #include "IntermediateFileParser.hpp"
+#include "ControlSection.hpp"
 using namespace std;
 
 class SectionsContainer {
 public:
-    
-    void insert(string sec_name, vector<IntermediateFileParser::entry>,
-                vector<string> ext_ref, vector<string> ext_def);
+    static SectionsContainer get_instance();
+    void insert(string sec_name, ControlSection);
+    ControlSection get_section(string sec_name);
+private:
+    SectionsContainer();
+    SectionsContainer *container = nullptr;
+    unordered_map<string, ControlSection> sections;
 };
 #endif /* SectionsContainer_hpp */

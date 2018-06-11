@@ -7,10 +7,11 @@
 
 
 #include "IntermediateFileParser.hpp"
-
+#include "SectionsContainer.hpp"
 class ObjectProgramGenerator {
 public:
-    void generate_program_code(vector<IntermediateFileParser::entry>);
+    ObjectProgramGenerator();
+    void generate_program_code(vector<IntermediateFileParser::entry>, unordered_map<string,string> labelAddresses);
 
     string generate_modification_records(vector<IntermediateFileParser::entry> entries);
 
@@ -35,8 +36,16 @@ public:
     string generate_text_records(vector<IntermediateFileParser::entry> entries) const;
 
     string generate_end_record(vector<IntermediateFileParser::entry> entries);
+    
+    string generate_definition_record(vector<IntermediateFileParser::entry> entries);
+    
+    string generate_referenc_recod(vector<IntermediateFileParser::entry> entries);
 
     void write_string_to_file(string str, string file_path);
+private:
+    SectionsContainer container;
+    string porgram_name;
+    unordered_map<string,string> labelAddresses;
 };
 
 

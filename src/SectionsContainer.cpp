@@ -8,3 +8,17 @@
 
 #include "SectionsContainer.hpp"
 
+SectionsContainer SectionsContainer::get_instance() {
+    if (this->container == nullptr)
+        container = new SectionsContainer();
+    return *container;
+}
+
+void SectionsContainer::insert(string sec_name, ControlSection section) {
+    this->sections[sec_name] = section;
+}
+
+ControlSection SectionsContainer::get_section(string sec_name) {
+    return this->sections[sec_name];
+}
+

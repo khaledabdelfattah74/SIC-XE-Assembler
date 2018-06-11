@@ -9,7 +9,7 @@ DisplacementCalculator::~DisplacementCalculator() {
 	// TODO Auto-generated destructor stub
 }
 
-void DisplacementCalculator::handleDisplacement(
+void DisplacementCalculator::handleDisplacement (
 		vector<IntermediateFileParser::entry> *vectorToCalculate) {
 	for (auto it = vectorToCalculate->begin(); it != vectorToCalculate->end();
 			++it) {
@@ -53,6 +53,10 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 		stringstream ss;
 		string operand1;
 		int pc,disp,ta;
+        if (entryToHandle->need_modification_record) {
+            disp = 0;
+            return;
+        }
 		switch (operations.lengthOf(entryToHandle->operationCode)) {
 		case 1:
 			cout << 1 << endl;
@@ -116,7 +120,6 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			cout << "Displacement Error or  directive" << endl;
 		}
 	}
-
 }
 int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entryToHandle) {
 	if(entryToHandle->operand.capacity() == 0) {
