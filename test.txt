@@ -47,14 +47,12 @@ v5       lda     @4095
 .v12	 lda     @-4096
          COMP    INPUT
 	 LDA     1000
-sajed    EQU     loop-1000
 b1       equ     4000
 b11      equ     4000
 b2       equ     1000
 b3       equ     2000
 b5       equ     500
          BASE    loop-1000
-         LDA     4000-loop
          LDA     loop-loop+1000
          LDA     1000
          LDA     2000
@@ -70,13 +68,10 @@ b5       equ     500
 	 resw    3000
 test     word    5
 	. LDA     b5
-sajed1   EQU     loop+1000
-sajed2   EQU     loop*1000
-sajed3   EQU     loop/7
-sajed4   EQU     loop-1000+952
-sajed5   EQU     -loop+1000-142
-sajed6   EQU     loop-sajed1
-sajed7   EQU     loop-1000
+sajed1   LDA     loop+1000
+sajed2   LDA     loop-1000
+sajed4   LDA     loop-1000+952
+sajed6   LDA     loop-sajed1+HEXCHAR
          JEQ     FOUND
          STCH    OUTPUT,X
          TIX     #5

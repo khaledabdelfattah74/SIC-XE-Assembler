@@ -55,8 +55,8 @@ IntermediateFileParser::entry IntermediateFileParser::getSuitableEntry(string li
 	if(line[0] == '=' || ((line[0] == 'X' || line[0]=='x') && line[1] == '\'') || ((line[0] == 'C' || line[0]=='c') && line[1] == '\''))  {
 		newEntry.operand.push_back(getLiteral(&line));
 	} else {
-		string operands = line.substr(0, 17);
-		line.erase(0, 18);
+		string operands = line.substr(0, line.length());
+		removeSpaces(&operands);
 		extractOperands(&newEntry.operand, operands);
 	}
 	return newEntry;
