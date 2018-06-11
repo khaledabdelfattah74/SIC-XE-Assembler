@@ -72,7 +72,7 @@ string ObjectProgramGenerator::generate_modification_records(vector<Intermediate
     string modifications;
     if(entries[0].address == "000000") {
     	for (int i = 0; i < entries.size(); ++i) {
-    		if(entries[i].e && !entries[i].i && !entries[i].p && !entries[i].b) {
+    		if(entries[i].e && (entries[i].i && entries[i].n) && !entries[i].p && !entries[i].b) {
     			modifications.append("M");
     			int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
     			string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
