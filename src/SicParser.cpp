@@ -61,7 +61,11 @@ SourceCodeTable SicParser::parse(string path) {
                 || to_upper(fields[i]) == "START"
                 || to_upper(fields[i]) == "END")
                 opIndex = i;
+            if(fields[i] == "LDT") {
+                cout << i;
+            }
         }
+
 
         Entry entry = *new Entry("", "", "", "", false);
         if (fields[0][0] == '.') {

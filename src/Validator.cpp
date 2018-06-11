@@ -17,8 +17,8 @@ const regex immediateAddressing ("(#|@)*(\\d)+");
 const regex notRegester ("(#|@)*(A|B|X|L|T|F|S|P)");
 const regex expression ("(\\w)+(\\-|\\+)(\\w)+");
 const regex notValid ("([A-Z](\\w)*(\\+)[A-Z](\\w)*)|((\\d)+(\\-)[A-Z](\\w)*)");
-const regex literal ("(\\=)(C|W|X)\\'(\\w)+\\'");
-const regex literal2 ("(\\=)(C|W|X)\\'(\\-)(\\w)+\\'");
+const regex literal ("(\\=)(C|W|X)\\'(\\w|\\s)+\\'");
+const regex literal2 ("(\\=)(C|W|X)\\'(\\-)(\\w|\\s)+\\'");
 
 
 Validator::Validator() {
@@ -54,7 +54,7 @@ bool Validator::check_vaidity(string operation, string operand) {
             else if (operand[1] == 'X')
                 return regex_match(value, regex ("(\\d|[A-F]|[a-f])+"));
             else if (operand[1] == 'C')
-                return regex_match(value, regex ("\\w+"));
+                return regex_match(value, regex ("(\\w|\\s)+"));
         } else
             return false;
     }

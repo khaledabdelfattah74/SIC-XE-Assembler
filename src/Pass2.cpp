@@ -14,10 +14,18 @@
 #include "OpTable.hpp"
 #include "Utilities.h"
 #include "ObjectProgramGenerator.h"
+#include "Pass2.h"
 
 using namespace std;
 
-void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
+Pass2::Pass2() {
+}
+
+Pass2::~Pass2() {
+
+}
+
+void Pass2::debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 	cout <<"Entries Of Vector"<< endl;
 	cout << endl;
@@ -38,7 +46,7 @@ void debugEntriesVectors(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 }
 
-void debugLabelAddresses(unordered_map<string,string> addresses) {
+void Pass2::debugLabelAddresses(unordered_map<string,string> addresses) {
 	cout << endl;
 	cout <<"Label Addresses"<< endl;
 	cout << endl;
@@ -49,7 +57,7 @@ void debugLabelAddresses(unordered_map<string,string> addresses) {
 	cout << endl;
 }
 
-void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
+void Pass2::debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
 	cout << endl;
 	cout<<"Address Mode"<<endl;
 	cout << endl;
@@ -70,7 +78,7 @@ void debugAddressMode(vector<IntermediateFileParser::entry> vectorToDebug) {
 		}
 	cout << endl;
 }
-void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
+void Pass2::debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 	OpTable x;
 	cout << endl;
 	cout<<"Displacement"<<endl;
@@ -95,7 +103,7 @@ void debugDisplacement(vector<IntermediateFileParser::entry> vectorToDebug) {
 		}
 	cout << endl;
 }
-void debugUtilities() {
+void Pass2::debugUtilities() {
 	Utilities x = *new Utilities();
 	cout << endl;
 	cout << "Utilities : "<< endl;
@@ -120,9 +128,9 @@ void debugUtilities() {
 
 }
 
-int main() {
+int Pass2::excute(string outPath) {
 
-	IntermediateFileParser intermediateParser = *new IntermediateFileParser("testOut.txt");
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser(outPath);
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
@@ -148,7 +156,7 @@ int main() {
 /*
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
 	objGen.generate_program_code(allEntryVector);*/
-	return 0;
+	return 1;
 }
 
 

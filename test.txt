@@ -9,10 +9,10 @@ LAB2C    START   1000
          LDX     #1
          STA     SAVEW,X
          LDA     =X'5f'
-         LDA     =X'd f'
+         LDA     =X'df'
          LDA     =C'8j5'
-	 LDA     =c'8j 5'
-         LDA     =w'15 52'
+	 LDT     =c' '
+         LDA     =w'1552'
          LDA     =w'-152'
          LDA     =W'124'
          LDA     =W'-152'
@@ -43,8 +43,8 @@ ALPHA    WORD    2
 SAVEW    RESW    2
 HEXCHAR  BYTE    X'6145fd56'
 INPUT    RESB    1
-STRING   BYTE    C'String'
-OUTPUT   RESB    5
+STRING   BYTE    X'F4'
+OUTPUT10   RESB    5
 
          END
 
