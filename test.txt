@@ -9,10 +9,10 @@ LAB2C    START   1000
          LDX     #1
          STA     SAVEW,X
          LDA     =X'5f'
-         LDA     =X'dF'
+         LDA     =X'df'
          LDA     =C'8j5'
 	 LDA     =c'8j5'
-         LDA     =w'152'
+         LDA     =w'15a2'
          LDA     =w'-152'
          LDA     =W'124'
          LDA     =W'-152'

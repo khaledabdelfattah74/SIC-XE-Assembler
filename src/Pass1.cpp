@@ -17,6 +17,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <ctype.h>
+#include <regex>
 #include "Validator.hpp"
 #include "Utilities.h"
 
@@ -255,7 +256,7 @@ int Pass1::getLengthOf(string constant) {
         return -1;
     }
     if (toupper(constant.c_str()[0]) == 'X') {
-        if (constant.length() >= 5 && (constant.length() % 2) != 0) {
+        if (constant.length() >= 5 && (constant.length() % 2) != 0 && regex_match(constant.substr(2, constant.length() - 2), regex ("(\\d|[A-F])+"))) {
             return ((int) constant.length() - 3 )/ 2;
         } else {
             return -1;
@@ -378,8 +379,13 @@ void Pass1::writeCurrenLineToIntermediateFile(int lineNumber, int locationCounte
         fixedOperand = to_upper(fixedOperand);
     }
     char stro[100];
-    sprintf(stro, "%-8d\t%06x\t\t%.8s\t\t%.8s\t\t%s\t%s",
-            lineNumber,(locationCounter - lenOfCurrentInstruction),
+
+
+    Utilities utilities;
+    string address = utilities.decimalToHex(locationCounter - lenOfCurrentInstruction);
+
+    sprintf(stro, "%-8d\t%6s\t\t%.8s\t\t%.8s\t\t%s\t%s",
+            lineNumber,address.c_str(),
             fixedLable.c_str(),
             fixedOpcode.c_str(),
             fixedOperand.c_str(),
@@ -450,9 +456,7 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
     }
 
     int value = 0;
-    stringstream stream;
-    stream << value;
-    stream >> hex >> value;
+
     int i = 0;
     for(auto term:terms) {
 
@@ -463,9 +467,6 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
             istringstream buffer(term);
 
             buffer >> numValue;
-            stringstream stream;
-            stream << numValue;
-            stream >> hex >> numValue;
 
         } else {
             if (!symTable.found(to_upper(term))) {
