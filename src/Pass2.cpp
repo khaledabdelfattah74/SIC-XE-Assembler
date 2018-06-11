@@ -104,6 +104,19 @@ void debugUtilities() {
 	cout << "HexByte : X'af00' >>> " + x.hexByte("X'af00'") << endl;
 	cout << "DecimalToHex : 10 >>> " + x.decimalToHex(10) << endl;
 	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
+	unordered_map<string,string> map = {
+			{"hexa","a"},
+			{"input","b"},
+			{"savew","c"}
+	};
+	cout << "Convert Expression(hexa-input+savew*10/hexa) : >>>" << x.convertExpression("hexa-input+savew*10/hexa", map)<<endl;
+
+	unordered_map<string,int> map2 = {
+				{"hexa",10},
+				{"input",11},
+				{"savew",12}
+		};
+	cout << "Convert Expression(10-20+30*2/10) : >>>" << x.convertExpression("10-20+30*2/10", map2)<<endl;
 
 }
 
@@ -117,7 +130,7 @@ int main() {
 		cout << "uncompletely assembled";
 		return 0;
 	}
-	//debugUtilities();
+	debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector);
 
@@ -132,9 +145,9 @@ int main() {
 	//debugLabelAddresses(labelAddresses);
 	//debugEntriesVectors(allEntryVector);
 	//debugAddressMode(allEntryVector);
-
+/*
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator();
-	objGen.generate_program_code(allEntryVector);
+	objGen.generate_program_code(allEntryVector);*/
 	return 0;
 }
 
