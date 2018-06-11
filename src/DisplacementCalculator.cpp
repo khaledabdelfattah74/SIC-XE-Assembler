@@ -27,7 +27,14 @@ void DisplacementCalculator::handleDisplacement(
 					Utilities util;
 					base = util.decimalToHex(util.stringToDecimal(operand1));
 				}else{
-					base = addresses[operand1];
+					Utilities util;
+					int decimalValue = valueOfExpression(operand1);
+					if(decimalValue < 0) {
+						errorMessage += "**invalid expression";
+						errorMessage += getEntrySrc(*it);
+					} else {
+						base = util.decimalToHex(decimalValue);
+					}
 				}
 			}
 			vectorToCalculate->erase(it,it+1);
