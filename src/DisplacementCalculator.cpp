@@ -84,7 +84,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 				operand1.erase(0,1);
 			}
-			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
+			if(notExpression(operand1)) {
 				if(addresses.count(operand1) > 0) {
 					ss << hex << addresses[operand1];
 					entryToHandle->displacemnet = ss.str();
@@ -129,7 +129,7 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 		operand1.erase(0,1);
 	}
 
-	if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
+	if(notExpression(operand1)) {
 		stringstream ss;
 		if(addresses.count(operand1) > 0) {
 			ss << hex << addresses[operand1];
@@ -291,4 +291,10 @@ string DisplacementCalculator::getEntrySrc(IntermediateFileParser::entry entry) 
 }
 string DisplacementCalculator::getErrorMessage() {
 	return errorMessage;
+}
+bool DisplacementCalculator::notExpression(string str) {
+	return (str.find('-')  == str.npos || (str[0]  == '-' && str.substr(1, str.length()).find('-')  == str.npos) || str[0]  == '=')
+			&& str.find('+') == str.npos
+			&&str.find('/') == str.npos
+			&&(str.find('*') == str.npos || (str[0] == '*' && str.length() == 1));
 }
