@@ -15,7 +15,15 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
 
-    string path = "/home/sajed/CLionProjects/untitled/test.txt";
+    if (argc < 2) {
+        // Tell the user how to run the program
+        cout << "Please, Send parameters correctly (Assembly file's path)" << endl;
+        /* "Usage messages" are a conventional way of telling the user
+         * how to run a program if they enter the command incorrectly.
+         */
+        return 1;
+    }
+    string path = argv[1];
 
     string objectCodePath = "";
     objectCodePath.append(path, 0, path.length() - 4);

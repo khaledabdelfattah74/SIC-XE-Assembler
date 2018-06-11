@@ -22,7 +22,7 @@ void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser
     output.append(generate_text_records(entries));
     output.append(generate_modification_records(entries));
     output.append(generate_end_record(entries));
-    write_string_to_file(output,objectCodePath);
+    write_string_to_file(output,this->objectCodePath);
 }
 
 string ObjectProgramGenerator::generate_text_records(vector<IntermediateFileParser::entry> entries) const {
