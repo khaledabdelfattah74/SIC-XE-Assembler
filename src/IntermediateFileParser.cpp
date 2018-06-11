@@ -66,18 +66,16 @@ void IntermediateFileParser::eraseAnyForwardSpaces(string *str,int offset) {
 }
 
 void IntermediateFileParser::extractOperands(vector<string> *operandList,string operands) {
-	int x = (int) operands.find(',');
-	if(x != (signed)operands.npos) {
-		string operand1 = operands.substr(0, x);
-		string operand2 = operands.substr(x + 1, operands.length());
-		removeSpaces(&operand1);
-		removeSpaces(&operand2);
-		operandList->push_back(operand1);
-		operandList->push_back(operand2);
-	} else {
-		removeSpaces(&operands);
-		operandList->push_back(operands);
-	}
+    string label = "";
+    for (char i = 0; i < operands.length(); i++) {
+        if (operands[i] == ',') {
+            operandList->push_back(label);
+            label = "";
+            continue;
+        }
+        label += operands[i];
+    }
+    operandList->push_back(label);
 }
 
 void IntermediateFileParser::debugEntry(IntermediateFileParser::entry entryToDebug) {

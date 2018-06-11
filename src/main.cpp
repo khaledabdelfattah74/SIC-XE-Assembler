@@ -16,7 +16,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     ExpressionEvaluator e = *new ExpressionEvaluator();
-    cout << e.evaluate("1001-1000+100-100+1") << endl;
+    cout << e.evaluate("1000") << endl;
     //Validator v = *new Validator();
     //cout << v.check_vaidity("LDA", "=X'123'") << endl;
     //cout << regex_match("A,X", twoRegesters) << endl;
