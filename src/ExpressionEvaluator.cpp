@@ -24,6 +24,8 @@ string ExpressionEvaluator::infix_to_postfix(string s) {
     stack<char> st;
     st.push('N');
     string postfix_exp;
+    if (s[0] == '-')
+        s = '0' + s;
     for (int i = 0; i < s.length(); i++) {
         while (s[i] >= 48 && s[i] <= 57) {
             postfix_exp += s[i];
@@ -81,13 +83,13 @@ int ExpressionEvaluator::evaluate(string expression) {
                     s.push(a + b);
                     break;
                 case '-':
-                    s.push(a - b);
+                    s.push(b - a);
                     break;
                 case '*':
                     s.push(a * b);
                     break;
                 case '/':
-                    s.push(a / b);
+                    s.push(b / a);
                     break;
             }
         }
