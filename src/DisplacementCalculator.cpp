@@ -207,59 +207,13 @@ bool DisplacementCalculator::getDisplacemnetError() {
 }
 
 int DisplacementCalculator::valueOfExpression(string expression) {
-    vector<string> terms{explode(expression, '+', '-', '*', '/')};
-    char operations[terms.size()];
-    if (expression.c_str()[0] == '-') {
-        operations[0] = '-';
-    } else {
-        operations[0] = '+';
+	ExpressionEvaluator expressionEvaluator;
+	Utilities utilities;
+	string convertedExp = utilities.convertExpression(expression, addresses);
+	if (convertedExp == "error") {
+		return -2;
     }
-    int counter = 1;
-    for (int i = 1; i < expression.length(); i++) {
-        if (expression.c_str()[i] == '-') {
-            operations[counter++] = '-';
-        } else if (expression.c_str()[i] == '+' || expression.c_str()[i] == '*' || expression.c_str()[i] == '/') {
-            operations[counter++] = expression.c_str()[i];
-        }
-    }
-
-    int value = 0;
-    int i = 0;
-    for(auto term:terms) {
-
-        int numValue = 0;
-        if (term.find(',') != std::string::npos) {
-            return -1;
-        } else if (is_number(term)) {
-            istringstream buffer(term);
-            buffer >> numValue;
-        } else {
-            if (addresses.count(term) == 0) {
-                return -2;
-            }
-            Utilities util;
-            numValue = util.hexToDecimal(addresses[term]);
-        }
-        switch(operations[i]) {
-            case '-' :
-                value -= numValue;
-                break;
-            case '+' :
-                value += numValue;
-                break;
-            case '*' :
-                value *= numValue;
-                break;
-            case '/' :
-                value /= numValue;
-                break;
-            default :
-                cout << "Invalid operation" << endl;
-        }
-        i++;
-    }
-    return value;
-
+	return expressionEvaluator.evaluate(convertedExp);
 }
 
 bool DisplacementCalculator::is_number(const std::string& s)

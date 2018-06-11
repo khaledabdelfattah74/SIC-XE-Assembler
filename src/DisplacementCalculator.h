@@ -4,6 +4,7 @@
 #include "IntermediateFileParser.hpp"
 #include "OpTable.hpp"
 #include "Utilities.h"
+#include "ExpressionEvaluator.hpp"
 class DisplacementCalculator {
 public:
 	DisplacementCalculator(unordered_map<string,string> labelAddresses);
@@ -27,6 +28,7 @@ private:
 
 	const vector<string> explode(const string& s, const char& c, const char& c1, const char& c2, const char& c3);
 	string getEntrySrc(IntermediateFileParser::entry entry);
+
 };
 
 #endif
