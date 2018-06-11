@@ -22,7 +22,7 @@ private:
 	int handleOperation3(IntermediateFileParser::entry *entryToHandle);
 	void checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp, int ta);
 	int valueOfExpression(string expression);
-
+	bool notExpression(string str);
 	bool is_number(const std::string& s);
 
 	const vector<string> explode(const string& s, const char& c, const char& c1, const char& c2, const char& c3);

@@ -78,13 +78,14 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			cout << 4 << endl;
 			if(entryToHandle->operand.capacity() == 0) {
 				cout << "Error : no operand or may be +RSUB";
+				entryToHandle->displacemnet = "0000000000";
 				return;
 			}
 			operand1 = entryToHandle->operand.at(0);
 			if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 				operand1.erase(0,1);
 			}
-			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
+			if(notExpression(operand1)) {
 				if(addresses.count(operand1) > 0) {
 					ss << hex << addresses[operand1];
 					entryToHandle->displacemnet = ss.str();
@@ -121,6 +122,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entryToHandle) {
 	if(entryToHandle->operand.capacity() == 0) {
 		cout << "Error : no operand or may be RSUB";
+		entryToHandle->displacemnet = "000000";
 		return 0;
 	}
 	int targetAdress = 0;
@@ -129,7 +131,7 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 		operand1.erase(0,1);
 	}
 
-	if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
+	if(notExpression(operand1)) {
 		stringstream ss;
 		if(addresses.count(operand1) > 0) {
 			ss << hex << addresses[operand1];
@@ -291,4 +293,10 @@ string DisplacementCalculator::getEntrySrc(IntermediateFileParser::entry entry) 
 }
 string DisplacementCalculator::getErrorMessage() {
 	return errorMessage;
+}
+bool DisplacementCalculator::notExpression(string str) {
+	return (str.find('-')  == str.npos || (str[0]  == '-' && str.substr(1, str.length()).find('-')  == str.npos) || str[0]  == '=')
+			&& str.find('+') == str.npos
+			&&str.find('/') == str.npos
+			&&(str.find('*') == str.npos || (str[0] == '*' && str.length() == 1));
 }
