@@ -20,7 +20,6 @@ class LitTab
     protected:
 
     private:
-        string to_upper(string);
         int lengthOfInstruction(string);
 };
 

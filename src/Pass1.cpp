@@ -213,6 +213,9 @@ void Pass1::mainLoop() {
                 if (currentEntry.getOperand().c_str()[0] == '=') {
                     if (currentEntry.getOperand().c_str()[2] == '\''
                         && currentEntry.getOperand().c_str()[currentEntry.getOperand().length() - 1] == '\'') {
+                        string temp = to_upper(currentEntry.getOperand().substr(0, 2));
+                        temp.append(currentEntry.getOperand().substr(2, currentEntry.getOperand().length() - 2));
+                        currentEntry.setOperand(temp);
                         bool valid = this->litTab.insert(currentEntry.getOperand());
                         if (!valid) {
                             this->error = true;
@@ -439,21 +442,22 @@ string Pass1::to_upper(string str) {
 }
 
 int Pass1::valueOfExpression(string expression, SymTable symTable) {
-    vector<string> terms{explode(expression, '+', '-')};
-    bool minus[terms.size()];
+    vector<string> terms{explode(expression, '+', '-', '*', '/')};
+    char operations[terms.size()];
     if (expression.c_str()[0] == '-') {
-        minus[0] = true;
+        operations[0] = '-';
     } else {
-        minus[0] = false;
+        operations[0] = '+';
     }
     int counter = 1;
     for (int i = 1; i < expression.length(); i++) {
         if (expression.c_str()[i] == '-') {
-            minus[counter++] = true;
-        } else if (expression.c_str()[i] == '+') {
-            minus[counter++] = false;
+            operations[counter++] = '-';
+        } else if (expression.c_str()[i] == '+' || expression.c_str()[i] == '*' || expression.c_str()[i] == '/') {
+            operations[counter++] = expression.c_str()[i];
         }
     }
+
     int value = 0;
     stringstream stream;
     stream << value;
@@ -461,30 +465,39 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
     int i = 0;
     for(auto term:terms) {
 
+        int numValue = 0;
         if (term.find(',') != std::string::npos) {
             return -1;
         } else if (is_number(term)) {
             istringstream buffer(term);
-            int numValue = 0;
+
             buffer >> numValue;
             stringstream stream;
             stream << numValue;
             stream >> hex >> numValue;
-            if (minus[i]) {
-                value -= numValue;
-            } else {
-                value += numValue;
-            }
+
         } else {
             if (!symTable.found(to_upper(term))) {
                 return -2;
             }
-            int numValue = symTable.symbolTable[to_upper(term)].first;
-            if (minus[i]) {
+
+            numValue = symTable.symbolTable[to_upper(term)];
+        }
+        switch(operations[i]) {
+            case '-' :
                 value -= numValue;
-            } else {
+                break;
+            case '+' :
                 value += numValue;
-            }
+                break;
+            case '*' :
+                value *= numValue;
+                break;
+            case '/' :
+                value /= numValue;
+                break;
+            default :
+                cout << "Invalid operation" << endl;
         }
         i++;
     }
@@ -499,12 +512,12 @@ bool Pass1::is_number(const std::string& s)
     return !s.empty() && it == s.end();
 }
 
-const vector<string> Pass1::explode(const string& s, const char& c, const char& c1) {
+const vector<string> Pass1::explode(const string& s, const char& c, const char& c1, const char& c2, const char& c3) {
     string buff{""};
     vector<string> v;
     for(auto n:s) {
-        if(n != c && n!= c1) buff+=n; else
-        if((n == c || n ==c1) && buff != "") { v.push_back(buff); buff = ""; }
+        if(n != c && n!= c1 && n!= c2 && n!= c3) buff+=n; else
+        if((n == c || n ==c1 || n!= c2 || n!= c3) && buff != "") { v.push_back(buff); buff = ""; }
     }
     if(buff != "") v.push_back(buff);
     return v;

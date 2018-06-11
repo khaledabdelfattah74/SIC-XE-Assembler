@@ -106,9 +106,10 @@ void debugUtilities() {
 	cout << "HexToDecimal : aaf >> " << x.hexToDecimal("aaf") << endl;
 
 }
-
+/*
 int main() {
-	IntermediateFileParser intermediateParser = *new IntermediateFileParser("testOut.txt");
+
+	IntermediateFileParser intermediateParser = *new IntermediateFileParser("/home/sajed/CLionProjects/untitled/testOut.txt");
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
     //for (IntermediateFileParser::entry i : allEntryVector)
       //  cout << i.label << " " << i.operationCode << endl;
@@ -123,6 +124,7 @@ int main() {
 	addressModifier.setVectorAddressingMode(&allEntryVector);
 
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
+	cout << "HERE "<<labelAddresses["=W'-152'"]<<endl;
 	disCalc.handleDisplacement(&allEntryVector);
 	debugDisplacement(allEntryVector);
 	if(disCalc.getDisplacemnetError()) {
@@ -137,6 +139,5 @@ int main() {
 	objGen.generate_program_code(allEntryVector);
 	return 0;
 }
-
-
+*/
 

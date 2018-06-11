@@ -37,7 +37,7 @@ private:
     void printSymTable(SymTable);
     void printLitTable(LitTab litTable);
     int valueOfExpression(string, SymTable);
-    const vector<string> explode(const string&, const char&, const char&);
+    const vector<string> explode(const string&, const char&, const char&, const char&, const char&);
     bool is_number(const std::string&);
 };
 
