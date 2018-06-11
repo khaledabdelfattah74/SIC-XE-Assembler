@@ -29,6 +29,7 @@ public:
 	const vector<string> explode(const string& s, const char& c, const char& c1, const char& c2, const char& c3);
 	bool is_number(const std::string& s);
 	int valueOfExpression(string expression);
+	int stringToDecimal(string str);
 };
 
 #endif /* SRC_UTILITIES_H_ */
