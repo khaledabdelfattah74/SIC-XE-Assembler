@@ -155,6 +155,10 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 }
 
 void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser::entry *entryToHandle,int disp,int ta) {
+	if(entryToHandle->operand.capacity() == 0) {
+		cout << "Error : no operand or may be RSUB";
+		return;
+	}
 	string operand1 = entryToHandle->operand.at(0);
 	if(addresses.count(operand1) == 0) {
 		cout << "HERE";
