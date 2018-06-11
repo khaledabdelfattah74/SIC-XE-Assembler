@@ -9,10 +9,10 @@ LAB2C    START   1000
          LDX     #1
          STA     SAVEW,X
          LDA     =X'5f'
-         LDA     =X'dF'
+         LDA     =X'df'
          LDA     =C'8j5'
-	 LDA     =c'8j5'
-         LDA     =w'152'
+
+         LDA     =w'1552'
          LDA     =w'-152'
          LDA     =W'124'
          LDA     =W'-152'
@@ -41,9 +41,9 @@ sajed7   EQU     loop-1000
 FOUND    J       OUTPUT
 ALPHA    WORD    2
 SAVEW    RESW    2
-HEXCHAR  BYTE    X'61'
+HEXCHAR  BYTE    X'6145fd56'
 INPUT    RESB    1
-STRING   BYTE    C'String'
+STRING   BYTE    X'F4'
 OUTPUT   RESB    5
 
          END

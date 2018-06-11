@@ -46,6 +46,7 @@ private:
 	void removeSpaces(string *str);
 	void debugEntry(entry entryToDebug);
 	bool validEntry(entry entryToValidate);
+	string getLiteral(string *str);
 
 };
 

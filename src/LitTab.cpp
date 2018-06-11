@@ -19,6 +19,7 @@ LitTab::~LitTab()
     //dtor
 }
 
+
 bool LitTab::insert(string name) {
     int length = lengthOfInstruction(name);
     if (length == -1) {

@@ -12,9 +12,9 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 10      	00100e		        		LDX     		#1               	
 11      	00100e		        		        		                 	.format 4
 12      	001011		        		STA     		SAVEW,X          	
-13      	001014		        		LDA     		=X'5F'           	
-14      	001017		        		LDA     		=X'DF'           	
-15      	00101a		        		LDA     		=C'8JF'          	
+13      	001014		        		LDA     		=X'5f'           	
+14      	001017		        		LDA     		=X'df'           	
+15      	00101a		        		LDA     		=C'8jf'          	
 16      	00101d		        		LDA     		=W'1524'         	
 17      	00101d		        		        		                 	.sajed
 18      	001020		        		LDA     		=W'1524'         	
@@ -36,14 +36,14 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 34      	00104b		ALPHA   		WORD    		2                	
 35      	00104e		SAVEW   		RESW    		2                	
 36      	001054		HEXACHAR		BYTE    		X'61'            	
-37      	001056		INPUT   		RESB    		1                	
+37      	001055		INPUT   		RESB    		1                	
+						***Operand format is not compatible with operation***
 38      	001057		STRING  		BYTE    		'STRING'         	
-39      	00105c		OUTPUT  		RESB    		5                	
-40      	001061		=x'5f'  		BYTE    		x'5f'            	
-40      	001062		=x'df'  		BYTE    		x'df'            	
-40      	001063		=c'8jf' 		BYTE    		c'8jf'           	
-40      	001066		=w'1524'		WORD    		1524             	
-40      	001069		=w'1524'		WORD    		1524             	
-40      	00106c		=w'1624'		WORD    		1624             	
-40      	00106f		=w'4095'		WORD    		4095             	
-40      	001072		        		END     		                 	
+39      	001056		OUTPUT  		RESB    		5                	
+40      	00105b		=X'5f'  		BYTE    		X'5f'            	
+40      	00105c		=X'df'  		BYTE    		X'df'            	
+40      	00105d		=C'8jf' 		BYTE    		C'8jf'           	
+40      	001060		=W'1524'		WORD    		1524             	
+40      	001063		=W'1624'		WORD    		1624             	
+40      	001066		=W'4095'		WORD    		4095             	
+40      	001069		        		END     		                 	

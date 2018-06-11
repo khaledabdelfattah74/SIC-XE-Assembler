@@ -13,7 +13,30 @@ void DisplacementCalculator::handleDisplacement(
 		vector<IntermediateFileParser::entry> *vectorToCalculate) {
 	for (auto it = vectorToCalculate->begin(); it != vectorToCalculate->end();
 			++it) {
-		handle(&*it);
+		IntermediateFileParser::entry entryToCheck = *it;
+		if(entryToCheck.operationCode == "BASE" || entryToCheck.operationCode == "base"){
+			canBase = true;
+			string operand1 = entryToCheck.operand[0];
+			if(operand1[0] == '#' || operand1[0] == '@') {
+				operand1.erase(0,1);
+			}
+			if(operand1[0] == '*'){
+				base = entryToCheck.address;
+			} else {
+				if(is_number(operand1)) {
+					Utilities util;
+					base = util.decimalToHex(util.stringToDecimal(operand1));
+				}else{
+					base = addresses[operand1];
+				}
+			}
+			vectorToCalculate->erase(it,it+1);
+			it--;
+		} else if(entryToCheck.operationCode == "NOBASE" || entryToCheck.operationCode == "nobase") {
+			canBase = false;
+		} else {
+			handle(&*it);
+		}
 	}
 }
 
@@ -61,8 +84,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			if(operand1.at(0) == '@' || operand1.at(0) == '#') {
 				operand1.erase(0,1);
 			}
-			if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') &&
-               operand1.find('+') == operand1.npos) {
+			if(notExpression(operand1)) {
 				if(addresses.count(operand1) > 0) {
 					ss << hex << addresses[operand1];
 					entryToHandle->displacemnet = ss.str();
@@ -72,14 +94,22 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 					int value;
 					iss >> value;
 					ss << hex << value;
+					if(value > 1048575 || value < 0) {
+						error = true;
+						errorMessage += "\n**address out of range\n";
+						errorMessage += getEntrySrc(*entryToHandle);
+					}
 					entryToHandle->displacemnet = ss.str();
 					return;
 				}
 				if(addresses.count(operand1) == 0) {
+					errorMessage += "**operand " + operand1 + " is undefined\n";
+					errorMessage += getEntrySrc(*entryToHandle);
 					error = true;
 				}
 			} else {
-				entryToHandle->displacemnet = valueOfExpression(operand1);
+				Utilities util;
+				entryToHandle->displacemnet = util.decimalToHex(valueOfExpression(operand1));
 			}
 			break;
 		default:
@@ -99,7 +129,7 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 		operand1.erase(0,1);
 	}
 
-	if((operand1.find('-')  == operand1.npos || operand1[0]  == '-' || operand1[0]  == '=') && operand1.find('+') == operand1.npos) {
+	if(notExpression(operand1)) {
 		stringstream ss;
 		if(addresses.count(operand1) > 0) {
 			ss << hex << addresses[operand1];
@@ -109,11 +139,17 @@ int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entr
 			istringstream iss(operand1);
 			int value;
 			iss >> value;
+			if(value > 4095 || value < 0) {
+				error = true;
+				errorMessage += "\n**address out of range\n";
+				errorMessage += getEntrySrc(*entryToHandle);
+			}
 			ss << hex << value;
 			entryToHandle->displacemnet = ss.str();
 		}
 	} else {
-		entryToHandle->displacemnet = valueOfExpression(operand1);
+		Utilities util;
+		entryToHandle->displacemnet = util.decimalToHex(valueOfExpression(operand1));
 	}
 	return targetAdress;
 }
@@ -122,6 +158,8 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 	string operand1 = entryToHandle->operand.at(0);
 	if(addresses.count(operand1) == 0) {
 		cout << "HERE";
+		errorMessage += "**operand " + operand1 + " is undefined\n";
+		errorMessage += getEntrySrc(*entryToHandle);
 		error = true;
 	}
 	cout << addresses[operand1]<<endl;
@@ -148,10 +186,17 @@ void DisplacementCalculator::checkDisplacementOperation3(IntermediateFileParser:
 			entryToHandle->b = 1;
 		} else {
 			cout << "Error : invalid address b" << endl;
+			errorMessage += "**displacement error\n";
+			errorMessage += getEntrySrc(*entryToHandle);
+			error = true;
 		}
 	} else {
 		cout << "Error : invalid address p" << endl;
 		cout << operand1 << endl;
+		cout << "Error : invalid address b" << endl;
+		errorMessage += "\n**displacement error\n";
+		errorMessage += getEntrySrc(*entryToHandle);
+		error = true;
 	}
 }
 
@@ -231,4 +276,25 @@ const vector<string> DisplacementCalculator::explode(const string& s, const char
     }
     if(buff != "") v.push_back(buff);
     return v;
+}
+
+string DisplacementCalculator::getEntrySrc(IntermediateFileParser::entry entry) {
+	string result;
+	result += entry.address + " " + entry.operationCode + " ";
+	for(int i = 0;i < entry.operand.size();i++) {
+		result += entry.operand[i] + ",";
+	}
+	result.erase(result.length() - 1,1);
+	result += "\n";
+	result += "\n";
+	return result;
+}
+string DisplacementCalculator::getErrorMessage() {
+	return errorMessage;
+}
+bool DisplacementCalculator::notExpression(string str) {
+	return (str.find('-')  == str.npos || (str[0]  == '-' && str.substr(1, str.length()).find('-')  == str.npos) || str[0]  == '=')
+			&& str.find('+') == str.npos
+			&&str.find('/') == str.npos
+			&&(str.find('*') == str.npos || (str[0] == '*' && str.length() == 1));
 }

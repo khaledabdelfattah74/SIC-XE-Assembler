@@ -14,12 +14,11 @@ vector<IntermediateFileParser::entry> IntermediateFileParser::getEntriesVector()
 	ifstream intermediatefile(path);
 	getline(intermediatefile, line);
 	getline(intermediatefile, line);
-
 	if (intermediatefile.is_open()) {
 		while (getline(intermediatefile, line)) {
 			trim(&line);
 			entry e = getSuitableEntry(line);
-			//debugEntry(e);
+			debugEntry(e);
 			if(validEntry(e)) {
 				entryVector.push_back(e);
 			}
@@ -41,19 +40,25 @@ IntermediateFileParser::entry IntermediateFileParser::getSuitableEntry(string li
 	newEntry.address = line.substr(0, 6);
 	line.erase(0, 6);
 	eraseAnyForwardSpaces(&line,2);
-
-	newEntry.label = line.substr(0, 8);
-	removeSpaces(&newEntry.label);
-	line.erase(0, 10);
+	if(line[0] == '=') {
+		newEntry.label = getLiteral(&line);
+	} else {
+		newEntry.label = line.substr(0, 8);
+		removeSpaces(&newEntry.label);
+		line.erase(0, 10);
+	}
 
 	newEntry.operationCode = line.substr(0, 8);
 	removeSpaces(&newEntry.operationCode);
 
 	line.erase(0, 10);
-
-	string operands = line.substr(0, 17);
-	line.erase(0, 18);
-	extractOperands(&newEntry.operand, operands);
+	if(line[0] == '=' || ((line[0] == 'X' || line[0]=='x') && line[1] == '\'') || ((line[0] == 'C' || line[0]=='c') && line[1] == '\''))  {
+		newEntry.operand.push_back(getLiteral(&line));
+	} else {
+		string operands = line.substr(0, 17);
+		line.erase(0, 18);
+		extractOperands(&newEntry.operand, operands);
+	}
 	return newEntry;
 }
 
@@ -105,4 +110,22 @@ void IntermediateFileParser::removeSpaces(string *str) {
 			it--;
 		}
 	}
+}
+
+string IntermediateFileParser::getLiteral(string *str) {
+	string result;
+	bool firstQoutes = false;
+	int len = 0;
+	for(auto it = str->begin();it != str->end();++it) {
+		result.append(str->substr(len,1));
+		len++;
+		if(*it == '\'' && !firstQoutes) {
+			firstQoutes = true;
+		} else if(*it == '\'' && firstQoutes) {
+			break;
+		}
+	}
+
+	str->erase(0,max(len,8)+2);
+	return result;
 }

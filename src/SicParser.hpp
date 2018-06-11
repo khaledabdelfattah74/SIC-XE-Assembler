@@ -23,6 +23,7 @@ public:
     ;
 private:
     string get_comment(vector<string> strings, int start);
+    string get_quoted_operand(string);
     string to_upper(string str);
     ;
 };
