@@ -131,7 +131,9 @@ void Pass2::debugUtilities() {
 int Pass2::excute(string outPath) {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser(outPath);
+	cout << ".size()" << endl;
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
+	cout << allEntryVector.size() << endl;
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
 	if(labelProcessor.getErrorFlag()) {

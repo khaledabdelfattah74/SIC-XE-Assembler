@@ -14,12 +14,11 @@ vector<IntermediateFileParser::entry> IntermediateFileParser::getEntriesVector()
 	ifstream intermediatefile(path);
 	getline(intermediatefile, line);
 	getline(intermediatefile, line);
-
 	if (intermediatefile.is_open()) {
 		while (getline(intermediatefile, line)) {
 			trim(&line);
 			entry e = getSuitableEntry(line);
-			//debugEntry(e);
+			debugEntry(e);
 			if(validEntry(e)) {
 				entryVector.push_back(e);
 			}

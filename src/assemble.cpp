@@ -27,7 +27,7 @@ int main(int argc, const char * argv[]) {
         if (!successful) {
             cout << "Pass2 assembled unsuccessfully";
         }
-    } else {
+   } else {
         cout << "Pass1 assembled unsuccessfully" << " : # of errors = " << pass1.getNumOfErrors();
     }
 }

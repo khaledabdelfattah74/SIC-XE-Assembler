@@ -44,7 +44,7 @@ SAVEW    RESW    2
 HEXCHAR  BYTE    X'6145fd56'
 INPUT    RESB    1
 STRING   BYTE    X'F4'
-OUTPUT10   RESB    5
+OUTPUT   RESB    5
 
          END
 

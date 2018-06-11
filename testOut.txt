@@ -43,7 +43,7 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 41      	000437		HEXCHAR 		BYTE    		X'6145fd56'      	
 42      	00043b		INPUT   		RESB    		1                	
 43      	00043c		STRING  		BYTE    		X'F4'            	
-44      	00043d		OUTPUT10		RESB    		5                	
+44      	00043d		OUTPUT  		RESB    		5                	
 45      	000442		=X'5f'  		BYTE    		X'5f'            	
 45      	000443		=X'df'  		BYTE    		X'df'            	
 45      	000444		=C'8j5' 		BYTE    		C'8j5'           	
