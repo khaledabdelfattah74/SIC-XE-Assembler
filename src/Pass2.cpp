@@ -131,7 +131,6 @@ void Pass2::debugUtilities() {
 int Pass2::excute(string outPath) {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser(outPath);
-	cout << ".size()" << endl;
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 	cout << allEntryVector.size() << endl;
 	LabelProcessor labelProcessor = *new LabelProcessor();
@@ -149,7 +148,7 @@ int Pass2::excute(string outPath) {
 	disCalc.handleDisplacement(&allEntryVector);
 	debugDisplacement(allEntryVector);
 	if(disCalc.getDisplacemnetError()) {
-		cout << "uncompletely assembled";
+		cout << "uncompletely assembled\n";
 		errorMessage = disCalc.getErrorMessage();
 		return 0;
 	}
