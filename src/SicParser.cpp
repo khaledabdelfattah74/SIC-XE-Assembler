@@ -61,9 +61,6 @@ SourceCodeTable SicParser::parse(string path) {
                 || to_upper(fields[i]) == "START"
                 || to_upper(fields[i]) == "END")
                 opIndex = i;
-            if(fields[i] == "LDT") {
-                cout << i;
-            }
         }
 
 
@@ -86,7 +83,11 @@ SourceCodeTable SicParser::parse(string path) {
                         entry = *new Entry(fields[0], fields[1], "", comment, false);
                     break;
                 case 3:
-                    entry = *new Entry(fields[0], fields[1], fields[2], comment, false);
+                    if (opIndex == 0)
+
+                        entry = *new Entry("", fields[0], get_quoted_operand(line), comment, false);
+                    else
+                        entry = *new Entry(fields[0], fields[1], fields[2], comment, false);
                     break;
                 default:
                     // Error
@@ -115,4 +116,24 @@ string SicParser::to_upper(string str) {
     for (char c : str)
         upper_case_string += toupper(c);
     return upper_case_string;
+}
+
+string SicParser::get_quoted_operand(string line) {
+    int i = 0;
+    string operand = "";
+    while(i < line.size()) {
+        if (line[i] == '\'') {
+            operand.append(line.substr(i - 1, 2));
+            i++;
+            while(i < line.size() || line[i] == '\'') {
+                operand.append(line.substr(i,1));
+                i++;
+            }
+            if(line[i == '\'']) {
+                operand.append(line.substr(i,1));
+            }
+        }
+        i++;
+    }
+    return operand;
 }
