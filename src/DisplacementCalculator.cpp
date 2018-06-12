@@ -44,7 +44,11 @@ void DisplacementCalculator::handleDisplacement(
 			canBase = false;
 			vectorToCalculate->erase(it,it+1);
 			it--;
-		} else {
+		} else if (entryToCheck.operationCode == "RSUB") {
+            entryToCheck.displacemnet = "000000";
+		} else if (entryToCheck.operationCode == "+RSUB") {
+            entryToCheck.displacemnet = "0000000000";
+        } else {
 			handle(&*it);
 		}
 	}
@@ -86,7 +90,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 			break;
 		case 4:
 			cout << 4 << endl;
-			if(entryToHandle->operand.capacity() == 0) {
+			if(entryToHandle->operand.capacity() == 0 || entryToHandle->operationCode == "+RSUB") {
 				cout << "Error : no operand or may be +RSUB";
 				entryToHandle->displacemnet = "0000000000";
 				return;
@@ -137,7 +141,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 
 }
 int DisplacementCalculator::handleOperation3(IntermediateFileParser::entry *entryToHandle) {
-	if(entryToHandle->operand.capacity() == 0) {
+	if(entryToHandle->operand.capacity() == 0 || entryToHandle->operationCode == "RSUB") {
 		cout << "Error : no operand or may be RSUB";
 		entryToHandle->displacemnet = "000000";
 		return 0;
