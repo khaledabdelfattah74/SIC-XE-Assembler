@@ -63,8 +63,9 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 		stringstream ss;
 		string operand1;
 		int pc,disp,ta;
+        Utilities util;
         if (entryToHandle->need_modification_record) {
-            disp = 0;
+            entryToHandle->displacemnet = util.decimalToHex(0);
             return;
         }
 		switch (operations.lengthOf(entryToHandle->operationCode)) {
@@ -123,7 +124,6 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 					error = true;
 				}
 			} else {
-				Utilities util;
 				int decimalValue = valueOfExpression(operand1);
 				if(decimalValue < 0) {
 					error = true;

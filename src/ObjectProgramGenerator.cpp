@@ -37,7 +37,10 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
     text_records.append(entries[0].address);
     int text_length_ind = (int) text_records.length();
     text_records.append("XX");
+    OpTable op_table = *new OpTable();
     for (int i = 1; i < entries.size()-1; ++i) {
+        if (!op_table.found(entries[i].operationCode))
+            continue;
         if(current_address != utilities.hexToDecimal(entries[i].address)) {
             current_address = utilities.hexToDecimal(entries[i].address);
             text_records.append("\n");

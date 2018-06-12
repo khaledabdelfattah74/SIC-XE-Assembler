@@ -15,6 +15,7 @@
 #include "Utilities.h"
 #include "ObjectProgramGenerator.h"
 #include "Pass2.h"
+#include "SicParser.hpp"
 
 using namespace std;
 
@@ -157,6 +158,7 @@ vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry>
             //ext_ref.insert(ext_def.end(), entry.operand.begin(), entry.operand.end());
             ext_def = entry.operand;
         }
+        sec_entries.push_back(entry);
         if (entry.operationCode == "END") {
             ControlSection section = *new ControlSection();
             section.sec_name = sec_name;
@@ -169,7 +171,6 @@ vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry>
             ext_def.clear();
             ext_ref.clear();
         }
-        sec_entries.push_back(entry);
     }
     return sections;
 }
@@ -212,13 +213,14 @@ int Pass2::excute(string outPath, string objectCodePath) {
     
     cout << sections[0].get_enteries()[sections[0].get_enteries().size() - 1].operationCode << "is need "
     << allEntryVector[allEntryVector.size() - 2].expression_labels.size()
-    << " " << sections[0].get_enteries()[sections[0].get_enteries().size() - 1].e << endl;
+    << " " << sections[1].get_enteries()[sections[1].get_enteries().size() - 1].operationCode << endl;
     
     
     string object_code = "";
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(labelAddresses, container, objectCodePath);
     for (ControlSection section : sections)
         object_code += objGen.generate_program_code(section.get_enteries());
+    object_code = SicParser::to_upper(object_code);
     objGen.write_string_to_file(object_code, objectCodePath);
 
 	return 1;
