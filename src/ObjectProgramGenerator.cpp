@@ -78,29 +78,27 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
 string ObjectProgramGenerator::generate_modification_records(vector<IntermediateFileParser::entry> entries) {
     Utilities utilities;
     string modifications;
-    if(entries[0].address == "000000") {
-        string modifications;
-        for (int i = 0; i < entries.size(); ++i) {
-            if (entries[i].need_modification_record) {
-                for (string label : entries[i].expression_labels) {
-                    modifications.append("M");
-                    int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
-                    string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
-                    modifications.append(hex_modification_address);
-                    if (entries[i].e)
-                        modifications.append("05");
-                    else
-                        modifications.append("06");
-                    modifications.append("+");
-                    modifications.append(label + "\n");
-                }
-            } else if(entries[i].e) {
+    for (int i = 0; i < entries.size(); ++i) {
+        if (entries[i].need_modification_record) {
+            cout << "Hello there " << endl;
+            for (string label : entries[i].expression_labels) {
                 modifications.append("M");
                 int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
                 string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
                 modifications.append(hex_modification_address);
-                modifications.append("05\n");
+                if (entries[i].e)
+                    modifications.append("05");
+                else
+                    modifications.append("06");
+                modifications.append("+");
+                modifications.append(label + "\n");
             }
+        } else if(entries[i].e) {
+            modifications.append("M");
+            int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
+            string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
+            modifications.append(hex_modification_address);
+            modifications.append("05\n");
         }
     }
     return modifications;
@@ -158,10 +156,10 @@ string ObjectProgramGenerator::third_format_to_hex(IntermediateFileParser::entry
     if(operand.length() > 3)
         operand = operand.substr(operand.length()-3,3);
     while (operand.length() < 3) {
-            operand.insert(0,"0");
+        operand.insert(0,"0");
     }
     //vector<bool> operand_binary = hex_string_to_binary(operand);
-
+    
     string object_hex = binary_to_hex_string(entry_start_binary).substr(3,3);
     object_hex.append(operand);
     return  object_hex;
@@ -172,25 +170,25 @@ vector<bool> ObjectProgramGenerator::entry_start_to_binary(const IntermediateFil
     string op_code = entry.operationCode;
     vector<bool> binary = hex_string_to_binary(operation_table.getOperationCode(op_code));
     if(entry.n)
-            binary[6] = true;
+        binary[6] = true;
     if(entry.i)
-            binary[7] = true;
+        binary[7] = true;
     if(entry.x)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     if(entry.b)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     if(entry.p)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     if(entry.e)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     return binary;
 }
 

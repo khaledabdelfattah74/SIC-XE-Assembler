@@ -157,7 +157,6 @@ vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry>
             //ext_ref.insert(ext_def.end(), entry.operand.begin(), entry.operand.end());
             ext_def = entry.operand;
         }
-        sec_entries.push_back(entry);
         if (entry.operationCode == "END") {
             ControlSection section = *new ControlSection();
             section.sec_name = sec_name;
@@ -170,6 +169,7 @@ vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry>
             ext_def.clear();
             ext_ref.clear();
         }
+        sec_entries.push_back(entry);
     }
     return sections;
 }
@@ -180,7 +180,6 @@ int Pass2::excute(string outPath) {
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
 
     vector<ControlSection> sections  = get_sections(allEntryVector);
-    //SectionsContainer container = SectionsContainer::get_instance();
     unordered_map<string, ControlSection> container;
     for (ControlSection c : sections)
         container[c.sec_name] = c;
@@ -188,14 +187,17 @@ int Pass2::excute(string outPath) {
     cout << allEntryVector.size() << endl;
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
-	/*if(labelProcessor.getErrorFlag()) {
-		cout << "uncompletely assembled";
-		return 0;
-	}*/
-	debugUtilities();
+    
+    debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
 	addressModifier.setVectorAddressingMode(&allEntryVector, container);
     
+    sections.clear();
+    sections  = get_sections(allEntryVector);
+    container.clear();
+    for (ControlSection c : sections)
+        container[c.sec_name] = c;
+
     
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	cout << "HERE "<<labelAddresses["=W'-152'"]<<endl;
@@ -206,9 +208,11 @@ int Pass2::excute(string outPath) {
 		errorMessage = disCalc.getErrorMessage();
 		return 0;
 	}
-	//debugLabelAddresses(labelAddresses);
-	//debugEntriesVectors(allEntryVector);
-	//debugAddressMode(allEntryVector);
+    
+    cout << sections[0].get_enteries()[sections[0].get_enteries().size() - 1].operationCode << "is need "
+    << allEntryVector[allEntryVector.size() - 2].expression_labels.size()
+    << " " << sections[0].get_enteries()[sections[0].get_enteries().size() - 1].e << endl;
+    
     
     string object_code = "";
 	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(labelAddresses, container);

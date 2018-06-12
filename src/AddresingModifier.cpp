@@ -21,10 +21,12 @@ void AddresingModifier::setVectorAddressingMode(vector<IntermediateFileParser::e
             cur_sec_name = it->label;
             ext_labels = container[cur_sec_name].get_ext_ref();
         }
-        if (regex_match(it->operand[0], expression)) {
+        if (regex_match(it->operand[0], expression) && it->operationCode != "EXTREF" &&
+            it->operationCode != "EXTDEF") {
             string label = "";
             for (char i = 0; i < it->operand[0].length(); i++) {
-                if (it->operand[0][i] == '+' || it->operand[0][i] == '-') {
+                if (it->operand[0][i] == '+' || it->operand[0][i] == '-'
+                        || it->operand[0][i] == '*' || it->operand[0][i] == '\\') {
                     if (find(ext_labels.begin(), ext_labels.end(), label) != ext_labels.end()) {
                         it->need_modification_record = true;
                         it->expression_labels.push_back(label);
