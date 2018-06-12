@@ -1,32 +1,59 @@
 .234567890123456789
 LAB2C    START   0000
- .        LDA     ALPHA
+	. lda     te*te1
+	. lda     te/te1
+	. lda     te+te1
+	 lda     te1-te
+ .        LDA    ALPHA
          LDB     #10
          LDX     #0
          ADDR    A,B
-	. org     1000
-  .       STA     SAVEW,X
 
-   .      STA     SAVEW,X
+         org    1000
+  .       STA    SAVEW,X
+
+   .      STA    SAVEW,X
+
          LDA     =X'5f'
          LDA     =X'df'
          LDA     =C'8j5'
-
+te	 word    5
+te1	 word    5
          LDA     =w'1552'
          LDA     =w'-152'
          LDA     =W'124'
          LDA     =W'-152'
          LDA     =W'1624'
          LDA     =W'4095'
-	ltorg
-	word     -1000
-	resw     1
- .       resw     -1
-   .     resw     9999
-.        resw     10000
+	 ltorg
+
+	 lda     loop 
+	 word    -1000
+	 resw    1
+ .       resw    -1
+   .     resw    9999
+.        resw    10000
          BAse    alpha
 .Format 4
          +SUB    #12
+	 +sub    12
+ 	 +sub    loop
+ 	 +sub    #loop
+ 	 +sub    @12
+ 	 +sub    @loop
+ 	 +sub    @loop-500
+ 	 +sub    #loop+500
+ 	 +sub    loop-500
+
+.	 +SUB    #12,x
+	 +sub    12,x
+ 	 +sub    loop,x
+ .	 +sub    #loop,x
+ .	 +sub    @12,x
+ .	 +sub    @loop,x
+ .	 +sub    @loop+500,x
+ .	 +sub    #loop+500,x
+ 	 +sub    loop+500,x
          LDX     #0
          LDCH    HEXCHAR
          STA     INPUT
@@ -34,25 +61,28 @@ LOOP     LDCH    STRING,X
 .	 lda     test
 .	 lda     none
 v1	 lda     4095
-.v2       lda     4096
+.v2      lda     4096
 v3       lda     #4095
-.v4       lda     #4096
+.v4      lda     #4096
 v5       lda     @4095
 .v6	 lda     @4096
 .v7	 lda     -4095
-..v8       lda     -4096
-.v9       lda     #-4095
-..v10      lda     #-4096
-.v11      lda     @-4095
+..v8     lda     -4096
+.v9      lda     #-4095
+..v10    lda     #-4096
+.v11     lda     @-4095
 .v12	 lda     @-4096
          COMP    INPUT
 	 LDA     1000
+
+.sajed   EQU     loop-1000
+
 b1       equ     4000
 b11      equ     4000
 b2       equ     1000
 b3       equ     2000
 b5       equ     500
-         BASE    loop-1000
+    .    BASE    loop-1000
          LDA     loop-loop+1000
          LDA     1000
          LDA     2000
@@ -64,18 +94,22 @@ b5       equ     500
 	 LDA     b3
          LDA     b2
 	 resw    3500
-	 BASE    4000
+
+         BASE    4000
 	 resw    3000
 test     word    5
-	. LDA     b5
+	.LDA     b5
 sajed1   LDA     loop+1000
-sajed2   LDA     loop-1000
+.sajed2  LDA     loop-1000
 sajed4   LDA     loop-1000+952
-sajed6   LDA     loop-sajed1+HEXCHAR
+
+.sajed6  LDA     loop-sajed1+HEXCHAR-found
+
          JEQ     FOUND
          STCH    OUTPUT,X
          TIX     #5
-     .    JLT     LOOP
+     .   JLT     LOOP
+
 	 nobaSe
 FOUND    J       OUTPUT
 ALPHA    WORD    2
@@ -89,5 +123,5 @@ beso     BYTE    C'F4   '
 STRING   RESW    1
 OUTPUT   RESB    5
 
-         END
+      END
 

@@ -11,7 +11,7 @@
 class ObjectProgramGenerator {
 public:
     ObjectProgramGenerator(unordered_map<string,string> labelAddresses,
-                           unordered_map<string, ControlSection>);
+                           unordered_map<string, ControlSection>, string);
     
     string generate_program_code(vector<IntermediateFileParser::entry>);
 
@@ -44,7 +44,9 @@ public:
     string generate_referenc_recod(vector<IntermediateFileParser::entry> entries);
 
     void write_string_to_file(string str, string file_path);
+
 private:
+    string objectCodePath;
     unordered_map<string, ControlSection> container;
     string porgram_name;
     unordered_map<string,string> labelAddresses;

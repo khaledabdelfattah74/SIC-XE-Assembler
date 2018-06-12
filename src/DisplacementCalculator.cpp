@@ -42,6 +42,8 @@ void DisplacementCalculator::handleDisplacement (
 			it--;
 		} else if(entryToCheck.operationCode == "NOBASE" || entryToCheck.operationCode == "nobase") {
 			canBase = false;
+			vectorToCalculate->erase(it,it+1);
+			it--;
 		} else {
 			handle(&*it);
 		}
@@ -125,7 +127,7 @@ void DisplacementCalculator::handle(IntermediateFileParser::entry *entryToHandle
 				int decimalValue = valueOfExpression(operand1);
 				if(decimalValue < 0) {
 					error = true;
-					errorMessage += "**invalid expression";
+					errorMessage += "\n**invalid expression\n";
 					errorMessage += getEntrySrc(*entryToHandle);
 				} else {
 					entryToHandle->displacemnet = util.decimalToHex(decimalValue);

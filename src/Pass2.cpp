@@ -174,7 +174,8 @@ vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry>
     return sections;
 }
 
-int Pass2::excute(string outPath) {
+
+int Pass2::excute(string outPath, string objectCodePath) {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser(outPath);
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
@@ -215,10 +216,11 @@ int Pass2::excute(string outPath) {
     
     
     string object_code = "";
-	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(labelAddresses, container);
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(labelAddresses, container, objectCodePath);
     for (ControlSection section : sections)
         object_code += objGen.generate_program_code(section.get_enteries());
-    objGen.write_string_to_file(object_code, "/Users/khaledabdelfattah/Desktop/ObjectCode.txt");
+    objGen.write_string_to_file(object_code, objectCodePath);
+
 	return 1;
 }
 

@@ -9,7 +9,9 @@
 string generateModificationRecords();
 
 ObjectProgramGenerator::ObjectProgramGenerator(unordered_map<string,string> labelAddresses,
-                                               unordered_map<string, ControlSection> container) {
+                                               unordered_map<string, ControlSection> container,
+                                               string objectCodePath) {
+    this->objectCodePath = objectCodePath;
     this->container = container;
     this->labelAddresses = labelAddresses;
 }
@@ -81,7 +83,7 @@ string ObjectProgramGenerator::generate_modification_records(vector<Intermediate
     for (int i = 0; i < entries.size(); ++i) {
         if (entries[i].need_modification_record) {
             cout << "Hello there " << endl;
-            for (string label : entries[i].expression_labels) {
+            for (pair<string, char> label : entries[i].expression_labels) {
                 modifications.append("M");
                 int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
                 string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
@@ -90,8 +92,8 @@ string ObjectProgramGenerator::generate_modification_records(vector<Intermediate
                     modifications.append("05");
                 else
                     modifications.append("06");
-                modifications.append("+");
-                modifications.append(label + "\n");
+                modifications += label.second;
+                modifications.append(label.first + "\n");
             }
         } else if(entries[i].e) {
             modifications.append("M");

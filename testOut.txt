@@ -2,95 +2,119 @@ Line no.	Address   	Label   		Mnemonic		Operands          	Comments
 										Op-code
 1       	000000		        		        		                 	.234567890123456789
 2       	000000		LAB2C   		START   		0000             	
-3       	000000		        		        		                 	 .        LDA     ALPHA
-4       	000000		        		LDB     		#10              	
-5       	000003		        		LDX     		#0               	
-6       	000006		        		ADDR    		A,B              	
-7       	000006		        		        		                 		. org     1000
-8       	000006		        		        		                 	  .       STA     SAVEW,X
-9       	000006		        		        		                 	   .      STA     SAVEW,X
-10      	000008		        		LDA     		=X'5f'           	
-11      	00000b		        		LDA     		=X'df'           	
-12      	00000e		        		LDA     		=C'8j5'          	
-13      	000011		        		LDA     		=W'1552'         	
-14      	000014		        		LDA     		=W'-152'         	
-15      	000017		        		LDA     		=W'124'          	
-16      	00001a		        		LDA     		=W'-152'         	
-17      	00001d		        		LDA     		=W'1624'         	
-18      	000020		        		LDA     		=W'4095'         	
-19      	000023		=X'5f'  		BYTE    		X'5f'            	
-19      	000024		=X'df'  		BYTE    		X'df'            	
-19      	000025		=C'8j5' 		BYTE    		C'8j5'           	
-19      	000028		=W'1552'		WORD    		1552             	
-19      	00002b		=W'-152'		WORD    		-152             	
-19      	00002e		=W'124' 		WORD    		124              	
-19      	000031		=W'1624'		WORD    		1624             	
-19      	000034		=W'4095'		WORD    		4095             	
-19      	000037		        		WORD    		-1000            	
-20      	00003a		        		RESW    		1                	
-21      	00003a		        		        		                 	 .       resw     -1
-22      	00003a		        		        		                 	   .     resw     9999
-23      	00003a		        		        		                 	.        resw     10000
-24      	00003d		        		BASE    		ALPHA            	
-25      	00003d		        		        		                 	.Format 4
-26      	00003d		        		+SUB    		#12              	
-27      	000041		        		LDX     		#0               	
-28      	000044		        		LDCH    		HEXCHAR          	
-29      	000047		        		STA     		INPUT            	
-30      	00004a		LOOP    		LDCH    		STRING,X         	
-31      	00004a		        		        		                 	.	 lda     test
-32      	00004a		        		        		                 	.	 lda     none
-33      	00004d		V1      		LDA     		4095             	
-34      	00004d		        		        		                 	.v2       lda     4096
-35      	000050		V3      		LDA     		#4095            	
-36      	000050		        		        		                 	.v4       lda     #4096
-37      	000053		V5      		LDA     		@4095            	
-38      	000053		        		        		                 	.v6	 lda     @4096
-39      	000053		        		        		                 	.v7	 lda     -4095
-40      	000053		        		        		                 	..v8       lda     -4096
-41      	000053		        		        		                 	.v9       lda     #-4095
-42      	000053		        		        		                 	..v10      lda     #-4096
-43      	000053		        		        		                 	.v11      lda     @-4095
-44      	000053		        		        		                 	.v12	 lda     @-4096
-45      	000056		        		COMP    		INPUT            	
-46      	000059		        		LDA     		1000             	
-48      	000fa0		B1      		RESW    		NONE             	.Assumption
-49      	000fa0		B11     		RESW    		NONE             	.Assumption
-50      	0003e8		B2      		RESW    		NONE             	.Assumption
-51      	0007d0		B3      		RESW    		NONE             	.Assumption
-52      	0001f4		B5      		RESW    		NONE             	.Assumption
-52      	00005c		        		BASE    		LOOP-1000        	
-53      	00005c		        		LDA     		LOOP-LOOP+1000   	
-54      	00005f		        		LDA     		1000             	
-55      	000062		        		LDA     		2000             	
-56      	000065		        		LDA     		500              	
-57      	000068		        		BASE    		1500             	
-58      	000068		        		LDA     		B1               	
-59      	00006b		        		NOBASE  		                 	
-60      	00006b		        		        		                 	.	 lda     b11
-61      	00006b		        		LDA     		B3               	
-62      	00006e		        		LDA     		B2               	
-63      	000071		        		RESW    		3500             	
-64      	002975		        		BASE    		4000             	
-65      	002975		        		RESW    		3000             	
-66      	004c9d		TEST    		WORD    		5                	
-67      	004c9d		        		        		                 		. LDA     b5
-68      	004ca0		SAJED1  		LDA     		LOOP+1000        	
-69      	004ca3		SAJED2  		LDA     		LOOP-1000        	
-70      	004ca6		SAJED4  		LDA     		LOOP-1000+952    	
-71      	004ca9		SAJED6  		LDA     		LOOP-SAJED1+HEXCHAR	
-72      	004cac		        		JEQ     		FOUND            	
-73      	004caf		        		STCH    		OUTPUT,X         	
-74      	004cb2		        		TIX     		#5               	
-75      	004cb2		        		        		                 	     .    JLT     LOOP
-76      	004cb5		        		NOBASE  		                 	
-77      	004cb5		FOUND   		J       		OUTPUT           	
-78      	004cb8		ALPHA   		WORD    		2                	
-79      	004cbb		SAVEW   		RESW    		2                	
-80      	004cc1		HEXCHAR 		BYTE    		X'6145fd56'      	
-81      	004cc5		INPUT   		RESB    		1                	
-82      	004cc6		BESO    		BYTE    		C'F4   '         	
-83      	004ccb		        		BYTE    		C'F5    '        	
-84      	004cd1		STRING  		RESW    		1                	
-85      	004cd4		OUTPUT  		RESB    		5                	
-86      	004cd9		        		END     		                 	
+3       	000000		        		        		                 		. lda     te*te1
+4       	000000		        		        		                 		. lda     te/te1
+5       	000000		        		        		                 		. lda     te+te1
+6       	000000		        		LDA     		TE1-TE           	
+7       	000000		        		        		                 	 .        LDA    ALPHA
+8       	000003		        		LDB     		#10              	
+9       	000006		        		LDX     		#0               	
+10      	000009		        		ADDR    		A,B              	
+11      	0003e8		        		        		                 	  .       STA    SAVEW,X
+12      	0003e8		        		        		                 	   .      STA    SAVEW,X
+13      	0003e8		        		LDA     		=X'5f'           	
+14      	0003eb		        		LDA     		=X'df'           	
+15      	0003ee		        		LDA     		=C'8j5'          	
+16      	0003f1		TE      		WORD    		5                	
+17      	0003f4		TE1     		WORD    		5                	
+18      	0003f7		        		LDA     		=W'1552'         	
+19      	0003fa		        		LDA     		=W'-152'         	
+20      	0003fd		        		LDA     		=W'124'          	
+21      	000400		        		LDA     		=W'-152'         	
+22      	000403		        		LDA     		=W'1624'         	
+23      	000406		        		LDA     		=W'4095'         	
+24      	000409		=X'5f'  		BYTE    		X'5f'            	
+24      	00040a		=X'df'  		BYTE    		X'df'            	
+24      	00040b		=C'8j5' 		BYTE    		C'8j5'           	
+24      	00040e		=W'1552'		WORD    		1552             	
+24      	000411		=W'-152'		WORD    		-152             	
+24      	000414		=W'124' 		WORD    		124              	
+24      	000417		=W'1624'		WORD    		1624             	
+24      	00041a		=W'4095'		WORD    		4095             	
+24      	00041d		        		LDA     		LOOP             	
+25      	000420		        		WORD    		-1000            	
+26      	000423		        		RESW    		1                	
+27      	000423		        		        		                 	 .       resw    -1
+28      	000423		        		        		                 	   .     resw    9999
+29      	000423		        		        		                 	.        resw    10000
+30      	000426		        		BASE    		ALPHA            	
+31      	000426		        		        		                 	.Format 4
+32      	000426		        		+SUB    		#12              	
+33      	00042a		        		+SUB    		12               	
+34      	00042e		        		+SUB    		LOOP             	
+35      	000432		        		+SUB    		#LOOP            	
+36      	000436		        		+SUB    		@12              	
+37      	00043a		        		+SUB    		@LOOP            	
+38      	00043e		        		+SUB    		@LOOP-500        	
+39      	000442		        		+SUB    		#LOOP+500        	
+40      	000446		        		+SUB    		LOOP-500         	
+41      	000446		        		        		                 	.	 +SUB    #12,x
+42      	00044a		        		+SUB    		12,X             	
+43      	00044e		        		+SUB    		LOOP,X           	
+44      	00044e		        		        		                 	 .	 +sub    #loop,x
+45      	00044e		        		        		                 	 .	 +sub    @12,x
+46      	00044e		        		        		                 	 .	 +sub    @loop,x
+47      	00044e		        		        		                 	 .	 +sub    @loop+500,x
+48      	00044e		        		        		                 	 .	 +sub    #loop+500,x
+49      	000452		        		+SUB    		LOOP+500,X       	
+50      	000456		        		LDX     		#0               	
+51      	000459		        		LDCH    		HEXCHAR          	
+52      	00045c		        		STA     		INPUT            	
+53      	00045f		LOOP    		LDCH    		STRING,X         	
+54      	00045f		        		        		                 	.	 lda     test
+55      	00045f		        		        		                 	.	 lda     none
+56      	000462		V1      		LDA     		4095             	
+57      	000462		        		        		                 	.v2      lda     4096
+58      	000465		V3      		LDA     		#4095            	
+59      	000465		        		        		                 	.v4      lda     #4096
+60      	000468		V5      		LDA     		@4095            	
+61      	000468		        		        		                 	.v6	 lda     @4096
+62      	000468		        		        		                 	.v7	 lda     -4095
+63      	000468		        		        		                 	..v8     lda     -4096
+64      	000468		        		        		                 	.v9      lda     #-4095
+65      	000468		        		        		                 	..v10    lda     #-4096
+66      	000468		        		        		                 	.v11     lda     @-4095
+67      	000468		        		        		                 	.v12	 lda     @-4096
+68      	00046b		        		COMP    		INPUT            	
+69      	00046e		        		LDA     		1000             	
+70      	00046e		        		        		                 	.sajed   EQU     loop-1000
+72      	000fa0		B1      		RESW    		NONE             	.Assumption
+73      	000fa0		B11     		RESW    		NONE             	.Assumption
+74      	0003e8		B2      		RESW    		NONE             	.Assumption
+75      	0007d0		B3      		RESW    		NONE             	.Assumption
+76      	0001f4		B5      		RESW    		NONE             	.Assumption
+76      	000471		        		        		                 	    .    BASE    loop-1000
+77      	000471		        		LDA     		LOOP-LOOP+1000   	
+78      	000474		        		LDA     		1000             	
+79      	000477		        		LDA     		2000             	
+80      	00047a		        		LDA     		500              	
+81      	00047d		        		BASE    		1500             	
+82      	00047d		        		LDA     		B1               	
+83      	000480		        		NOBASE  		                 	
+84      	000480		        		        		                 	.	 lda     b11
+85      	000480		        		LDA     		B3               	
+86      	000483		        		LDA     		B2               	
+87      	000486		        		RESW    		3500             	
+88      	002d8a		        		BASE    		4000             	
+89      	002d8a		        		RESW    		3000             	
+90      	0050b2		TEST    		WORD    		5                	
+91      	0050b2		        		        		                 		.LDA     b5
+92      	0050b5		SAJED1  		LDA     		LOOP+1000        	
+93      	0050b5		        		        		                 	.sajed2  LDA     loop-1000
+94      	0050b8		SAJED4  		LDA     		LOOP-1000+952    	
+95      	0050b8		        		        		                 	.sajed6  LDA     loop-sajed1+HEXCHAR-found
+96      	0050bb		        		JEQ     		FOUND            	
+97      	0050be		        		STCH    		OUTPUT,X         	
+98      	0050c1		        		TIX     		#5               	
+99      	0050c1		        		        		                 	     .   JLT     LOOP
+100     	0050c4		        		NOBASE  		                 	
+101     	0050c4		FOUND   		J       		OUTPUT           	
+102     	0050c7		ALPHA   		WORD    		2                	
+103     	0050ca		SAVEW   		RESW    		2                	
+104     	0050d0		HEXCHAR 		BYTE    		X'6145fd56'      	
+105     	0050d4		INPUT   		RESB    		1                	
+106     	0050d5		BESO    		BYTE    		C'F4   '         	
+107     	0050da		        		BYTE    		C'F5    '        	
+108     	0050e0		STRING  		RESW    		1                	
+109     	0050e3		OUTPUT  		RESB    		5                	
+110     	0050e8		        		END     		                 	

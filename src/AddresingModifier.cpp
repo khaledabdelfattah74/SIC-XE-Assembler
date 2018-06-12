@@ -16,6 +16,7 @@ AddresingModifier::~AddresingModifier() {
 void AddresingModifier::setVectorAddressingMode(vector<IntermediateFileParser::entry> *vectorToSet,
                                                 unordered_map<string, ControlSection> container) {
     vector<string> ext_labels;
+    char op = '+';
 	for (auto it = vectorToSet->begin(); it != vectorToSet->end(); ++it) {
         if (it->operationCode == "START" || it->operationCode == "CSECT") {
             cur_sec_name = it->label;
@@ -29,16 +30,17 @@ void AddresingModifier::setVectorAddressingMode(vector<IntermediateFileParser::e
                         || it->operand[0][i] == '*' || it->operand[0][i] == '\\') {
                     if (find(ext_labels.begin(), ext_labels.end(), label) != ext_labels.end()) {
                         it->need_modification_record = true;
-                        it->expression_labels.push_back(label);
+                        it->expression_labels.push_back({label, op});
                     }
                     label = "";
+                    op = it->operand[0][i];
                     continue;
                 }
                 label += it->operand[0][i];
             }
             if (find(ext_labels.begin(), ext_labels.end(), label) != ext_labels.end()) {
                 it->need_modification_record = true;
-                it->expression_labels.push_back(label);
+                it->expression_labels.push_back({label, op});
             }
         }
 		setAddressingMode(&*it);

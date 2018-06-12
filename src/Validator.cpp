@@ -16,8 +16,8 @@ const regex indexing ("(\\w)+,X");
 const regex memoryAddressing ("(#|@)*([A-Z])(\\w)*");
 const regex immediateAddressing ("(#|@)*(\\d)+");
 const regex notRegester ("(#|@)*(A|B|X|L|T|F|S|P)");
-const regex expression ("((\\w)+(\\-|\\+|\\*|\\\\))*(\\w)+");
-const regex notValid ("([A-Z](\\w)*(\\+)[A-Z](\\w)*)|((\\d)+(\\-)[A-Z](\\w)*)");
+const regex expression ("(@|#)*(\\w)+((\\-|\\+|\\*|\\/)(\\w)+)+(,x|,X)*");
+const regex notValid ("([A-Z](\\w)*(\\+|\\*|\\/)[A-Z](\\w)*)|((\\d)+(\\-|\\*|\\/)[A-Z](\\w)*)|([A-Z](\\w)*(\\*|\\/)(\\d)+)");
 const regex literal ("(\\=)(C|W|X)\\'(\\w|\\s)+\\'");
 const regex literal2 ("(\\=)(C|W|X)\\'(\\-)(\\w|\\s)+\\'");
 
@@ -35,8 +35,7 @@ bool Validator::check_vaidity(string operation, string operand) {
     } else if (operation == "RSUB") {
         return operand.length() == 0;
     } else if (regex_match(operand, expression)) {
-        cout << operand << regex_match(operand, notValid) << endl;
-        return !regex_match(operand, notValid);
+        return ((!regex_match(operand, notValid)) || operation == "WORD" ) && ((operand[0] != '@' && operand[0] != '#')||(operand.substr(operand.size()-2 , 2) != ",X"));
     } else {
         if (regex_match(operand, oneRegister))
             return false;

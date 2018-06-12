@@ -104,8 +104,14 @@ bool IntermediateFileParser::validEntry(IntermediateFileParser::entry entryToVal
 void IntermediateFileParser::removeSpaces(string *str) {
 	if(str->length() > 0 && str->at(0) == ' ')
 		return;
+	//cout << *str << endl;
+	bool comment = false;
 	for(auto it = str->begin();it != str->end();++it) {
-		if(*it == ' ') {
+		//cout << *it << endl;
+		if(*it == ' '|| *it == '.'|| comment) {
+			if(*it == '.') {
+				comment = true;
+			}
 			str->erase(it,it+1);
 			it--;
 		}

@@ -23,6 +23,11 @@ unordered_map<string,string> LabelProcessor::assignLabelAddresses(vector<Interme
 					} else {
 						errorFlag = true;
 					}
+				} else {
+					if(canBeRemved(entryToProcess)) {
+						vectorToProcess->erase(it,it+1);
+						it--;
+					}
 				}
 		}
 	return labelAdresses;
