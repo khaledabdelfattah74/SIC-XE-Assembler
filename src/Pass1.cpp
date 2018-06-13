@@ -121,6 +121,12 @@ void Pass1::mainLoop() {
                     writeCurrenLineToIntermediateFile(-3, locctr, currentInstructionLength, currentEntry);
                 }
             }
+            if (currentEntry.getOperand() == "*") {
+                int temp = locctr;
+                ostringstream convert;
+                convert << temp;
+                currentEntry.setOperand(convert.str());
+            }
             bool validOpCode = opTable.found(to_upper(currentEntry.getOpCode()));
             if (validOpCode) {
                 Validator validator;
