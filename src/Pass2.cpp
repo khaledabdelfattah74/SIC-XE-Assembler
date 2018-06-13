@@ -15,6 +15,7 @@
 #include "Utilities.h"
 #include "ObjectProgramGenerator.h"
 #include "Pass2.h"
+#include "SicParser.hpp"
 
 using namespace std;
 
@@ -128,41 +129,103 @@ void Pass2::debugUtilities() {
 
 }
 
+vector<ControlSection> Pass2::get_sections(vector<IntermediateFileParser::entry> enteries) {
+    vector<ControlSection> sections;
+    string sec_name;
+    vector<IntermediateFileParser::entry> sec_entries;
+    vector<string> ext_ref, ext_def;
+    for (IntermediateFileParser::entry entry : enteries) {
+        if (entry.operationCode == "START") {
+            sec_name = entry.label;
+        }
+        if (entry.operationCode == "CSECT") {
+            ControlSection section = *new ControlSection();
+            section.sec_name = sec_name;
+            section.entries = sec_entries;
+            section.ext_ref = ext_ref;
+            section.ext_def = ext_def;
+            sections.push_back(section);
+            sec_name = entry.label;
+            sec_entries.clear();
+            ext_def.clear();
+            ext_ref.clear();
+        }
+        if (entry.operationCode == "EXTREF") {
+            //ext_ref.insert(ext_ref.end(), entry.operand.begin(), entry.operand.end());
+            ext_ref = entry.operand;
+        }
+        if (entry.operationCode == "EXTDEF") {
+            //ext_ref.insert(ext_def.end(), entry.operand.begin(), entry.operand.end());
+            ext_def = entry.operand;
+        }
+        sec_entries.push_back(entry);
+        if (entry.operationCode == "END") {
+            ControlSection section = *new ControlSection();
+            section.sec_name = sec_name;
+            section.entries = sec_entries;
+            section.ext_ref = ext_ref;
+            section.ext_def = ext_def;
+            sections.push_back(section);
+            sec_name = entry.label;
+            sec_entries.clear();
+            ext_def.clear();
+            ext_ref.clear();
+        }
+    }
+    return sections;
+}
+
+
 int Pass2::excute(string outPath, string objectCodePath) {
 
 	IntermediateFileParser intermediateParser = *new IntermediateFileParser(outPath);
 	vector<IntermediateFileParser::entry> allEntryVector = intermediateParser.getEntriesVector();
-	cout << allEntryVector.size() << endl;
+
+    vector<ControlSection> sections  = get_sections(allEntryVector);
+    unordered_map<string, ControlSection> container;
+    for (ControlSection c : sections)
+        container[c.sec_name] = c;
+    
+    cout << allEntryVector.size() << endl;
 	LabelProcessor labelProcessor = *new LabelProcessor();
 	unordered_map<string,string> labelAddresses = labelProcessor.assignLabelAddresses(&allEntryVector);
-	/*if(labelProcessor.getErrorFlag()) {
-		cout << "uncompletely assembled";
-		return 0;
-	}*/
-	debugUtilities();
+    
+    debugUtilities();
 	AddresingModifier addressModifier = *new AddresingModifier();
-	addressModifier.setVectorAddressingMode(&allEntryVector);
+	addressModifier.setVectorAddressingMode(&allEntryVector, container);
+    
+    sections.clear();
+    sections  = get_sections(allEntryVector);
+    container.clear();
+    for (ControlSection c : sections)
+        container[c.sec_name] = c;
 
+    
 	DisplacementCalculator disCalc = *new DisplacementCalculator(labelAddresses);
 	cout << "HERE "<<labelAddresses["=W'-152'"]<<endl;
 	disCalc.handleDisplacement(&allEntryVector);
 	debugDisplacement(allEntryVector);
 	if(disCalc.getDisplacemnetError()) {
-		cout << "uncompletely assembled\n";
+		cout << "incompletely assembled\n";
 		errorMessage = disCalc.getErrorMessage();
 		return 0;
 	}
-	//debugLabelAddresses(labelAddresses);
-	//debugEntriesVectors(allEntryVector);
-	//debugAddressMode(allEntryVector);
+    
+    cout << sections[0].get_enteries()[sections[0].get_enteries().size() - 1].operationCode << "is need "
+    << allEntryVector[allEntryVector.size() - 2].expression_labels.size()
+    << " " << sections[1].get_enteries()[sections[1].get_enteries().size() - 1].operationCode << endl;
+    
+    
+    string object_code = "";
+	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(labelAddresses, container, objectCodePath);
+    for (ControlSection section : sections)
+        object_code += objGen.generate_program_code(section.get_enteries());
+    object_code = SicParser::to_upper(object_code);
+    objGen.write_string_to_file(object_code, objectCodePath);
 
-	ObjectProgramGenerator objGen = *new ObjectProgramGenerator(objectCodePath);
-	objGen.generate_program_code(allEntryVector);
 	return 1;
 }
 
 string Pass2::getErrorMessage() {
 	return errorMessage;
 }
-
-

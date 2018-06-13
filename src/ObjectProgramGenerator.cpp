@@ -8,21 +8,23 @@
 
 string generateModificationRecords();
 
-ObjectProgramGenerator::ObjectProgramGenerator(string objectCodePath) {
+ObjectProgramGenerator::ObjectProgramGenerator(unordered_map<string,string> labelAddresses,
+                                               unordered_map<string, ControlSection> container,
+                                               string objectCodePath) {
     this->objectCodePath = objectCodePath;
+    this->container = container;
+    this->labelAddresses = labelAddresses;
 }
 
-ObjectProgramGenerator::~ObjectProgramGenerator() {
-
-}
-
-void ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries) {
+string ObjectProgramGenerator::generate_program_code(vector<IntermediateFileParser::entry> entries) {
     string output;
     output.append(generate_header_record(entries));
+    output.append(generate_definition_record(entries));
+    output.append(generate_referenc_recod(entries));
     output.append(generate_text_records(entries));
     output.append(generate_modification_records(entries));
     output.append(generate_end_record(entries));
-    write_string_to_file(output,this->objectCodePath);
+    return output;
 }
 
 string ObjectProgramGenerator::generate_text_records(vector<IntermediateFileParser::entry> entries) const {
@@ -33,9 +35,12 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
     int text_length = 0;
     text_records.append("T");
     text_records.append(entries[0].address);
-    int text_length_ind = text_records.length();
+    int text_length_ind = (int) text_records.length();
     text_records.append("XX");
+    OpTable op_table = *new OpTable();
     for (int i = 1; i < entries.size()-1; ++i) {
+        if (!op_table.found(entries[i].operationCode))
+            continue;
         if(current_address != utilities.hexToDecimal(entries[i].address)) {
             current_address = utilities.hexToDecimal(entries[i].address);
             text_records.append("\n");
@@ -44,10 +49,10 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
             text_records[text_length_ind+1] = text_length_hex[5];
             text_records.append("T");
             text_records.append(entries[i].address);
-            text_length_ind = text_records.length();
+            text_length_ind = (int) text_records.length();
             text_records.append("XX");
             text_records.append(objectCodes[i-1]);
-            text_length = objectCodes[i-1].length()/2;
+            text_length = (int) objectCodes[i-1].length()/2;
         } else {
             if(text_length + objectCodes[i-1].length()/2 <= 30) {
                 current_address += objectCodes[i-1].length()/2;
@@ -61,10 +66,10 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
                 text_records[text_length_ind+1] = text_length_hex[5];
                 text_records.append("T");
                 text_records.append(entries[i].address);
-                text_length_ind = text_records.length();
+                text_length_ind = (int) text_records.length();
                 text_records.append("XX");
                 text_records.append(objectCodes[i-1]);
-                text_length = objectCodes[i-1].length()/2;
+                text_length = (int) objectCodes[i-1].length()/2;
             }
         }
     }
@@ -78,16 +83,28 @@ string ObjectProgramGenerator::generate_text_records(vector<IntermediateFilePars
 string ObjectProgramGenerator::generate_modification_records(vector<IntermediateFileParser::entry> entries) {
     Utilities utilities;
     string modifications;
-    if(entries[0].address == "000000") {
-    	for (int i = 0; i < entries.size(); ++i) {
-    		if(entries[i].e && entries[i].n && !entries[i].p && !entries[i].b) {
-    			modifications.append("M");
-    			int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
-    			string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
-    			modifications.append(hex_modification_address);
-    			modifications.append("05\n");
-    		}
-    	}
+    for (int i = 0; i < entries.size(); ++i) {
+        if (entries[i].need_modification_record) {
+            cout << "Hello there " << endl;
+            for (pair<string, char> label : entries[i].expression_labels) {
+                modifications.append("M");
+                int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
+                string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
+                modifications.append(hex_modification_address);
+                if (entries[i].e)
+                    modifications.append("05");
+                else
+                    modifications.append("06");
+                modifications += label.second;
+                modifications.append(label.first + "\n");
+            }
+        } else if(entries[i].e) {
+            modifications.append("M");
+            int decimal_modification_address = utilities.hexToDecimal(entries[i].address) + 1;
+            string hex_modification_address = utilities.decimalToHex(decimal_modification_address);
+            modifications.append(hex_modification_address);
+            modifications.append("05\n");
+        }
     }
     return modifications;
 }
@@ -144,10 +161,10 @@ string ObjectProgramGenerator::third_format_to_hex(IntermediateFileParser::entry
     if(operand.length() > 3)
         operand = operand.substr(operand.length()-3,3);
     while (operand.length() < 3) {
-            operand.insert(0,"0");
+        operand.insert(0,"0");
     }
     //vector<bool> operand_binary = hex_string_to_binary(operand);
-
+    
     string object_hex = binary_to_hex_string(entry_start_binary).substr(3,3);
     object_hex.append(operand);
     return  object_hex;
@@ -158,25 +175,25 @@ vector<bool> ObjectProgramGenerator::entry_start_to_binary(const IntermediateFil
     string op_code = entry.operationCode;
     vector<bool> binary = hex_string_to_binary(operation_table.getOperationCode(op_code));
     if(entry.n)
-            binary[6] = true;
+        binary[6] = true;
     if(entry.i)
-            binary[7] = true;
+        binary[7] = true;
     if(entry.x)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     if(entry.b)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     if(entry.p)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     if(entry.e)
-            binary.push_back(true);
-        else
-            binary.push_back(false);
+        binary.push_back(true);
+    else
+        binary.push_back(false);
     return binary;
 }
 
@@ -210,6 +227,7 @@ string ObjectProgramGenerator::register_to_hex(string reg)const {
         case 'F':
             return "6";
     }
+    return "";
 }
 
 vector<bool> ObjectProgramGenerator::hex_string_to_binary(string hex)const {
@@ -321,10 +339,10 @@ string ObjectProgramGenerator::generate_header_record(vector<IntermediateFilePar
     string header;
     Utilities utilities;
     header.append("H");
-    string porgram_name = entries[0].label;
-    while (porgram_name.length() < 6)
-        porgram_name.push_back(' ');
-    header.append(porgram_name);
+    this->porgram_name = entries[0].label;
+    while (this->porgram_name.length() < 6)
+        this->porgram_name.push_back(' ');
+    header.append(this->porgram_name);
     header.append(entries[0].address);
     header.append(utilities.decimalToHex(utilities.hexToDecimal(entries[entries.size()-1].address) - utilities.hexToDecimal(entries[0].address)));
     header.append("\n");
@@ -334,12 +352,43 @@ string ObjectProgramGenerator::generate_header_record(vector<IntermediateFilePar
 string ObjectProgramGenerator::generate_end_record(vector<IntermediateFileParser::entry> entries) {
     string end_record;
     end_record.append("E");
-    end_record.append(entries[0].address);
+    end_record.append(entries[0].address + "\n");
     return end_record;
 }
 
 void ObjectProgramGenerator::write_string_to_file(string str, string file_path) {
     ofstream out (file_path);
     out << str;
+}
+
+string ObjectProgramGenerator::generate_definition_record(vector<IntermediateFileParser::entry> entries) {
+    vector<string> ext_def = this->container[entries[0].label].get_ext_def();
+    if (ext_def.size() == 0)
+        return "";
+    string define_record = "D";
+    for (string label : ext_def) {
+        define_record += label;
+        if (label.length() < 6)
+            for (int i = (int) label.length(); i <= 6; i++)
+                define_record += " ";
+        define_record += this->labelAddresses[label];
+    }
+    define_record += "\n";
+    return define_record;
+}
+
+string ObjectProgramGenerator::generate_referenc_recod(vector<IntermediateFileParser::entry> entries) {
+    vector<string> ext_ref = this->container[entries[0].label].get_ext_ref();
+    if (ext_ref.size() == 0)
+        return "";
+    string refer_record = "R";
+    for (string label : ext_ref) {
+        refer_record += label;
+        if (label.length() < 6)
+            for (int i = (int) label.length(); i <= 6; i++)
+                refer_record += " ";
+    }
+    refer_record += "\n";
+    return refer_record;
 }
 

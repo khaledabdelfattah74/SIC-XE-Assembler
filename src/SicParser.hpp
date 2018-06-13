@@ -20,13 +20,11 @@ public:
     SicParser();
     virtual ~SicParser();
     SourceCodeTable parse(string path);
-    ;
+    static string to_upper(string str);
 private:
     string get_comment(vector<string> strings, int start);
     string get_quoted_operand(string);
     string get_operand(vector<string>, int);
-    string to_upper(string str);
-    ;
 };
 
 #endif /* SicParser_hpp */

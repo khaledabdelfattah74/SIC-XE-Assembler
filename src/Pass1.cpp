@@ -70,9 +70,8 @@ void Pass1::mainLoop() {
     int lineNo = 0;
     Entry currentEntry = sourceCodeTable.fetchNextEntry();
     writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
-    lineNo++;
-
-
+    lineNo++;    
+    string section_name;
     while (currentEntry.isCommentLine()) {
         writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
         lineNo++;
@@ -247,6 +246,17 @@ void Pass1::mainLoop() {
                     writeCurrenLineToIntermediateFile(-6, locctr, currentInstructionLength, currentEntry);
                     this->error = true;
                 }
+            } else if (to_upper(currentEntry.getOpCode()) == "CSECT") {
+                locctr = 0;
+                writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+                section_name = to_upper(currentEntry.getLable());
+                goto Fetch;
+            } else if (to_upper(currentEntry.getOpCode()) == "EXTREF") {
+                writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+                goto Fetch;
+            } else if (to_upper(currentEntry.getOpCode()) == "EXTDEF") {
+                writeCurrenLineToIntermediateFile(lineNo, locctr, 0, currentEntry);
+                goto Fetch;
             } else {
                 this->error = true;
                 writeCurrenLineToIntermediateFile(-2, locctr, currentInstructionLength, currentEntry);
@@ -266,12 +276,15 @@ void Pass1::mainLoop() {
                     }
                 }
             }
-        }
-
-        if (to_upper(currentEntry.getOpCode()) != "LTORG" && to_upper(currentEntry.getOpCode()) != "ORG" && (to_upper(currentEntry.getOperand()) != "NONE" || to_upper(currentEntry.getComment()) != ".ASSUMPTION")) {
+        }        
+        if (to_upper(currentEntry.getOpCode()) != "LTORG" &&
+            to_upper(currentEntry.getOpCode()) != "ORG" &&
+            to_upper(currentEntry.getOperand()) != "NONE" &&
+            to_upper(currentEntry.getComment()) != ".Assumption") {
             writeCurrenLineToIntermediateFile(lineNo, locctr, currentInstructionLength, currentEntry);
             lineNo++;
         }
+    Fetch:
         currentEntry = sourceCodeTable.fetchNextEntry();
     }
 
@@ -410,8 +423,8 @@ void Pass1::printSymTable(SymTable symTable) {
                 symbolName.append(" ");
             }
         }
-        cout << symbolName << "\t" << hex << symbol.second << endl;
-        outfile << symbolName << "\t" << hex << symbol.second << endl;
+       cout << symbolName << "\t" << hex << symbol.second << endl;
+       outfile << symbolName << "\t" << hex << symbol.second << endl;
     }
     outfile.close();
 }
@@ -483,7 +496,7 @@ int Pass1::valueOfExpression(string expression, SymTable symTable) {
             if (!symTable.found(to_upper(term))) {
                 return -2;
             }
-            numValue = symTable.symbolTable[to_upper(term)];
+            numValue = symTable.symbolTable[to_upper(term)].first;
         }
         switch(operations[i]) {
             case '-' :
